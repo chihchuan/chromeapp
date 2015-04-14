@@ -1,0 +1,38 @@
+/**
+ * A "hello world" application for Chrome Apps written in Dart.
+ *
+ * For more information, see:
+ * - http://developer.chrome.com/apps/api_index.html
+ * - https://github.com/dart-gde/chrome.dart
+ */
+
+import 'dart:html';
+
+import 'package:chrome/chrome_app.dart' as chrome;
+
+int boundsChange = 100;
+int count = 0;
+DivElement d = querySelector("#container_id");
+ParagraphElement p = new ParagraphElement();
+
+void main() {
+//  String str = "";
+//  chrome.runtime.getPlatformInfo().then((m) {
+//    str = m.toString();
+//  });
+  p.text = "pp";
+  document.body.insertAdjacentElement("beforeEnd", p);
+}
+
+void resizeWindow(MouseEvent event) {
+  chrome.ContentBounds bounds = chrome.app.window.current().getBounds();
+
+  bounds.width += boundsChange;
+  bounds.left -= boundsChange ~/ 2;
+
+  chrome.app.window.current().setBounds(bounds);
+
+  boundsChange *= -1;
+
+  querySelector("#count").text = (count++).toString();
+}
