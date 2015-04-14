@@ -12,10 +12,10 @@ import 'package:chrome/chrome_app.dart' as chrome;
 
 int boundsChange = 100;
 int count = 0;
-DivElement d = querySelector("#container_id");
+DivElement ddd = querySelector("#container_id");
 
 void main() {
-  d.setInnerHtml("okok");
+  ddd.setInnerHtml("okok");
 }
 
 void resizeWindow(MouseEvent event) {
