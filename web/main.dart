@@ -13,15 +13,9 @@ import 'package:chrome/chrome_app.dart' as chrome;
 int boundsChange = 100;
 int count = 0;
 DivElement d = querySelector("#container_id");
-ParagraphElement p = new ParagraphElement();
 
 void main() {
-//  String str = "";
-//  chrome.runtime.getPlatformInfo().then((m) {
-//    str = m.toString();
-//  });
-  p.text = "pp";
-  document.body.insertAdjacentElement("beforeEnd", p);
+  d.setInnerHtml("okok");
 }
 
 void resizeWindow(MouseEvent event) {
