@@ -1,6 +1,7 @@
 name: dartApp
 description: A sample Dart Chrome packaged application
 dependencies:
-  chrome: any
+  browser: any
+  chrome: "0.6.5"
 transformers:
 - chrome
