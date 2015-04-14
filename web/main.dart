@@ -10,14 +10,16 @@ import 'dart:html';
 
 import 'package:chrome/chrome_app.dart' as chrome;
 
-int boundsChange = 100;
-int count = 0;
-DivElement ddd = querySelector("#container_id");
+//int boundsChange = 100;
+//int count = 0;
+
 
 void main() {
+  DivElement ddd = querySelector("#container_id");
   ddd.setInnerHtml("okok");
 }
 
+/*
 void resizeWindow(MouseEvent event) {
   chrome.ContentBounds bounds = chrome.app.window.current().getBounds();
 
@@ -30,3 +32,4 @@ void resizeWindow(MouseEvent event) {
 
   querySelector("#count").text = (count++).toString();
 }
+*/
