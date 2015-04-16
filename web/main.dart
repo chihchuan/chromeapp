@@ -12,7 +12,7 @@ import 'package:chrome/chrome_app.dart' as chrome;
 
 
 void main() {
-  querySelector("#clickTime").onClick.listen(getInfo);
+  (querySelector("#clickTime") as ButtonElement).onClick.listen(getInfo);
 }
 
 void getInfo(Event e) {
