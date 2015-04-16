@@ -16,5 +16,5 @@ void main() {
 }
 
 void getInfo(Event e) {
-  chrome.runtime.getPlatformInfo().then((m) => querySelector("#contain").text = m.toString());
+  querySelector("#contain").text = "getInfo";
 }
