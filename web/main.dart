@@ -12,7 +12,9 @@ import 'package:chrome/chrome_app.dart' as chrome;
 
 
 void main() {
-  querySelector("#container_id").setInnerHtml("hi");
-  
+  querySelector("#clickTime").onClick.listen(getInfo);
 }
 
+void getInfo(Event e) {
+  chrome.runtime.getPlatformInfo().then((m) => querySelector("#contain").text = m.toString());
+}
