@@ -7,7 +7,6 @@
  */
 
 import 'dart:html';
-
 import 'package:chrome/chrome_app.dart' as chrome;
 
 
@@ -16,5 +15,5 @@ void main() {
 }
 
 void getInfo(Event e) {
-  querySelector("#contain").text = "hmm";
+  //querySelector("#contain").text = "hmm";
 }
