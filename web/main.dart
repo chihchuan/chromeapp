@@ -16,6 +16,5 @@ void main() {
 }
 
 void getInfo(Event e) {
-  String info = "getinfo";
-  querySelector("#contain").text = info;
+  querySelector("#contain").text = "hmm";
 }
