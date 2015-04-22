@@ -40,9 +40,12 @@ class ChromeGcm extends ChromeApi {
 
   ChromeGcm._() {
     var getApi = () => _gcm;
-    _onMessage = new ChromeStreamController<Map>.oneArg(getApi, 'onMessage', mapify);
-    _onMessagesDeleted = new ChromeStreamController.noArgs(getApi, 'onMessagesDeleted');
-    _onSendError = new ChromeStreamController<Map>.oneArg(getApi, 'onSendError', mapify);
+    _onMessage =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onMessage', mapify);
+    _onMessagesDeleted =
+        new ChromeStreamController.noArgs(getApi, 'onMessagesDeleted');
+    _onSendError =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onSendError', mapify);
   }
 
   bool get available => _gcm != null;
@@ -105,13 +108,14 @@ class ChromeGcm extends ChromeApi {
 }
 
 class GcmSendParams extends ChromeObject {
-  GcmSendParams({String destinationId, String messageId, int timeToLive, Map data}) {
+  GcmSendParams({String destinationId, String messageId, int timeToLive,
+      Map data}) {
     if (destinationId != null) this.destinationId = destinationId;
     if (messageId != null) this.messageId = messageId;
     if (timeToLive != null) this.timeToLive = timeToLive;
     if (data != null) this.data = data;
   }
-  GcmSendParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  GcmSendParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The ID of the server to send the message to as assigned by [Google API

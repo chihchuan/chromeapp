@@ -37,8 +37,8 @@ class AggregateManyToOneTransformer extends MockAggregateTransformer {
       assets.sort((asset1, asset2) => asset1.id.path.compareTo(asset2.id.path));
       return Future.wait(assets.map((asset) => asset.readAsString()));
     }).then((contents) {
-      var id = new AssetId(transform.package,
-          path.url.join(transform.key, output));
+      var id =
+          new AssetId(transform.package, path.url.join(transform.key, output));
       transform.addOutput(new Asset.fromString(id, contents.join('\n')));
     });
   }

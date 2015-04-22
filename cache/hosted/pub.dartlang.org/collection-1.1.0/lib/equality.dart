@@ -72,7 +72,7 @@ class IdentityEquality implements Equality {
 class IterableEquality<E> implements Equality<Iterable<E>> {
   final Equality<E> _elementEquality;
   const IterableEquality([Equality<E> elementEquality =
-                              const DefaultEquality()])
+      const DefaultEquality()])
       : _elementEquality = elementEquality;
 
   bool equals(Iterable<E> elements1, Iterable<E> elements2) {
@@ -151,8 +151,8 @@ class ListEquality<E> implements Equality<List<E>> {
   bool isValidKey(Object o) => o is List<E>;
 }
 
-abstract class _UnorderedEquality<E, T extends Iterable<E>>
-    implements Equality<T> {
+abstract class _UnorderedEquality<E, T extends Iterable<E>> implements
+    Equality<T> {
   final Equality<E> _elementEquality;
 
   const _UnorderedEquality(this._elementEquality);
@@ -201,8 +201,8 @@ abstract class _UnorderedEquality<E, T extends Iterable<E>>
  * of the other iterable, so that each pair are equal.
  */
 class UnorderedIterableEquality<E> extends _UnorderedEquality<E, Iterable<E>> {
-  const UnorderedIterableEquality(
-      [Equality<E> elementEquality = const DefaultEquality()])
+  const UnorderedIterableEquality([Equality<E> elementEquality =
+      const DefaultEquality()])
       : super(elementEquality);
 
   bool isValidKey(Object o) => o is Iterable<E>;
@@ -219,8 +219,7 @@ class UnorderedIterableEquality<E> extends _UnorderedEquality<E, Iterable<E>> {
  * it expects sets instead of iterables as arguments.
  */
 class SetEquality<E> extends _UnorderedEquality<E, Set<E>> {
-  const SetEquality(
-      [Equality<E> elementEquality = const DefaultEquality()])
+  const SetEquality([Equality<E> elementEquality = const DefaultEquality()])
       : super(elementEquality);
 
   bool isValidKey(Object o) => o is Set<E>;
@@ -240,13 +239,14 @@ class _MapEntry {
 
   int get hashCode =>
       (3 * equality._keyEquality.hash(key) +
-       7 * equality._valueEquality.hash(value)) & _HASH_MASK;
+          7 * equality._valueEquality.hash(value)) &
+          _HASH_MASK;
 
-  bool operator==(Object other) {
+  bool operator ==(Object other) {
     if (other is! _MapEntry) return false;
     _MapEntry otherEntry = other;
     return equality._keyEquality.equals(key, otherEntry.key) &&
-           equality._valueEquality.equals(value, otherEntry.value);
+        equality._valueEquality.equals(value, otherEntry.value);
 
   }
 }
@@ -260,9 +260,10 @@ class _MapEntry {
 class MapEquality<K, V> implements Equality<Map<K, V>> {
   final Equality<K> _keyEquality;
   final Equality<V> _valueEquality;
-  const MapEquality({ Equality<K> keys : const DefaultEquality(),
-                      Equality<V> values : const DefaultEquality() })
-      : _keyEquality = keys, _valueEquality = values;
+  const MapEquality({Equality<K> keys: const DefaultEquality(),
+      Equality<V> values: const DefaultEquality()})
+      : _keyEquality = keys,
+        _valueEquality = values;
 
   bool equals(Map<K, V> e1, Map<K, V> e2) {
     if (identical(e1, e2)) return true;
@@ -366,16 +367,18 @@ class DeepCollectionEquality implements Equality {
   final Equality _base;
   final bool _unordered;
   const DeepCollectionEquality([Equality base = const DefaultEquality()])
-      : _base = base, _unordered = false;
+      : _base = base,
+        _unordered = false;
 
   /**
    * Creates a deep equality on collections where the order of lists and
    * iterables are not considered important. That is, lists and iterables are
    * treated as unordered iterables.
    */
-  const DeepCollectionEquality.unordered(
-      [Equality base = const DefaultEquality()])
-      : _base = base, _unordered = true;
+  const DeepCollectionEquality.unordered([Equality base =
+      const DefaultEquality()])
+      : _base = base,
+        _unordered = true;
 
   bool equals(e1, e2) {
     if (e1 is Set) {

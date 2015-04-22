@@ -30,13 +30,21 @@ class ChromeExtension extends ChromeApi {
   /**
    * Fired when a request is sent from another extension.
    */
-  Stream<OnRequestExternalEvent> get onRequestExternal => _onRequestExternal.stream;
+  Stream<OnRequestExternalEvent> get onRequestExternal =>
+      _onRequestExternal.stream;
   ChromeStreamController<OnRequestExternalEvent> _onRequestExternal;
 
   ChromeExtension._() {
     var getApi = () => _extension;
-    _onRequest = new ChromeStreamController<OnRequestEvent>.threeArgs(getApi, 'onRequest', _createOnRequestEvent);
-    _onRequestExternal = new ChromeStreamController<OnRequestExternalEvent>.threeArgs(getApi, 'onRequestExternal', _createOnRequestExternalEvent);
+    _onRequest = new ChromeStreamController<OnRequestEvent>.threeArgs(
+        getApi,
+        'onRequest',
+        _createOnRequestEvent);
+    _onRequestExternal =
+        new ChromeStreamController<OnRequestExternalEvent>.threeArgs(
+            getApi,
+            'onRequestExternal',
+            _createOnRequestExternalEvent);
   }
 
   bool get available => _extension != null;
@@ -46,7 +54,8 @@ class ChromeExtension extends ChromeApi {
    * resulted in an error. If no error has occured lastError will be
    * [undefined].
    */
-  LastErrorExtension get lastError => _createLastErrorExtension(_extension['lastError']);
+  LastErrorExtension get lastError =>
+      _createLastErrorExtension(_extension['lastError']);
 
   /**
    * True for content scripts running inside incognito tabs, and for extension
@@ -73,7 +82,9 @@ class ChromeExtension extends ChromeApi {
     if (_extension == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<dynamic>.oneArg();
-    _extension.callMethod('sendRequest', [extensionId, jsify(request), completer.callback]);
+    _extension.callMethod(
+        'sendRequest',
+        [extensionId, jsify(request), completer.callback]);
     return completer.future;
   }
 
@@ -230,7 +241,7 @@ class OnRequestExternalEvent {
 
 class LastErrorExtension extends ChromeObject {
   LastErrorExtension();
-  LastErrorExtension.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  LastErrorExtension.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Description of the error that has taken place.
@@ -243,7 +254,8 @@ class ExtensionGetViewsParams extends ChromeObject {
     if (type != null) this.type = type;
     if (windowId != null) this.windowId = windowId;
   }
-  ExtensionGetViewsParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ExtensionGetViewsParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * The type of view to get. If omitted, returns all views (including
@@ -261,10 +273,15 @@ class ExtensionGetViewsParams extends ChromeObject {
   set windowId(int value) => jsProxy['windowId'] = value;
 }
 
-OnRequestEvent _createOnRequestEvent(JsObject request, JsObject sender, JsObject sendResponse) =>
+OnRequestEvent _createOnRequestEvent(JsObject request, JsObject sender,
+    JsObject sendResponse) =>
     new OnRequestEvent(request, _createMessageSender(sender), sendResponse);
-OnRequestExternalEvent _createOnRequestExternalEvent(JsObject request, JsObject sender, JsObject sendResponse) =>
+OnRequestExternalEvent _createOnRequestExternalEvent(JsObject request,
+    JsObject sender, JsObject sendResponse) =>
     new OnRequestExternalEvent(request, _createMessageSender(sender), sendResponse);
-LastErrorExtension _createLastErrorExtension(JsObject jsProxy) => jsProxy == null ? null : new LastErrorExtension.fromProxy(jsProxy);
-Window _createWindow(JsObject jsProxy) => jsProxy == null ? null : new Window.fromProxy(jsProxy);
-MessageSender _createMessageSender(JsObject jsProxy) => jsProxy == null ? null : new MessageSender.fromProxy(jsProxy);
+LastErrorExtension _createLastErrorExtension(JsObject jsProxy) =>
+    jsProxy == null ? null : new LastErrorExtension.fromProxy(jsProxy);
+Window _createWindow(JsObject jsProxy) =>
+    jsProxy == null ? null : new Window.fromProxy(jsProxy);
+MessageSender _createMessageSender(JsObject jsProxy) =>
+    jsProxy == null ? null : new MessageSender.fromProxy(jsProxy);

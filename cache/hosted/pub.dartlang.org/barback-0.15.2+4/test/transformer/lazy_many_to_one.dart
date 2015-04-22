@@ -10,8 +10,8 @@ import 'many_to_one.dart';
 
 /// Like [ManyToOneTransformer], but returns a lazy asset that doesn't perform
 /// the conglomeration until it's materialized.
-class LazyManyToOneTransformer extends ManyToOneTransformer
-    implements LazyTransformer {
+class LazyManyToOneTransformer extends ManyToOneTransformer implements
+    LazyTransformer {
   LazyManyToOneTransformer(String extension)
       : super(extension);
 

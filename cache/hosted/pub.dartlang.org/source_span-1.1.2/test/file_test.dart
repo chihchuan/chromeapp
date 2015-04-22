@@ -87,7 +87,7 @@ zip zap zop""", url: "foo.dart");
       test("column may not be outside the file", () {
         expect(() => file.getOffset(2, 100), throwsRangeError);
       });
- 
+
       test("column may not be outside the line", () {
         expect(() => file.getOffset(1, 20), throwsRangeError);
       });
@@ -109,14 +109,15 @@ zip zap zop""", url: "foo.dart");
 
     group("for span().union()", () {
       test("source URLs must match", () {
-        var other = new SourceSpan(
-            new SourceLocation(10), new SourceLocation(11), "_");
+        var other =
+            new SourceSpan(new SourceLocation(10), new SourceLocation(11), "_");
 
         expect(() => file.span(9, 10).union(other), throwsArgumentError);
       });
 
       test("spans may not be disjoint", () {
-        expect(() => file.span(9, 10).union(file.span(11, 12)),
+        expect(
+            () => file.span(9, 10).union(file.span(11, 12)),
             throwsArgumentError);
       });
     });

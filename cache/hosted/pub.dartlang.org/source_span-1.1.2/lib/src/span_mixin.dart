@@ -29,8 +29,8 @@ abstract class SourceSpanMixin implements SourceSpan {
 
   SourceSpan union(SourceSpan other) {
     if (sourceUrl != other.sourceUrl) {
-      throw new ArgumentError("Source URLs \"${sourceUrl}\" and "
-          " \"${other.sourceUrl}\" don't match.");
+      throw new ArgumentError(
+          "Source URLs \"${sourceUrl}\" and " " \"${other.sourceUrl}\" don't match.");
     }
 
     var start = min(this.start, other.start);
@@ -42,7 +42,8 @@ abstract class SourceSpanMixin implements SourceSpan {
       throw new ArgumentError("Spans $this and $other are disjoint.");
     }
 
-    var text = beginSpan.text +
+    var text =
+        beginSpan.text +
         endSpan.text.substring(beginSpan.end.distance(endSpan.start));
     return new SourceSpan(start, end, text);
   }
@@ -97,8 +98,8 @@ abstract class SourceSpanMixin implements SourceSpan {
     return buffer.toString();
   }
 
-  bool operator ==(other) => other is SourceSpan &&
-      start == other.start && end == other.end;
+  bool operator ==(other) =>
+      other is SourceSpan && start == other.start && end == other.end;
 
   int get hashCode => start.hashCode + (31 * end.hashCode);
 

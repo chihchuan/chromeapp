@@ -41,14 +41,16 @@ class ChromeWallpaper extends ChromeApi {
 }
 
 class WallpaperSetWallpaperParams extends ChromeObject {
-  WallpaperSetWallpaperParams({var wallpaperData, String url, String layout, String name, bool thumbnail}) {
+  WallpaperSetWallpaperParams({var wallpaperData, String url, String layout,
+      String name, bool thumbnail}) {
     if (wallpaperData != null) this.wallpaperData = wallpaperData;
     if (url != null) this.url = url;
     if (layout != null) this.layout = layout;
     if (name != null) this.name = name;
     if (thumbnail != null) this.thumbnail = thumbnail;
   }
-  WallpaperSetWallpaperParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  WallpaperSetWallpaperParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * The jpeg or png encoded wallpaper image.

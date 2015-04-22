@@ -35,10 +35,13 @@ class ChromeDesktopCapture extends ChromeApi {
    * An id that can be passed to cancelChooseDesktopMedia() in case the prompt
    * need to be canceled.
    */
-  int chooseDesktopMedia(List<DesktopCaptureSourceType> sources, dynamic callback, [Tab targetTab]) {
+  int chooseDesktopMedia(List<DesktopCaptureSourceType> sources,
+      dynamic callback, [Tab targetTab]) {
     if (_desktopCapture == null) _throwNotAvailable();
 
-    return _desktopCapture.callMethod('chooseDesktopMedia', [jsify(sources), jsify(targetTab), jsify(callback)]);
+    return _desktopCapture.callMethod(
+        'chooseDesktopMedia',
+        [jsify(sources), jsify(targetTab), jsify(callback)]);
   }
 
   /**
@@ -49,7 +52,9 @@ class ChromeDesktopCapture extends ChromeApi {
   void cancelChooseDesktopMedia(int desktopMediaRequestId) {
     if (_desktopCapture == null) _throwNotAvailable();
 
-    _desktopCapture.callMethod('cancelChooseDesktopMedia', [desktopMediaRequestId]);
+    _desktopCapture.callMethod(
+        'cancelChooseDesktopMedia',
+        [desktopMediaRequestId]);
   }
 
   void _throwNotAvailable() {
@@ -64,5 +69,6 @@ class ChromeDesktopCapture extends ChromeApi {
  */
 class DesktopCaptureSourceType extends ChromeObject {
   DesktopCaptureSourceType();
-  DesktopCaptureSourceType.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  DesktopCaptureSourceType.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 }

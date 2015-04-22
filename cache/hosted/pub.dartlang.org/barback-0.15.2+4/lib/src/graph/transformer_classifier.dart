@@ -69,13 +69,14 @@ class TransformerClassifier {
 
   TransformerClassifier(this.phase, transformer, this._location)
       : transformer = transformer is AggregateTransformer ?
-            transformer : new WrappingAggregateTransformer(transformer);
+          transformer :
+          new WrappingAggregateTransformer(transformer);
 
   /// Adds a new asset as an input for this transformer.
   void addInput(AssetNode input) {
     _activeClassifications++;
-    syncFuture(() => transformer.classifyPrimary(input.id)).catchError(
-        (error, stackTrace) {
+    syncFuture(
+        () => transformer.classifyPrimary(input.id)).catchError((error, stackTrace) {
       if (input.state.isRemoved) return null;
 
       // Catch all transformer errors and pipe them to the results stream. This

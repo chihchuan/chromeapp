@@ -43,10 +43,22 @@ class ChromeManagement extends ChromeApi {
 
   ChromeManagement._() {
     var getApi = () => _management;
-    _onInstalled = new ChromeStreamController<ExtensionInfo>.oneArg(getApi, 'onInstalled', _createExtensionInfo);
-    _onUninstalled = new ChromeStreamController<String>.oneArg(getApi, 'onUninstalled', selfConverter);
-    _onEnabled = new ChromeStreamController<ExtensionInfo>.oneArg(getApi, 'onEnabled', _createExtensionInfo);
-    _onDisabled = new ChromeStreamController<ExtensionInfo>.oneArg(getApi, 'onDisabled', _createExtensionInfo);
+    _onInstalled = new ChromeStreamController<ExtensionInfo>.oneArg(
+        getApi,
+        'onInstalled',
+        _createExtensionInfo);
+    _onUninstalled = new ChromeStreamController<String>.oneArg(
+        getApi,
+        'onUninstalled',
+        selfConverter);
+    _onEnabled = new ChromeStreamController<ExtensionInfo>.oneArg(
+        getApi,
+        'onEnabled',
+        _createExtensionInfo);
+    _onDisabled = new ChromeStreamController<ExtensionInfo>.oneArg(
+        getApi,
+        'onDisabled',
+        _createExtensionInfo);
   }
 
   bool get available => _management != null;
@@ -57,7 +69,8 @@ class ChromeManagement extends ChromeApi {
   Future<List<ExtensionInfo>> getAll() {
     if (_management == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<ExtensionInfo>>.oneArg((e) => listify(e, _createExtensionInfo));
+    var completer = new ChromeCompleter<List<ExtensionInfo>>.oneArg(
+        (e) => listify(e, _createExtensionInfo));
     _management.callMethod('getAll', [completer.callback]);
     return completer.future;
   }
@@ -71,7 +84,8 @@ class ChromeManagement extends ChromeApi {
   Future<ExtensionInfo> get(String id) {
     if (_management == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<ExtensionInfo>.oneArg(_createExtensionInfo);
+    var completer =
+        new ChromeCompleter<ExtensionInfo>.oneArg(_createExtensionInfo);
     _management.callMethod('get', [id, completer.callback]);
     return completer.future;
   }
@@ -86,7 +100,9 @@ class ChromeManagement extends ChromeApi {
     if (_management == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<List<String>>.oneArg(listify);
-    _management.callMethod('getPermissionWarningsById', [id, completer.callback]);
+    _management.callMethod(
+        'getPermissionWarningsById',
+        [id, completer.callback]);
     return completer.future;
   }
 
@@ -101,7 +117,9 @@ class ChromeManagement extends ChromeApi {
     if (_management == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<List<String>>.oneArg(listify);
-    _management.callMethod('getPermissionWarningsByManifest', [manifestStr, completer.callback]);
+    _management.callMethod(
+        'getPermissionWarningsByManifest',
+        [manifestStr, completer.callback]);
     return completer.future;
   }
 
@@ -129,7 +147,9 @@ class ChromeManagement extends ChromeApi {
     if (_management == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _management.callMethod('uninstall', [id, jsify(options), completer.callback]);
+    _management.callMethod(
+        'uninstall',
+        [id, jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -141,7 +161,9 @@ class ChromeManagement extends ChromeApi {
     if (_management == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _management.callMethod('uninstallSelf', [jsify(options), completer.callback]);
+    _management.callMethod(
+        'uninstallSelf',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -185,7 +207,9 @@ class ChromeManagement extends ChromeApi {
     if (_management == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _management.callMethod('setLaunchType', [id, jsify(launchType), completer.callback]);
+    _management.callMethod(
+        'setLaunchType',
+        [id, jsify(launchType), completer.callback]);
     return completer.future;
   }
 
@@ -201,8 +225,11 @@ class ChromeManagement extends ChromeApi {
   Future<ExtensionInfo> generateAppForLink(String url, String title) {
     if (_management == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<ExtensionInfo>.oneArg(_createExtensionInfo);
-    _management.callMethod('generateAppForLink', [url, title, completer.callback]);
+    var completer =
+        new ChromeCompleter<ExtensionInfo>.oneArg(_createExtensionInfo);
+    _management.callMethod(
+        'generateAppForLink',
+        [url, title, completer.callback]);
     return completer.future;
   }
 
@@ -219,7 +246,7 @@ class IconInfo extends ChromeObject {
     if (size != null) this.size = size;
     if (url != null) this.url = url;
   }
-  IconInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  IconInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * A number representing the width and height of the icon. Likely values
@@ -244,14 +271,19 @@ class IconInfo extends ChromeObject {
  */
 class LaunchType extends ChromeObject {
   LaunchType();
-  LaunchType.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  LaunchType.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 }
 
 /**
  * Information about an installed extension, app, or theme.
  */
 class ExtensionInfo extends ChromeObject {
-  ExtensionInfo({String id, String name, String shortName, String description, String version, bool mayDisable, bool enabled, String disabledReason, bool isApp, String type, String appLaunchUrl, String homepageUrl, String updateUrl, bool offlineEnabled, String optionsUrl, List<IconInfo> icons, List<String> permissions, List<String> hostPermissions, String installType, LaunchType launchType, List<LaunchType> availableLaunchTypes}) {
+  ExtensionInfo({String id, String name, String shortName, String description,
+      String version, bool mayDisable, bool enabled, String disabledReason,
+      bool isApp, String type, String appLaunchUrl, String homepageUrl,
+      String updateUrl, bool offlineEnabled, String optionsUrl, List<IconInfo> icons,
+      List<String> permissions, List<String> hostPermissions, String installType,
+      LaunchType launchType, List<LaunchType> availableLaunchTypes}) {
     if (id != null) this.id = id;
     if (name != null) this.name = name;
     if (shortName != null) this.shortName = shortName;
@@ -272,9 +304,10 @@ class ExtensionInfo extends ChromeObject {
     if (hostPermissions != null) this.hostPermissions = hostPermissions;
     if (installType != null) this.installType = installType;
     if (launchType != null) this.launchType = launchType;
-    if (availableLaunchTypes != null) this.availableLaunchTypes = availableLaunchTypes;
+    if (availableLaunchTypes != null) this.availableLaunchTypes =
+        availableLaunchTypes;
   }
-  ExtensionInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ExtensionInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The extension's unique identifier.
@@ -389,7 +422,8 @@ class ExtensionInfo extends ChromeObject {
    * Returns a list of host based permissions.
    */
   List<String> get hostPermissions => listify(jsProxy['hostPermissions']);
-  set hostPermissions(List<String> value) => jsProxy['hostPermissions'] = jsify(value);
+  set hostPermissions(List<String> value) => jsProxy['hostPermissions'] =
+      jsify(value);
 
   /**
    * How the extension was installed. One of<br>[admin]: The extension was
@@ -414,15 +448,18 @@ class ExtensionInfo extends ChromeObject {
    * The currently available launch types (only present for apps). This property
    * is new in Chrome 37.
    */
-  List<LaunchType> get availableLaunchTypes => listify(jsProxy['availableLaunchTypes'], _createLaunchType);
-  set availableLaunchTypes(List<LaunchType> value) => jsProxy['availableLaunchTypes'] = jsify(value);
+  List<LaunchType> get availableLaunchTypes =>
+      listify(jsProxy['availableLaunchTypes'], _createLaunchType);
+  set availableLaunchTypes(List<LaunchType> value) => jsProxy['availableLaunchTypes'] =
+      jsify(value);
 }
 
 class ManagementUninstallParams extends ChromeObject {
   ManagementUninstallParams({bool showConfirmDialog}) {
     if (showConfirmDialog != null) this.showConfirmDialog = showConfirmDialog;
   }
-  ManagementUninstallParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ManagementUninstallParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Whether or not a confirm-uninstall dialog should prompt the user. Defaults
@@ -437,7 +474,8 @@ class ManagementUninstallSelfParams extends ChromeObject {
   ManagementUninstallSelfParams({bool showConfirmDialog}) {
     if (showConfirmDialog != null) this.showConfirmDialog = showConfirmDialog;
   }
-  ManagementUninstallSelfParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ManagementUninstallSelfParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Whether or not a confirm-uninstall dialog should prompt the user. Defaults
@@ -447,6 +485,9 @@ class ManagementUninstallSelfParams extends ChromeObject {
   set showConfirmDialog(bool value) => jsProxy['showConfirmDialog'] = value;
 }
 
-ExtensionInfo _createExtensionInfo(JsObject jsProxy) => jsProxy == null ? null : new ExtensionInfo.fromProxy(jsProxy);
-IconInfo _createIconInfo(JsObject jsProxy) => jsProxy == null ? null : new IconInfo.fromProxy(jsProxy);
-LaunchType _createLaunchType(JsObject jsProxy) => jsProxy == null ? null : new LaunchType.fromProxy(jsProxy);
+ExtensionInfo _createExtensionInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new ExtensionInfo.fromProxy(jsProxy);
+IconInfo _createIconInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new IconInfo.fromProxy(jsProxy);
+LaunchType _createLaunchType(JsObject jsProxy) =>
+    jsProxy == null ? null : new LaunchType.fromProxy(jsProxy);

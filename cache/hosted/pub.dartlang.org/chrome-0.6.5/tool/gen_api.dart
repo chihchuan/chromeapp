@@ -42,8 +42,8 @@ void main(List<String> args) {
     print(record.message);
   });
 
-  GenApiFile generator = new GenApiFile(new File(results.rest.first),
-      overrides: overrides);
+  GenApiFile generator =
+      new GenApiFile(new File(results.rest.first), overrides: overrides);
   generator.generate(new File(results['out']));
 }
 
@@ -54,15 +54,15 @@ class GenApiFile {
   ChromeLibrary _chromeLib;
   Backend _backend;
 
-  GenApiFile(this.inFile, {Overrides overrides, DartGenerator generator}) :
-      this.overrides = (overrides == null) ? new Overrides() : overrides {
+  GenApiFile(this.inFile, {Overrides overrides, DartGenerator generator})
+      : this.overrides = (overrides == null) ? new Overrides() : overrides {
     if (!inFile.path.endsWith(".json") && !inFile.path.endsWith(".idl")) {
       throw new Exception('format not understood: ${inFile.path}');
     }
 
     if (inFile.path.endsWith(".json")) {
-      json_model.JsonNamespace namespace = json_parser.parse(
-          inFile.readAsStringSync());
+      json_model.JsonNamespace namespace =
+          json_parser.parse(inFile.readAsStringSync());
       _chromeLib = json_model.convert(namespace);
     } else if (inFile.path.endsWith(".idl")) {
       chrome_idl_parser.ChromeIDLParser chromeIdlParser =
@@ -95,7 +95,8 @@ class GenApiFile {
     return _chromeLib.imports;
   }
 
-  void generateContent(bool printClassDocs, Set createdFactories, Set createdClasses) {
+  void generateContent(bool printClassDocs, Set createdFactories,
+      Set createdClasses) {
     _backend.generateContent(printClassDocs, createdFactories, createdClasses);
   }
 }
@@ -104,7 +105,8 @@ class GenApiFile {
 
 ArgParser _createArgsParser() {
   ArgParser parser = new ArgParser();
-  parser.addFlag('help',
+  parser.addFlag(
+      'help',
       abbr: 'h',
       negatable: false,
       help: 'show command help');
@@ -113,9 +115,7 @@ ArgParser _createArgsParser() {
       abbr: 'o',
       help: 'Path to the destination file. Required.');
 
-  parser.addOption(
-      'overrides',
-      help: 'Path to on overrides json file.');
+  parser.addOption('overrides', help: 'Path to on overrides json file.');
   return parser;
 }
 

@@ -32,8 +32,14 @@ class ChromePermissions extends ChromeApi {
 
   ChromePermissions._() {
     var getApi = () => _permissions;
-    _onAdded = new ChromeStreamController<Permissions>.oneArg(getApi, 'onAdded', _createPermissions);
-    _onRemoved = new ChromeStreamController<Permissions>.oneArg(getApi, 'onRemoved', _createPermissions);
+    _onAdded = new ChromeStreamController<Permissions>.oneArg(
+        getApi,
+        'onAdded',
+        _createPermissions);
+    _onRemoved = new ChromeStreamController<Permissions>.oneArg(
+        getApi,
+        'onRemoved',
+        _createPermissions);
   }
 
   bool get available => _permissions != null;
@@ -62,7 +68,9 @@ class ChromePermissions extends ChromeApi {
     if (_permissions == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<bool>.oneArg();
-    _permissions.callMethod('contains', [jsify(permissions), completer.callback]);
+    _permissions.callMethod(
+        'contains',
+        [jsify(permissions), completer.callback]);
     return completer.future;
   }
 
@@ -78,7 +86,9 @@ class ChromePermissions extends ChromeApi {
     if (_permissions == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<bool>.oneArg();
-    _permissions.callMethod('request', [jsify(permissions), completer.callback]);
+    _permissions.callMethod(
+        'request',
+        [jsify(permissions), completer.callback]);
     return completer.future;
   }
 
@@ -107,7 +117,7 @@ class Permissions extends ChromeObject {
     if (permissions != null) this.permissions = permissions;
     if (origins != null) this.origins = origins;
   }
-  Permissions.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Permissions.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * List of named permissions (does not include hosts or origins).  Anything
@@ -127,4 +137,5 @@ class Permissions extends ChromeObject {
   set origins(List<String> value) => jsProxy['origins'] = jsify(value);
 }
 
-Permissions _createPermissions(JsObject jsProxy) => jsProxy == null ? null : new Permissions.fromProxy(jsProxy);
+Permissions _createPermissions(JsObject jsProxy) =>
+    jsProxy == null ? null : new Permissions.fromProxy(jsProxy);

@@ -69,8 +69,9 @@ void main() {
       expect(queue, equals([2, 3]));
     });
 
-    test("removes an element from the beginning of a queue with an internal "
-        "gap", () {
+    test(
+        "removes an element from the beginning of a queue with an internal " "gap",
+        () {
       var queue = withInternalGap();
       expect(queue.removeFirst(), equals(1));
       expect(queue, equals([2, 3, 4, 5, 6, 7]));
@@ -167,8 +168,9 @@ void main() {
       expect(() => queue[-1], throwsRangeError);
     });
 
-    test("throws a RangeError if the index is greater than or equal to the "
-        "length", () {
+    test(
+        "throws a RangeError if the index is greater than or equal to the " "length",
+        () {
       var queue = new QueueList.from([1, 2, 3]);
       expect(() => queue[3], throwsRangeError);
     });
@@ -202,8 +204,9 @@ void main() {
       }, throwsRangeError);
     });
 
-    test("throws a RangeError if the index is greater than or equal to the "
-        "length", () {
+    test(
+        "throws a RangeError if the index is greater than or equal to the " "length",
+        () {
       var queue = new QueueList.from([1, 2, 3]);
       expect(() {
         queue[3] = 4;
@@ -218,33 +221,38 @@ void main() {
     });
 
     test("add", () {
-      expect(() => queue.forEach((_) => queue.add(4)),
+      expect(
+          () => queue.forEach((_) => queue.add(4)),
           throwsConcurrentModificationError);
     });
 
     test("addAll", () {
-      expect(() => queue.forEach((_) => queue.addAll([4, 5, 6])),
+      expect(
+          () => queue.forEach((_) => queue.addAll([4, 5, 6])),
           throwsConcurrentModificationError);
     });
 
     test("addFirst", () {
-      expect(() => queue.forEach((_) => queue.addFirst(0)),
+      expect(
+          () => queue.forEach((_) => queue.addFirst(0)),
           throwsConcurrentModificationError);
     });
 
     test("removeFirst", () {
-      expect(() => queue.forEach((_) => queue.removeFirst()),
+      expect(
+          () => queue.forEach((_) => queue.removeFirst()),
           throwsConcurrentModificationError);
     });
 
     test("removeLast", () {
-      expect(() => queue.forEach((_) => queue.removeLast()),
+      expect(
+          () => queue.forEach((_) => queue.removeLast()),
           throwsConcurrentModificationError);
     });
 
     test("length=", () {
-      expect(() => queue.forEach((_) => queue.length = 1),
-          throwsConcurrentModificationError);
+      expect(() => queue.forEach((_) => queue.length =
+          1), throwsConcurrentModificationError);
     });
   });
 }
@@ -272,5 +280,4 @@ QueueList withInternalGap() {
 /// Returns a matcher that expects that a closure throws a
 /// [ConcurrentModificationError].
 final throwsConcurrentModificationError = throwsA(
-    new isInstanceOf<ConcurrentModificationError>(
-        "ConcurrentModificationError"));
+    new isInstanceOf<ConcurrentModificationError>("ConcurrentModificationError"));

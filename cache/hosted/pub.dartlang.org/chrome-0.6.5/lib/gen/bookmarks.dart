@@ -48,7 +48,8 @@ class ChromeBookmarks extends ChromeApi {
    * Fired when the children of a folder have changed their order due to the
    * order being sorted in the UI.  This is not called as a result of a move().
    */
-  Stream<OnChildrenReorderedEvent> get onChildrenReordered => _onChildrenReordered.stream;
+  Stream<OnChildrenReorderedEvent> get onChildrenReordered =>
+      _onChildrenReordered.stream;
   ChromeStreamController<OnChildrenReorderedEvent> _onChildrenReordered;
 
   /**
@@ -67,11 +68,27 @@ class ChromeBookmarks extends ChromeApi {
 
   ChromeBookmarks._() {
     var getApi = () => _bookmarks;
-    _onCreated = new ChromeStreamController<OnCreatedEvent>.twoArgs(getApi, 'onCreated', _createOnCreatedEvent);
-    _onRemoved = new ChromeStreamController<BookmarksOnRemovedEvent>.twoArgs(getApi, 'onRemoved', _createOnRemovedEvent);
-    _onChanged = new ChromeStreamController<BookmarksOnChangedEvent>.twoArgs(getApi, 'onChanged', _createOnChangedEvent);
-    _onMoved = new ChromeStreamController<BookmarksOnMovedEvent>.twoArgs(getApi, 'onMoved', _createOnMovedEvent);
-    _onChildrenReordered = new ChromeStreamController<OnChildrenReorderedEvent>.twoArgs(getApi, 'onChildrenReordered', _createOnChildrenReorderedEvent);
+    _onCreated = new ChromeStreamController<OnCreatedEvent>.twoArgs(
+        getApi,
+        'onCreated',
+        _createOnCreatedEvent);
+    _onRemoved = new ChromeStreamController<BookmarksOnRemovedEvent>.twoArgs(
+        getApi,
+        'onRemoved',
+        _createOnRemovedEvent);
+    _onChanged = new ChromeStreamController<BookmarksOnChangedEvent>.twoArgs(
+        getApi,
+        'onChanged',
+        _createOnChangedEvent);
+    _onMoved = new ChromeStreamController<BookmarksOnMovedEvent>.twoArgs(
+        getApi,
+        'onMoved',
+        _createOnMovedEvent);
+    _onChildrenReordered =
+        new ChromeStreamController<OnChildrenReorderedEvent>.twoArgs(
+            getApi,
+            'onChildrenReordered',
+            _createOnChildrenReorderedEvent);
     _onImportBegan = new ChromeStreamController.noArgs(getApi, 'onImportBegan');
     _onImportEnded = new ChromeStreamController.noArgs(getApi, 'onImportEnded');
   }
@@ -83,14 +100,16 @@ class ChromeBookmarks extends ChromeApi {
    * that can be performed each hour. Updates that would cause this limit to be
    * exceeded fail.
    */
-  int get MAX_WRITE_OPERATIONS_PER_HOUR => _bookmarks['MAX_WRITE_OPERATIONS_PER_HOUR'];
+  int get MAX_WRITE_OPERATIONS_PER_HOUR =>
+      _bookmarks['MAX_WRITE_OPERATIONS_PER_HOUR'];
 
   /**
    * The maximum number of `move`, `update`, `create`, or `remove` operations
    * that can be performed each minute, sustained over 10 minutes. Updates that
    * would cause this limit to be exceeded fail.
    */
-  int get MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE => _bookmarks['MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE'];
+  int get MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE =>
+      _bookmarks['MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE'];
 
   /**
    * Retrieves the specified BookmarkTreeNode(s).
@@ -100,7 +119,8 @@ class ChromeBookmarks extends ChromeApi {
   Future<List<BookmarkTreeNode>> get(dynamic idOrIdList) {
     if (_bookmarks == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<BookmarkTreeNode>>.oneArg((e) => listify(e, _createBookmarkTreeNode));
+    var completer = new ChromeCompleter<List<BookmarkTreeNode>>.oneArg(
+        (e) => listify(e, _createBookmarkTreeNode));
     _bookmarks.callMethod('get', [jsify(idOrIdList), completer.callback]);
     return completer.future;
   }
@@ -111,7 +131,8 @@ class ChromeBookmarks extends ChromeApi {
   Future<List<BookmarkTreeNode>> getChildren(String id) {
     if (_bookmarks == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<BookmarkTreeNode>>.oneArg((e) => listify(e, _createBookmarkTreeNode));
+    var completer = new ChromeCompleter<List<BookmarkTreeNode>>.oneArg(
+        (e) => listify(e, _createBookmarkTreeNode));
     _bookmarks.callMethod('getChildren', [id, completer.callback]);
     return completer.future;
   }
@@ -124,7 +145,8 @@ class ChromeBookmarks extends ChromeApi {
   Future<List<BookmarkTreeNode>> getRecent(int numberOfItems) {
     if (_bookmarks == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<BookmarkTreeNode>>.oneArg((e) => listify(e, _createBookmarkTreeNode));
+    var completer = new ChromeCompleter<List<BookmarkTreeNode>>.oneArg(
+        (e) => listify(e, _createBookmarkTreeNode));
     _bookmarks.callMethod('getRecent', [numberOfItems, completer.callback]);
     return completer.future;
   }
@@ -135,7 +157,8 @@ class ChromeBookmarks extends ChromeApi {
   Future<List<BookmarkTreeNode>> getTree() {
     if (_bookmarks == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<BookmarkTreeNode>>.oneArg((e) => listify(e, _createBookmarkTreeNode));
+    var completer = new ChromeCompleter<List<BookmarkTreeNode>>.oneArg(
+        (e) => listify(e, _createBookmarkTreeNode));
     _bookmarks.callMethod('getTree', [completer.callback]);
     return completer.future;
   }
@@ -148,7 +171,8 @@ class ChromeBookmarks extends ChromeApi {
   Future<List<BookmarkTreeNode>> getSubTree(String id) {
     if (_bookmarks == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<BookmarkTreeNode>>.oneArg((e) => listify(e, _createBookmarkTreeNode));
+    var completer = new ChromeCompleter<List<BookmarkTreeNode>>.oneArg(
+        (e) => listify(e, _createBookmarkTreeNode));
     _bookmarks.callMethod('getSubTree', [id, completer.callback]);
     return completer.future;
   }
@@ -165,7 +189,8 @@ class ChromeBookmarks extends ChromeApi {
   Future<List<BookmarkTreeNode>> search(dynamic query) {
     if (_bookmarks == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<BookmarkTreeNode>>.oneArg((e) => listify(e, _createBookmarkTreeNode));
+    var completer = new ChromeCompleter<List<BookmarkTreeNode>>.oneArg(
+        (e) => listify(e, _createBookmarkTreeNode));
     _bookmarks.callMethod('search', [jsify(query), completer.callback]);
     return completer.future;
   }
@@ -177,7 +202,8 @@ class ChromeBookmarks extends ChromeApi {
   Future<BookmarkTreeNode> create(CreateDetails bookmark) {
     if (_bookmarks == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<BookmarkTreeNode>.oneArg(_createBookmarkTreeNode);
+    var completer =
+        new ChromeCompleter<BookmarkTreeNode>.oneArg(_createBookmarkTreeNode);
     _bookmarks.callMethod('create', [jsify(bookmark), completer.callback]);
     return completer.future;
   }
@@ -188,7 +214,8 @@ class ChromeBookmarks extends ChromeApi {
   Future<BookmarkTreeNode> move(String id, BookmarksMoveParams destination) {
     if (_bookmarks == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<BookmarkTreeNode>.oneArg(_createBookmarkTreeNode);
+    var completer =
+        new ChromeCompleter<BookmarkTreeNode>.oneArg(_createBookmarkTreeNode);
     _bookmarks.callMethod('move', [id, jsify(destination), completer.callback]);
     return completer.future;
   }
@@ -201,7 +228,8 @@ class ChromeBookmarks extends ChromeApi {
   Future<BookmarkTreeNode> update(String id, BookmarksUpdateParams changes) {
     if (_bookmarks == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<BookmarkTreeNode>.oneArg(_createBookmarkTreeNode);
+    var completer =
+        new ChromeCompleter<BookmarkTreeNode>.oneArg(_createBookmarkTreeNode);
     _bookmarks.callMethod('update', [id, jsify(changes), completer.callback]);
     return completer.future;
   }
@@ -319,7 +347,9 @@ class OnChildrenReorderedEvent {
  * ordered within their parent folder.
  */
 class BookmarkTreeNode extends ChromeObject {
-  BookmarkTreeNode({String id, String parentId, int index, String url, String title, var dateAdded, var dateGroupModified, String unmodifiable, List<BookmarkTreeNode> children}) {
+  BookmarkTreeNode({String id, String parentId, int index, String url,
+      String title, var dateAdded, var dateGroupModified, String unmodifiable,
+      List<BookmarkTreeNode> children}) {
     if (id != null) this.id = id;
     if (parentId != null) this.parentId = parentId;
     if (index != null) this.index = index;
@@ -330,7 +360,7 @@ class BookmarkTreeNode extends ChromeObject {
     if (unmodifiable != null) this.unmodifiable = unmodifiable;
     if (children != null) this.children = children;
   }
-  BookmarkTreeNode.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BookmarkTreeNode.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The unique identifier for the node. IDs are unique within the current
@@ -375,7 +405,8 @@ class BookmarkTreeNode extends ChromeObject {
    * epoch.
    */
   dynamic get dateGroupModified => jsProxy['dateGroupModified'];
-  set dateGroupModified(var value) => jsProxy['dateGroupModified'] = jsify(value);
+  set dateGroupModified(var value) => jsProxy['dateGroupModified'] =
+      jsify(value);
 
   /**
    * Indicates the reason why this node is unmodifiable. The [managed] value
@@ -390,8 +421,10 @@ class BookmarkTreeNode extends ChromeObject {
   /**
    * An ordered list of children of this node.
    */
-  List<BookmarkTreeNode> get children => listify(jsProxy['children'], _createBookmarkTreeNode);
-  set children(List<BookmarkTreeNode> value) => jsProxy['children'] = jsify(value);
+  List<BookmarkTreeNode> get children =>
+      listify(jsProxy['children'], _createBookmarkTreeNode);
+  set children(List<BookmarkTreeNode> value) => jsProxy['children'] =
+      jsify(value);
 }
 
 /**
@@ -404,7 +437,7 @@ class CreateDetails extends ChromeObject {
     if (title != null) this.title = title;
     if (url != null) this.url = url;
   }
-  CreateDetails.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CreateDetails.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Defaults to the Other Bookmarks folder.
@@ -427,7 +460,7 @@ class BookmarksMoveParams extends ChromeObject {
     if (parentId != null) this.parentId = parentId;
     if (index != null) this.index = index;
   }
-  BookmarksMoveParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BookmarksMoveParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get parentId => jsProxy['parentId'];
   set parentId(String value) => jsProxy['parentId'] = value;
@@ -441,7 +474,7 @@ class BookmarksUpdateParams extends ChromeObject {
     if (title != null) this.title = title;
     if (url != null) this.url = url;
   }
-  BookmarksUpdateParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BookmarksUpdateParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get title => jsProxy['title'];
   set title(String value) => jsProxy['title'] = value;
@@ -458,6 +491,8 @@ BookmarksOnChangedEvent _createOnChangedEvent(String id, JsObject changeInfo) =>
     new BookmarksOnChangedEvent(id, mapify(changeInfo));
 BookmarksOnMovedEvent _createOnMovedEvent(String id, JsObject moveInfo) =>
     new BookmarksOnMovedEvent(id, mapify(moveInfo));
-OnChildrenReorderedEvent _createOnChildrenReorderedEvent(String id, JsObject reorderInfo) =>
+OnChildrenReorderedEvent _createOnChildrenReorderedEvent(String id,
+    JsObject reorderInfo) =>
     new OnChildrenReorderedEvent(id, mapify(reorderInfo));
-BookmarkTreeNode _createBookmarkTreeNode(JsObject jsProxy) => jsProxy == null ? null : new BookmarkTreeNode.fromProxy(jsProxy);
+BookmarkTreeNode _createBookmarkTreeNode(JsObject jsProxy) =>
+    jsProxy == null ? null : new BookmarkTreeNode.fromProxy(jsProxy);

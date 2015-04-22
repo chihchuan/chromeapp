@@ -151,7 +151,7 @@ void main() {
 
         async.elapse(new Duration(seconds: 6));
       });
-    });    
+    });
 
     test("times out if nothing happens", () {
       new FakeAsync().run((async) {
@@ -163,7 +163,7 @@ void main() {
 
         async.elapse(new Duration(seconds: 6));
       });
-    });    
+    });
   });
 }
 
@@ -172,9 +172,11 @@ void main() {
 /// This should only be called within a [FakeAsync.run] zone.
 Function expectNoAsync() {
   var stack = new Trace.current(1);
-  return () => handleExternalError(
-      new TestFailure("Expected function not to be called."), "",
-      stack);
+  return () =>
+      handleExternalError(
+          new TestFailure("Expected function not to be called."),
+          "",
+          stack);
 }
 
 /// A matcher for Futures that asserts that they don't complete.
@@ -184,8 +186,11 @@ Matcher get doesNotComplete => predicate((future) {
   expect(future, new isInstanceOf<Future>('Future'));
 
   var stack = new Trace.current(1);
-  future.then((_) => handleExternalError(
-      new TestFailure("Expected future not to complete."), "",
-      stack));
+  future.then(
+      (_) =>
+          handleExternalError(
+              new TestFailure("Expected future not to complete."),
+              "",
+              stack));
   return true;
 });

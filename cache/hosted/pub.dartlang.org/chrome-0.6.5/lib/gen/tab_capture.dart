@@ -20,7 +20,10 @@ class ChromeTabCapture extends ChromeApi {
 
   ChromeTabCapture._() {
     var getApi = () => _tabCapture;
-    _onStatusChanged = new ChromeStreamController<CaptureInfo>.oneArg(getApi, 'onStatusChanged', _createCaptureInfo);
+    _onStatusChanged = new ChromeStreamController<CaptureInfo>.oneArg(
+        getApi,
+        'onStatusChanged',
+        _createCaptureInfo);
   }
 
   bool get available => _tabCapture != null;
@@ -36,7 +39,8 @@ class ChromeTabCapture extends ChromeApi {
   Future<LocalMediaStream> capture(CaptureOptions options) {
     if (_tabCapture == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<LocalMediaStream>.oneArg(_createLocalMediaStream);
+    var completer =
+        new ChromeCompleter<LocalMediaStream>.oneArg(_createLocalMediaStream);
     _tabCapture.callMethod('capture', [jsify(options), completer.callback]);
     return completer.future;
   }
@@ -51,7 +55,8 @@ class ChromeTabCapture extends ChromeApi {
   Future<List<CaptureInfo>> getCapturedTabs() {
     if (_tabCapture == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<CaptureInfo>>.oneArg((e) => listify(e, _createCaptureInfo));
+    var completer = new ChromeCompleter<List<CaptureInfo>>.oneArg(
+        (e) => listify(e, _createCaptureInfo));
     _tabCapture.callMethod('getCapturedTabs', [completer.callback]);
     return completer.future;
   }
@@ -67,9 +72,13 @@ class TabCaptureState extends ChromeEnum {
   static const TabCaptureState STOPPED = const TabCaptureState._('stopped');
   static const TabCaptureState ERROR = const TabCaptureState._('error');
 
-  static const List<TabCaptureState> VALUES = const[PENDING, ACTIVE, STOPPED, ERROR];
+  static const List<TabCaptureState> VALUES = const [
+      PENDING,
+      ACTIVE,
+      STOPPED,
+      ERROR];
 
-  const TabCaptureState._(String str): super(str);
+  const TabCaptureState._(String str) : super(str);
 }
 
 class CaptureInfo extends ChromeObject {
@@ -78,7 +87,7 @@ class CaptureInfo extends ChromeObject {
     if (status != null) this.status = status;
     if (fullscreen != null) this.fullscreen = fullscreen;
   }
-  CaptureInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CaptureInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get tabId => jsProxy['tabId'];
   set tabId(int value) => jsProxy['tabId'] = value;
@@ -100,7 +109,7 @@ class MediaStreamConstraint extends ChromeObject {
     if (mandatory != null) this.mandatory = mandatory;
     if (optional != null) this.optional = optional;
   }
-  MediaStreamConstraint.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  MediaStreamConstraint.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   dynamic get mandatory => jsProxy['mandatory'];
   set mandatory(var value) => jsProxy['mandatory'] = jsify(value);
@@ -114,13 +123,15 @@ class MediaStreamConstraint extends ChromeObject {
  * MediaTrackConstraints that should be set for these streams.
  */
 class CaptureOptions extends ChromeObject {
-  CaptureOptions({bool audio, bool video, MediaStreamConstraint audioConstraints, MediaStreamConstraint videoConstraints}) {
+  CaptureOptions({bool audio, bool video,
+      MediaStreamConstraint audioConstraints, MediaStreamConstraint videoConstraints})
+      {
     if (audio != null) this.audio = audio;
     if (video != null) this.video = video;
     if (audioConstraints != null) this.audioConstraints = audioConstraints;
     if (videoConstraints != null) this.videoConstraints = videoConstraints;
   }
-  CaptureOptions.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CaptureOptions.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   bool get audio => jsProxy['audio'];
   set audio(bool value) => jsProxy['audio'] = value;
@@ -128,14 +139,22 @@ class CaptureOptions extends ChromeObject {
   bool get video => jsProxy['video'];
   set video(bool value) => jsProxy['video'] = value;
 
-  MediaStreamConstraint get audioConstraints => _createMediaStreamConstraint(jsProxy['audioConstraints']);
-  set audioConstraints(MediaStreamConstraint value) => jsProxy['audioConstraints'] = jsify(value);
+  MediaStreamConstraint get audioConstraints =>
+      _createMediaStreamConstraint(jsProxy['audioConstraints']);
+  set audioConstraints(MediaStreamConstraint value) => jsProxy['audioConstraints'] =
+      jsify(value);
 
-  MediaStreamConstraint get videoConstraints => _createMediaStreamConstraint(jsProxy['videoConstraints']);
-  set videoConstraints(MediaStreamConstraint value) => jsProxy['videoConstraints'] = jsify(value);
+  MediaStreamConstraint get videoConstraints =>
+      _createMediaStreamConstraint(jsProxy['videoConstraints']);
+  set videoConstraints(MediaStreamConstraint value) => jsProxy['videoConstraints'] =
+      jsify(value);
 }
 
-CaptureInfo _createCaptureInfo(JsObject jsProxy) => jsProxy == null ? null : new CaptureInfo.fromProxy(jsProxy);
-LocalMediaStream _createLocalMediaStream(JsObject jsProxy) => jsProxy == null ? null : new LocalMediaStream.fromProxy(jsProxy);
-TabCaptureState _createTabCaptureState(String value) => TabCaptureState.VALUES.singleWhere((ChromeEnum e) => e.value == value);
-MediaStreamConstraint _createMediaStreamConstraint(JsObject jsProxy) => jsProxy == null ? null : new MediaStreamConstraint.fromProxy(jsProxy);
+CaptureInfo _createCaptureInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new CaptureInfo.fromProxy(jsProxy);
+LocalMediaStream _createLocalMediaStream(JsObject jsProxy) =>
+    jsProxy == null ? null : new LocalMediaStream.fromProxy(jsProxy);
+TabCaptureState _createTabCaptureState(String value) =>
+    TabCaptureState.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+MediaStreamConstraint _createMediaStreamConstraint(JsObject jsProxy) =>
+    jsProxy == null ? null : new MediaStreamConstraint.fromProxy(jsProxy);

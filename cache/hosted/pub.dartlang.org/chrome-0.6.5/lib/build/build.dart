@@ -1,4 +1,3 @@
-
 /**
  * A library to de-sym link packages directories, and make real copies of the
  * `packages` references.
@@ -19,7 +18,9 @@ export 'dart:io' show Directory;
  */
 void copyPackages(Directory destDir, {bool removeSymlinks: true}) {
   _removePackagesSymlinks(destDir, recursive: removeSymlinks);
-  _copyDirectory(new Directory('packages'), _joinDirectory(destDir, 'packages'));
+  _copyDirectory(
+      new Directory('packages'),
+      _joinDirectory(destDir, 'packages'));
 }
 
 void _removePackagesSymlinks(Directory dir, {bool recursive: false}) {

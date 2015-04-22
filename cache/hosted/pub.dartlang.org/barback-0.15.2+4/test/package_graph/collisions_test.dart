@@ -13,25 +13,22 @@ main() {
   initConfig();
 
   test("errors if two transformers output the same file", () {
-    initGraph(["app|foo.a"], {"app": [
-      [
-        new RewriteTransformer("a", "b"),
-        new RewriteTransformer("a", "b")
-      ]
-    ]});
+    initGraph(["app|foo.a"], {
+      "app": [
+          [new RewriteTransformer("a", "b"), new RewriteTransformer("a", "b")]]
+    });
     updateSources(["app|foo.a"]);
 
     buildShouldFail([isAssetCollisionException("app|foo.b")]);
   });
 
-  test("errors if a new transformer outputs the same file as an old "
-      "transformer", () {
-    initGraph(["app|foo.a", "app|foo.b"], {"app": [
-      [
-        new RewriteTransformer("a", "c"),
-        new RewriteTransformer("b", "c")
-      ]
-    ]});
+  test(
+      "errors if a new transformer outputs the same file as an old " "transformer",
+      () {
+    initGraph(["app|foo.a", "app|foo.b"], {
+      "app": [
+          [new RewriteTransformer("a", "c"), new RewriteTransformer("b", "c")]]
+    });
     updateSources(["app|foo.a"]);
     expectAsset("app|foo.c", "foo.c");
     buildShouldSucceed();
@@ -46,7 +43,9 @@ main() {
     initGraph({
       "app|foo.one": "one",
       "app|foo.two": "two"
-    }, {"app": [[rewrite1, rewrite2]]});
+    }, {
+      "app": [[rewrite1, rewrite2]]
+    });
 
     rewrite1.pauseApply();
     updateSources(["app|foo.one", "app|foo.two"]);
@@ -71,12 +70,10 @@ main() {
     initGraph({
       "app|foo.one": "one",
       "app|foo.two": "two"
-    }, {"app": [
-      [
-        new RewriteTransformer("one", "out"),
-        new RewriteTransformer("two", "out")
-      ]
-    ]});
+    }, {
+      "app": [
+          [new RewriteTransformer("one", "out"), new RewriteTransformer("two", "out")]]
+    });
 
     updateSources(["app|foo.one"]);
     expectAsset("app|foo.out", "one.out");
@@ -95,13 +92,11 @@ main() {
     initGraph({
       "app|foo.one": "one",
       "app|foo.two": "two"
-    }, {"app": [
-      [
-        new RewriteTransformer("one", "mid"),
-        new RewriteTransformer("two", "mid")
-      ],
-      [new RewriteTransformer("mid", "out")]
-    ]});
+    }, {
+      "app": [
+          [new RewriteTransformer("one", "mid"), new RewriteTransformer("two", "mid")],
+          [new RewriteTransformer("mid", "out")]]
+    });
 
     updateSources(["app|foo.one"]);
     expectAsset("app|foo.out", "one.mid.out");
@@ -116,8 +111,9 @@ main() {
     buildShouldSucceed();
   });
 
-  test("a collision that is partially resolved returns the second completed "
-      "output", () {
+  test(
+      "a collision that is partially resolved returns the second completed " "output",
+      () {
     var rewrite1 = new RewriteTransformer("one", "out");
     var rewrite2 = new RewriteTransformer("two", "out");
     var rewrite3 = new RewriteTransformer("three", "out");
@@ -125,7 +121,9 @@ main() {
       "app|foo.one": "one",
       "app|foo.two": "two",
       "app|foo.three": "three"
-    }, {"app": [[rewrite1, rewrite2, rewrite3]]});
+    }, {
+      "app": [[rewrite1, rewrite2, rewrite3]]
+    });
 
     // Make rewrite3 the most-recently-completed transformer from the first run.
     rewrite2.pauseApply();
@@ -135,10 +133,10 @@ main() {
     rewrite2.resumeApply();
     schedule(pumpEventQueue);
     rewrite3.resumeApply();
-    buildShouldFail([
-      isAssetCollisionException("app|foo.out"),
-      isAssetCollisionException("app|foo.out")
-    ]);
+    buildShouldFail(
+        [
+            isAssetCollisionException("app|foo.out"),
+            isAssetCollisionException("app|foo.out")]);
 
     // Then update rewrite3 in a separate build. rewrite2 should still be the
     // next version of foo.out in line.
@@ -152,14 +150,12 @@ main() {
     buildShouldFail([isAssetCollisionException("app|foo.out")]);
   });
 
-  test("a collision with a pass-through asset returns the pass-through asset",
+  test(
+      "a collision with a pass-through asset returns the pass-through asset",
       () {
-    initGraph([
-      "app|foo.txt",
-      "app|foo.in"
-    ], {"app": [
-      [new RewriteTransformer("in", "txt")]
-    ]});
+    initGraph(["app|foo.txt", "app|foo.in"], {
+      "app": [[new RewriteTransformer("in", "txt")]]
+    });
 
     updateSources(["app|foo.txt", "app|foo.in"]);
     expectAsset("app|foo.txt", "foo");
@@ -167,12 +163,9 @@ main() {
   });
 
   test("a new pass-through asset that collides returns the previous asset", () {
-    initGraph([
-      "app|foo.txt",
-      "app|foo.in"
-    ], {"app": [
-      [new RewriteTransformer("in", "txt")]
-    ]});
+    initGraph(["app|foo.txt", "app|foo.in"], {
+      "app": [[new RewriteTransformer("in", "txt")]]
+    });
 
     updateSources(["app|foo.in"]);
     expectAsset("app|foo.txt", "foo.txt");
@@ -183,14 +176,13 @@ main() {
     buildShouldFail([isAssetCollisionException("app|foo.txt")]);
   });
 
-  test("a new transform output that collides with a pass-through asset returns "
-      "the pass-through asset", () {
-    initGraph([
-      "app|foo.txt",
-      "app|foo.in"
-    ], {"app": [
-      [new RewriteTransformer("in", "txt")]
-    ]});
+  test(
+      "a new transform output that collides with a pass-through asset returns "
+          "the pass-through asset",
+      () {
+    initGraph(["app|foo.txt", "app|foo.in"], {
+      "app": [[new RewriteTransformer("in", "txt")]]
+    });
 
     updateSources(["app|foo.txt"]);
     expectAsset("app|foo.txt", "foo");

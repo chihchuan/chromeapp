@@ -1,4 +1,3 @@
-
 library chrome_model_test;
 
 import 'package:unittest/unittest.dart';
@@ -19,8 +18,7 @@ void main() {
 
 void chromeTypeTests() {
   test('isAny', () {
-    ChromeType chromeType = new ChromeType(type: "var",
-        refName: "SomeType");
+    ChromeType chromeType = new ChromeType(type: "var", refName: "SomeType");
     expect(chromeType.isAny, isTrue);
     expect(chromeType.isReferencedType, isTrue);
     expect(chromeType.toReturnString(), equals("SomeType"));
@@ -49,8 +47,8 @@ void chromeTypeTests() {
 
   test('List<SomeType>', () {
     ChromeType chromeTypeList = new ChromeType(type: "List");
-    ChromeType chromeTypeSomeType = new ChromeType(type: "var",
-        refName: "SomeType");
+    ChromeType chromeTypeSomeType =
+        new ChromeType(type: "var", refName: "SomeType");
     chromeTypeList.parameters.add(chromeTypeSomeType);
     expect(chromeTypeList.isString, isFalse);
     expect(chromeTypeList.isList, isTrue);
@@ -61,17 +59,19 @@ void chromeTypeTests() {
 
   test('List<SomeType, SomeOtherType>', () {
     ChromeType chromeTypeList = new ChromeType(type: "List");
-    ChromeType chromeTypeSomeType = new ChromeType(type: "var",
-        refName: "SomeType");
-    ChromeType chromeTypeSomeOtherType = new ChromeType(type: "var",
-        refName: "SomeOtherType");
+    ChromeType chromeTypeSomeType =
+        new ChromeType(type: "var", refName: "SomeType");
+    ChromeType chromeTypeSomeOtherType =
+        new ChromeType(type: "var", refName: "SomeOtherType");
     chromeTypeList.parameters.add(chromeTypeSomeType);
     chromeTypeList.parameters.add(chromeTypeSomeOtherType);
     expect(chromeTypeList.isString, isFalse);
     expect(chromeTypeList.isList, isTrue);
-    expect(chromeTypeList.getReturnStringTypeParams(),
+    expect(
+        chromeTypeList.getReturnStringTypeParams(),
         equals("<SomeType, SomeOtherType>"));
-    expect(chromeTypeList.toReturnString(),
+    expect(
+        chromeTypeList.toReturnString(),
         equals("List<SomeType, SomeOtherType>"));
     expect(chromeTypeList.toString(), equals("List<SomeType, SomeOtherType>"));
   });
@@ -80,9 +80,9 @@ void chromeTypeTests() {
 
 void chromeReturnTypeTests() {
   test('basic usage', () {
-    ChromeReturnType chromeReturnType =
-        new ChromeReturnType("awesomeness",
-            <ChromeType>[ChromeType.JS_OBJECT, ChromeType.VAR]);
+    ChromeReturnType chromeReturnType = new ChromeReturnType(
+        "awesomeness",
+        <ChromeType>[ChromeType.JS_OBJECT, ChromeType.VAR]);
     expect(chromeReturnType.name, equals("awesomeness"));
     expect(chromeReturnType.params, hasLength(2));
     expect(chromeReturnType.params[0], equals(ChromeType.JS_OBJECT));
@@ -138,13 +138,14 @@ void chromeLibraryTests() {
 
     expect(chromeLibrary.eventTypes.any((e) => e.name == "calcit"), isTrue);
 
-    ChromeProperty chromeProperty = new ChromeProperty("blah",
-        ChromeType.STRING);
+    ChromeProperty chromeProperty =
+        new ChromeProperty("blah", ChromeType.STRING);
     chromeProperty.nodoc = false;
     chromeLibrary.properties.add(chromeProperty);
 
-    expect(chromeLibrary.filteredProperties.toList()
-        .any((e)=> e.name == "blah"), isTrue);
+    expect(
+        chromeLibrary.filteredProperties.toList().any((e) => e.name == "blah"),
+        isTrue);
 
     ChromeEnumType enumType = new ChromeEnumType();
     enumType.name = "somevar";
@@ -188,8 +189,8 @@ void chromeEventTests() {
     expect(calculatedType.name, equals("OpenWindowEvent"));
     expect(calculatedType.refName, equals("OpenWindowEvent"));
     expect(calculatedType.properties, hasLength(2));
-    expect(calculatedType.properties.any((e)=> e.name == "param1"), isTrue);
-    expect(calculatedType.properties.any((e)=> e.name == "param2"), isTrue);
+    expect(calculatedType.properties.any((e) => e.name == "param1"), isTrue);
+    expect(calculatedType.properties.any((e) => e.name == "param2"), isTrue);
   });
 }
 

@@ -40,15 +40,15 @@ class IDLConverter {
     }
 
     if (namespace.enumDeclarations != null) {
-      library.enumTypes.addAll(
-          namespace.enumDeclarations.map(_convertEnum));
+      library.enumTypes.addAll(namespace.enumDeclarations.map(_convertEnum));
     }
 
     return library;
   }
 
 
-  ChromeDeclaredType _convertTypeDeclaration(IDLTypeDeclaration typeDeclaration) {
+  ChromeDeclaredType
+      _convertTypeDeclaration(IDLTypeDeclaration typeDeclaration) {
     ChromeDeclaredType chromeDeclaredType = new ChromeDeclaredType();
 
     chromeDeclaredType.name = typeDeclaration.name;
@@ -62,7 +62,8 @@ class IDLConverter {
     int index = chromeDeclaredType.name.lastIndexOf('.');
 
     if (index != -1) {
-      chromeDeclaredType.qualifier = chromeDeclaredType.name.substring(0, index);
+      chromeDeclaredType.qualifier =
+          chromeDeclaredType.name.substring(0, index);
       chromeDeclaredType.name = chromeDeclaredType.name.substring(index + 1);
     }
 
@@ -70,8 +71,8 @@ class IDLConverter {
   }
 
   ChromeProperty _convertProperty(IDLField member) {
-    ChromeProperty property = new ChromeProperty(member.name,
-        _convertType(member.type));
+    ChromeProperty property =
+        new ChromeProperty(member.name, _convertType(member.type));
     return property;
   }
 
@@ -83,8 +84,7 @@ class IDLConverter {
     chromeMethod.returns = _convertType(idlMethod.returnType);
     chromeMethod.params = idlMethod.parameters.map(_convertParameter).toList();
 
-    if (!idlMethod.parameters.isEmpty &&
-        idlMethod.parameters.last.isCallback) {
+    if (!idlMethod.parameters.isEmpty && idlMethod.parameters.last.isCallback) {
       ChromeType chromeType = chromeMethod.params.removeLast();
       chromeMethod.returns = _convertToFuture(chromeMethod, chromeType);
     } else {
@@ -104,7 +104,8 @@ class IDLConverter {
     List<ChromeType> params = chromeType.parameters;
 
     IDLCallbackDeclaration callback = namespace.callbackDeclarations.firstWhere(
-        (c) => c.name == chromeType.refName, orElse: () => null);
+        (c) => c.name == chromeType.refName,
+        orElse: () => null);
 
     if (callback != null) {
       params = callback.parameters.map(_convertParameter).toList();
@@ -112,10 +113,11 @@ class IDLConverter {
 
     if (params.length == 1) {
       future.parameters.add(params.first);
-      future.documentation = _cleanDocComments(callback.documentation.join('\n'));
+      future.documentation =
+          _cleanDocComments(callback.documentation.join('\n'));
     } else if (params.length == 2) {
-      ChromeType type = new ChromeType(type: 'var',
-          refName: "${titleCase(method.name)}Result");
+      ChromeType type =
+          new ChromeType(type: 'var', refName: "${titleCase(method.name)}Result");
 
       type.combinedReturnValue = true;
       type.parameters.addAll(params);
@@ -147,13 +149,15 @@ class IDLConverter {
 
     if (parameter.type.isArray) {
       var idlType = parameter.type;
-      ChromeType elementType = new ChromeType(type: idlToDartType(idlType),
+      ChromeType elementType = new ChromeType(
+          type: idlToDartType(idlType),
           refName: idlToDartRefName(idlType));
       param = new ChromeType(type: "List");
       param.parameters.add(elementType);
       param.name = parameter.name;
     } else {
-      param = new ChromeType(type: idlToDartType(parameter.type),
+      param = new ChromeType(
+          type: idlToDartType(parameter.type),
           refName: idlToDartRefName(parameter.type));
       param.name = parameter.name;
     }
@@ -171,7 +175,9 @@ class IDLConverter {
     idlEnumDeclaration.enums.forEach((IDLEnumValue value) {
       ChromeEnumEntry chromeEnumEntry = new ChromeEnumEntry();
       chromeEnumEntry.name = value.name;
-      // This fixes an odd value for the chrome.Recipient._INTERFACE enum (#124).
+
+
+          // This fixes an odd value for the chrome.Recipient._INTERFACE enum (#124).
       if (chromeEnumEntry.name == '_interface') {
         chromeEnumEntry.name = 'interface';
       }
@@ -187,7 +193,8 @@ class IDLConverter {
       return ChromeType.VOID;
     } else if (idlType.isArray) {
       ChromeType chromeType = new ChromeType(type: "List");
-      ChromeType elementType = new ChromeType(type: idlToDartType(idlType),
+      ChromeType elementType = new ChromeType(
+          type: idlToDartType(idlType),
           refName: idlToDartRefName(idlType));
       chromeType.parameters.add(elementType);
       library.addImport(getImportForClass(chromeType.refName));
@@ -202,10 +209,10 @@ class IDLConverter {
   }
 
   final TYPE_MAP = {
-                    'DOMString': 'String',
-                    'boolean': 'bool',
-                    'double': 'num',
-                    'long': 'int'
+    'DOMString': 'String',
+    'boolean': 'bool',
+    'double': 'num',
+    'long': 'int'
   };
 
   String idlToDartType(IDLType type) {
@@ -251,9 +258,8 @@ class IDLConverter {
     str = str.replaceAll(new RegExp('\n\s?(\n\s?)+'), '\n\n');
 
     // |width|x|height| ==> [width]x[height]
-    str = str.replaceAllMapped(
-        new RegExp(r"\|(\w+)\|"),
-        (Match m) => "[${m.group(1)}]");
+    str =
+        str.replaceAllMapped(new RegExp(r"\|(\w+)\|"), (Match m) => "[${m.group(1)}]");
 
     // $(ref:sessions) ==> [sessions]
     str = str.replaceAllMapped(

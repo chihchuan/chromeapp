@@ -25,7 +25,8 @@ class ChromeCommands extends ChromeApi {
 
   ChromeCommands._() {
     var getApi = () => _commands;
-    _onCommand = new ChromeStreamController<String>.oneArg(getApi, 'onCommand', selfConverter);
+    _onCommand =
+        new ChromeStreamController<String>.oneArg(getApi, 'onCommand', selfConverter);
   }
 
   bool get available => _commands != null;
@@ -37,7 +38,8 @@ class ChromeCommands extends ChromeApi {
   Future<List<Command>> getAll() {
     if (_commands == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<Command>>.oneArg((e) => listify(e, _createCommand));
+    var completer =
+        new ChromeCompleter<List<Command>>.oneArg((e) => listify(e, _createCommand));
     _commands.callMethod('getAll', [completer.callback]);
     return completer.future;
   }
@@ -53,7 +55,7 @@ class Command extends ChromeObject {
     if (description != null) this.description = description;
     if (shortcut != null) this.shortcut = shortcut;
   }
-  Command.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Command.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The name of the Extension Command
@@ -74,4 +76,5 @@ class Command extends ChromeObject {
   set shortcut(String value) => jsProxy['shortcut'] = value;
 }
 
-Command _createCommand(JsObject jsProxy) => jsProxy == null ? null : new Command.fromProxy(jsProxy);
+Command _createCommand(JsObject jsProxy) =>
+    jsProxy == null ? null : new Command.fromProxy(jsProxy);

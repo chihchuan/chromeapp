@@ -9,7 +9,8 @@ void main() {
   group("with an empty canonicalized map", () {
     var map;
     setUp(() {
-      map = new CanonicalizedMap<int, String, String>(int.parse,
+      map = new CanonicalizedMap<int, String, String>(
+          int.parse,
           isValidKey: new RegExp(r"^\d+$").hasMatch);
     });
 
@@ -66,8 +67,9 @@ void main() {
 
     test("canonicalizes keys for putIfAbsent", () {
       map["1"] = "value";
-      expect(map.putIfAbsent("01", () => throw "shouldn't run"),
-             equals("value"));
+      expect(
+          map.putIfAbsent("01", () => throw "shouldn't run"),
+          equals("value"));
       expect(map.putIfAbsent("2", () => "new value"), equals("new value"));
     });
 

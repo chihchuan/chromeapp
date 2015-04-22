@@ -15,8 +15,9 @@ import 'utils.dart';
 main() {
   initConfig();
 
-  test("a replay that's retrieved before the stream is finished replays the "
-      "stream", () {
+  test(
+      "a replay that's retrieved before the stream is finished replays the " "stream",
+      () {
     var controller = new StreamController<int>();
     var replay = new StreamReplayer<int>(controller.stream).getReplay();
 
@@ -28,8 +29,9 @@ main() {
     expect(replay.toList(), completion(equals([1, 2, 3])));
   });
 
-  test("a replay that's retrieved after the stream is finished replays the "
-      "stream", () {
+  test(
+      "a replay that's retrieved after the stream is finished replays the " "stream",
+      () {
     var controller = new StreamController<int>();
     var replayer = new StreamReplayer<int>(controller.stream);
 

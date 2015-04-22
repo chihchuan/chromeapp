@@ -49,8 +49,11 @@ class ChromeSessions extends ChromeApi {
   Future<List<Session>> getRecentlyClosed([Filter filter]) {
     if (_sessions == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<Session>>.oneArg((e) => listify(e, _createSession));
-    _sessions.callMethod('getRecentlyClosed', [jsify(filter), completer.callback]);
+    var completer =
+        new ChromeCompleter<List<Session>>.oneArg((e) => listify(e, _createSession));
+    _sessions.callMethod(
+        'getRecentlyClosed',
+        [jsify(filter), completer.callback]);
     return completer.future;
   }
 
@@ -66,7 +69,8 @@ class ChromeSessions extends ChromeApi {
   Future<List<Device>> getDevices([Filter filter]) {
     if (_sessions == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<Device>>.oneArg((e) => listify(e, _createDevice));
+    var completer =
+        new ChromeCompleter<List<Device>>.oneArg((e) => listify(e, _createDevice));
     _sessions.callMethod('getDevices', [jsify(filter), completer.callback]);
     return completer.future;
   }
@@ -100,7 +104,7 @@ class Filter extends ChromeObject {
   Filter({int maxResults}) {
     if (maxResults != null) this.maxResults = maxResults;
   }
-  Filter.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Filter.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The maximum number of entries to be fetched in the requested list. Omit
@@ -117,7 +121,7 @@ class Session extends ChromeObject {
     if (tab != null) this.tab = tab;
     if (window != null) this.window = window;
   }
-  Session.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Session.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The time when the window or tab was closed or modified, represented in
@@ -146,7 +150,7 @@ class Device extends ChromeObject {
     if (deviceName != null) this.deviceName = deviceName;
     if (sessions != null) this.sessions = sessions;
   }
-  Device.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Device.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The name of the foreign device.
@@ -162,7 +166,11 @@ class Device extends ChromeObject {
   set sessions(List<Session> value) => jsProxy['sessions'] = jsify(value);
 }
 
-Session _createSession(JsObject jsProxy) => jsProxy == null ? null : new Session.fromProxy(jsProxy);
-Device _createDevice(JsObject jsProxy) => jsProxy == null ? null : new Device.fromProxy(jsProxy);
-Tab _createTab(JsObject jsProxy) => jsProxy == null ? null : new Tab.fromProxy(jsProxy);
-Window _createWindow(JsObject jsProxy) => jsProxy == null ? null : new Window.fromProxy(jsProxy);
+Session _createSession(JsObject jsProxy) =>
+    jsProxy == null ? null : new Session.fromProxy(jsProxy);
+Device _createDevice(JsObject jsProxy) =>
+    jsProxy == null ? null : new Device.fromProxy(jsProxy);
+Tab _createTab(JsObject jsProxy) =>
+    jsProxy == null ? null : new Tab.fromProxy(jsProxy);
+Window _createWindow(JsObject jsProxy) =>
+    jsProxy == null ? null : new Window.fromProxy(jsProxy);

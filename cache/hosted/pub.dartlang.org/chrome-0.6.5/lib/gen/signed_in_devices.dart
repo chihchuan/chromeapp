@@ -21,7 +21,10 @@ class ChromeSignedInDevices extends ChromeApi {
 
   ChromeSignedInDevices._() {
     var getApi = () => _signedInDevices;
-    _onDeviceInfoChange = new ChromeStreamController<List<DeviceInfo>>.oneArg(getApi, 'onDeviceInfoChange', (e) => listify(e, _createDeviceInfo));
+    _onDeviceInfoChange = new ChromeStreamController<List<DeviceInfo>>.oneArg(
+        getApi,
+        'onDeviceInfoChange',
+        (e) => listify(e, _createDeviceInfo));
   }
 
   bool get available => _signedInDevices != null;
@@ -37,7 +40,8 @@ class ChromeSignedInDevices extends ChromeApi {
   Future<List<DeviceInfo>> get([bool isLocal]) {
     if (_signedInDevices == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<DeviceInfo>>.oneArg((e) => listify(e, _createDeviceInfo));
+    var completer = new ChromeCompleter<List<DeviceInfo>>.oneArg(
+        (e) => listify(e, _createDeviceInfo));
     _signedInDevices.callMethod('get', [isLocal, completer.callback]);
     return completer.future;
   }
@@ -56,31 +60,44 @@ class OS extends ChromeEnum {
   static const OS IOS = const OS._('ios');
   static const OS UNKNOWN = const OS._('unknown');
 
-  static const List<OS> VALUES = const[WIN, MAC, LINUX, CHROME_OS, ANDROID, IOS, UNKNOWN];
+  static const List<OS> VALUES = const [
+      WIN,
+      MAC,
+      LINUX,
+      CHROME_OS,
+      ANDROID,
+      IOS,
+      UNKNOWN];
 
-  const OS._(String str): super(str);
+  const OS._(String str) : super(str);
 }
 
 class DeviceType extends ChromeEnum {
-  static const DeviceType DESKTOP_OR_LAPTOP = const DeviceType._('desktop_or_laptop');
+  static const DeviceType DESKTOP_OR_LAPTOP =
+      const DeviceType._('desktop_or_laptop');
   static const DeviceType PHONE = const DeviceType._('phone');
   static const DeviceType TABLET = const DeviceType._('tablet');
   static const DeviceType UNKNOWN = const DeviceType._('unknown');
 
-  static const List<DeviceType> VALUES = const[DESKTOP_OR_LAPTOP, PHONE, TABLET, UNKNOWN];
+  static const List<DeviceType> VALUES = const [
+      DESKTOP_OR_LAPTOP,
+      PHONE,
+      TABLET,
+      UNKNOWN];
 
-  const DeviceType._(String str): super(str);
+  const DeviceType._(String str) : super(str);
 }
 
 class DeviceInfo extends ChromeObject {
-  DeviceInfo({String name, String id, OS os, DeviceType type, String chromeVersion}) {
+  DeviceInfo({String name, String id, OS os, DeviceType type,
+      String chromeVersion}) {
     if (name != null) this.name = name;
     if (id != null) this.id = id;
     if (os != null) this.os = os;
     if (type != null) this.type = type;
     if (chromeVersion != null) this.chromeVersion = chromeVersion;
   }
-  DeviceInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  DeviceInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get name => jsProxy['name'];
   set name(String value) => jsProxy['name'] = value;
@@ -98,6 +115,9 @@ class DeviceInfo extends ChromeObject {
   set chromeVersion(String value) => jsProxy['chromeVersion'] = value;
 }
 
-DeviceInfo _createDeviceInfo(JsObject jsProxy) => jsProxy == null ? null : new DeviceInfo.fromProxy(jsProxy);
-OS _createOS(String value) => OS.VALUES.singleWhere((ChromeEnum e) => e.value == value);
-DeviceType _createDeviceType(String value) => DeviceType.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+DeviceInfo _createDeviceInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new DeviceInfo.fromProxy(jsProxy);
+OS _createOS(String value) =>
+    OS.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+DeviceType _createDeviceType(String value) =>
+    DeviceType.VALUES.singleWhere((ChromeEnum e) => e.value == value);

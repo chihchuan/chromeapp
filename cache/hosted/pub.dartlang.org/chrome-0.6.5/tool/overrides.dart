@@ -1,4 +1,3 @@
-
 /**
  * A library to query the declaritive overrides for Chrome API generation. See
  * the `meta/overrides.json` file.
@@ -54,7 +53,9 @@ class Overrides {
 
   String className(String libraryName, String name) {
     String qualifiedName = '${libraryName}.${name}';
-    return renameClassMap[qualifiedName] != null ? renameClassMap[qualifiedName] : name;
+    return renameClassMap[qualifiedName] != null ?
+        renameClassMap[qualifiedName] :
+        name;
   }
 
   /**
@@ -63,7 +64,8 @@ class Overrides {
    * name.
    */
   List<List<String>> classRenamesFor(String libraryName) {
-    Iterable<String> keys = renameClassMap.keys.where((String str) => str.startsWith('${libraryName}.'));
+    Iterable<String> keys =
+        renameClassMap.keys.where((String str) => str.startsWith('${libraryName}.'));
 
     return keys.map((key) {
       String newName = renameClassMap[key];
@@ -73,6 +75,6 @@ class Overrides {
   }
 
   String overrideClass(String className) {
-    return overrideClasses.contains(className) ? '_${className}': className;
+    return overrideClasses.contains(className) ? '_${className}' : className;
   }
 }

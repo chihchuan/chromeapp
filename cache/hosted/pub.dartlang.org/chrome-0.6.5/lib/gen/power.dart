@@ -50,7 +50,7 @@ class Level extends ChromeEnum {
   static const Level SYSTEM = const Level._('system');
   static const Level DISPLAY = const Level._('display');
 
-  static const List<Level> VALUES = const[SYSTEM, DISPLAY];
+  static const List<Level> VALUES = const [SYSTEM, DISPLAY];
 
-  const Level._(String str): super(str);
+  const Level._(String str) : super(str);
 }

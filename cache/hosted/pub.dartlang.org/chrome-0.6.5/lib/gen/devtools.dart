@@ -12,7 +12,8 @@ class ChromeDevtools {
   /**
    * Accessor for the `chrome.devtools.inspectedWindow` namespace.
    */
-  final ChromeDevtoolsInspectedWindow inspectedWindow = new ChromeDevtoolsInspectedWindow._();
+  final ChromeDevtoolsInspectedWindow inspectedWindow =
+      new ChromeDevtoolsInspectedWindow._();
 
   /**
    * Accessor for the `chrome.devtools.network` namespace.
@@ -32,7 +33,8 @@ class ChromeDevtools {
  * resources within the page.
  */
 class ChromeDevtoolsInspectedWindow extends ChromeApi {
-  JsObject get _devtools_inspectedWindow => chrome['devtools']['inspectedWindow'];
+  JsObject get _devtools_inspectedWindow =>
+      chrome['devtools']['inspectedWindow'];
 
   /**
    * Fired when a new resource is added to the inspected page.
@@ -44,13 +46,22 @@ class ChromeDevtoolsInspectedWindow extends ChromeApi {
    * Fired when a new revision of the resource is committed (e.g. user saves an
    * edited version of the resource in the Developer Tools).
    */
-  Stream<OnResourceContentCommittedEvent> get onResourceContentCommitted => _onResourceContentCommitted.stream;
-  ChromeStreamController<OnResourceContentCommittedEvent> _onResourceContentCommitted;
+  Stream<OnResourceContentCommittedEvent> get onResourceContentCommitted =>
+      _onResourceContentCommitted.stream;
+  ChromeStreamController<OnResourceContentCommittedEvent>
+      _onResourceContentCommitted;
 
   ChromeDevtoolsInspectedWindow._() {
     var getApi = () => _devtools_inspectedWindow;
-    _onResourceAdded = new ChromeStreamController<Resource>.oneArg(getApi, 'onResourceAdded', _createResource);
-    _onResourceContentCommitted = new ChromeStreamController<OnResourceContentCommittedEvent>.twoArgs(getApi, 'onResourceContentCommitted', _createOnResourceContentCommittedEvent);
+    _onResourceAdded = new ChromeStreamController<Resource>.oneArg(
+        getApi,
+        'onResourceAdded',
+        _createResource);
+    _onResourceContentCommitted =
+        new ChromeStreamController<OnResourceContentCommittedEvent>.twoArgs(
+            getApi,
+            'onResourceContentCommitted',
+            _createOnResourceContentCommittedEvent);
   }
 
   bool get available => _devtools_inspectedWindow != null;
@@ -77,7 +88,9 @@ class ChromeDevtoolsInspectedWindow extends ChromeApi {
     if (_devtools_inspectedWindow == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<EvalResult>.twoArgs(EvalResult._create);
-    _devtools_inspectedWindow.callMethod('eval', [expression, completer.callback]);
+    _devtools_inspectedWindow.callMethod(
+        'eval',
+        [expression, completer.callback]);
     return completer.future;
   }
 
@@ -99,13 +112,15 @@ class ChromeDevtoolsInspectedWindow extends ChromeApi {
   Future<List<Resource>> getResources() {
     if (_devtools_inspectedWindow == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<Resource>>.oneArg((e) => listify(e, _createResource));
+    var completer =
+        new ChromeCompleter<List<Resource>>.oneArg((e) => listify(e, _createResource));
     _devtools_inspectedWindow.callMethod('getResources', [completer.callback]);
     return completer.future;
   }
 
   void _throwNotAvailable() {
-    throw new UnsupportedError("'chrome.devtools.inspectedWindow' is not available");
+    throw new UnsupportedError(
+        "'chrome.devtools.inspectedWindow' is not available");
   }
 }
 
@@ -132,7 +147,7 @@ class Resource extends ChromeObject {
   Resource({String url}) {
     if (url != null) this.url = url;
   }
-  Resource.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Resource.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The URL of the resource.
@@ -149,7 +164,8 @@ class Resource extends ChromeObject {
    * Currently, only base64 is supported.
    */
   Future<GetResourceContentResult> getContent() {
-    var completer = new ChromeCompleter<GetResourceContentResult>.twoArgs(GetResourceContentResult._create);
+    var completer = new ChromeCompleter<GetResourceContentResult>.twoArgs(
+        GetResourceContentResult._create);
     jsProxy.callMethod('getContent', [completer.callback]);
     return completer.future;
   }
@@ -176,12 +192,14 @@ class Resource extends ChromeObject {
 }
 
 class DevtoolsInspectedWindowReloadParams extends ChromeObject {
-  DevtoolsInspectedWindowReloadParams({bool ignoreCache, String userAgent, String injectedScript}) {
+  DevtoolsInspectedWindowReloadParams({bool ignoreCache, String userAgent,
+      String injectedScript}) {
     if (ignoreCache != null) this.ignoreCache = ignoreCache;
     if (userAgent != null) this.userAgent = userAgent;
     if (injectedScript != null) this.injectedScript = injectedScript;
   }
-  DevtoolsInspectedWindowReloadParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  DevtoolsInspectedWindowReloadParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * When true, the loader will ignore the cache for all inspected page
@@ -239,8 +257,10 @@ class GetResourceContentResult {
   GetResourceContentResult._(this.content, this.encoding);
 }
 
-Resource _createResource(JsObject jsProxy) => jsProxy == null ? null : new Resource.fromProxy(jsProxy);
-OnResourceContentCommittedEvent _createOnResourceContentCommittedEvent(JsObject resource, String content) =>
+Resource _createResource(JsObject jsProxy) =>
+    jsProxy == null ? null : new Resource.fromProxy(jsProxy);
+OnResourceContentCommittedEvent
+    _createOnResourceContentCommittedEvent(JsObject resource, String content) =>
     new OnResourceContentCommittedEvent(_createResource(resource), content);
 
 /**
@@ -265,8 +285,14 @@ class ChromeDevtoolsNetwork extends ChromeApi {
 
   ChromeDevtoolsNetwork._() {
     var getApi = () => _devtools_network;
-    _onRequestFinished = new ChromeStreamController<Request>.oneArg(getApi, 'onRequestFinished', _createRequest);
-    _onNavigated = new ChromeStreamController<String>.oneArg(getApi, 'onNavigated', selfConverter);
+    _onRequestFinished = new ChromeStreamController<Request>.oneArg(
+        getApi,
+        'onRequestFinished',
+        _createRequest);
+    _onNavigated = new ChromeStreamController<String>.oneArg(
+        getApi,
+        'onNavigated',
+        selfConverter);
   }
 
   bool get available => _devtools_network != null;
@@ -296,7 +322,7 @@ class ChromeDevtoolsNetwork extends ChromeApi {
  */
 class Request extends ChromeObject {
   Request();
-  Request.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Request.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Returns content of the response body.
@@ -307,7 +333,8 @@ class Request extends ChromeObject {
    * Currently, only base64 is supported.
    */
   Future<GetRequestContentResult> getContent() {
-    var completer = new ChromeCompleter<GetRequestContentResult>.twoArgs(GetRequestContentResult._create);
+    var completer = new ChromeCompleter<GetRequestContentResult>.twoArgs(
+        GetRequestContentResult._create);
     jsProxy.callMethod('getContent', [completer.callback]);
     return completer.future;
   }
@@ -327,7 +354,8 @@ class GetRequestContentResult {
   GetRequestContentResult._(this.content, this.encoding);
 }
 
-Request _createRequest(JsObject jsProxy) => jsProxy == null ? null : new Request.fromProxy(jsProxy);
+Request _createRequest(JsObject jsProxy) =>
+    jsProxy == null ? null : new Request.fromProxy(jsProxy);
 
 /**
  * Use the `chrome.devtools.panels` API to integrate your extension into
@@ -344,7 +372,8 @@ class ChromeDevtoolsPanels extends ChromeApi {
   /**
    * Elements panel.
    */
-  ElementsPanel get elements => _createElementsPanel(_devtools_panels['elements']);
+  ElementsPanel get elements =>
+      _createElementsPanel(_devtools_panels['elements']);
 
   /**
    * Creates an extension panel.
@@ -360,11 +389,15 @@ class ChromeDevtoolsPanels extends ChromeApi {
    * Returns:
    * An ExtensionPanel object representing the created panel.
    */
-  Future<ExtensionPanel> create(String title, String iconPath, String pagePath) {
+  Future<ExtensionPanel> create(String title, String iconPath,
+      String pagePath) {
     if (_devtools_panels == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<ExtensionPanel>.twoArgs(_createExtensionPanel);
-    _devtools_panels.callMethod('create', [title, iconPath, pagePath, completer.callback]);
+    var completer =
+        new ChromeCompleter<ExtensionPanel>.twoArgs(_createExtensionPanel);
+    _devtools_panels.callMethod(
+        'create',
+        [title, iconPath, pagePath, completer.callback]);
     return completer.future;
   }
 
@@ -395,7 +428,7 @@ class ChromeDevtoolsPanels extends ChromeApi {
  */
 class ElementsPanel extends ChromeObject {
   ElementsPanel();
-  ElementsPanel.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ElementsPanel.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Creates a pane within panel's sidebar.
@@ -406,7 +439,8 @@ class ElementsPanel extends ChromeObject {
    * An ExtensionSidebarPane object for created sidebar pane.
    */
   Future<ExtensionSidebarPane> createSidebarPane(String title) {
-    var completer = new ChromeCompleter<ExtensionSidebarPane>.oneArg(_createExtensionSidebarPane);
+    var completer =
+        new ChromeCompleter<ExtensionSidebarPane>.oneArg(_createExtensionSidebarPane);
     jsProxy.callMethod('createSidebarPane', [title, completer.callback]);
     return completer.future;
   }
@@ -417,7 +451,7 @@ class ElementsPanel extends ChromeObject {
  */
 class ExtensionPanel extends ChromeObject {
   ExtensionPanel();
-  ExtensionPanel.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ExtensionPanel.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Appends a button to the status bar of the panel.
@@ -432,8 +466,10 @@ class ExtensionPanel extends ChromeObject {
    * 
    * [disabled] Whether the button is disabled.
    */
-  Button createStatusBarButton(String iconPath, String tooltipText, bool disabled) {
-    return _createButton(jsProxy.callMethod('createStatusBarButton', [iconPath, tooltipText, disabled]));
+  Button createStatusBarButton(String iconPath, String tooltipText,
+      bool disabled) {
+    return _createButton(
+        jsProxy.callMethod('createStatusBarButton', [iconPath, tooltipText, disabled]));
   }
 }
 
@@ -442,7 +478,7 @@ class ExtensionPanel extends ChromeObject {
  */
 class ExtensionSidebarPane extends ChromeObject {
   ExtensionSidebarPane();
-  ExtensionSidebarPane.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ExtensionSidebarPane.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Sets the height of the sidebar.
@@ -465,7 +501,9 @@ class ExtensionSidebarPane extends ChromeObject {
    */
   Future setExpression(String expression, [String rootTitle]) {
     var completer = new ChromeCompleter.noArgs();
-    jsProxy.callMethod('setExpression', [expression, rootTitle, completer.callback]);
+    jsProxy.callMethod(
+        'setExpression',
+        [expression, rootTitle, completer.callback]);
     return completer.future;
   }
 
@@ -479,7 +517,9 @@ class ExtensionSidebarPane extends ChromeObject {
    */
   Future setObject(String jsonObject, [String rootTitle]) {
     var completer = new ChromeCompleter.noArgs();
-    jsProxy.callMethod('setObject', [jsonObject, rootTitle, completer.callback]);
+    jsProxy.callMethod(
+        'setObject',
+        [jsonObject, rootTitle, completer.callback]);
     return completer.future;
   }
 
@@ -498,7 +538,7 @@ class ExtensionSidebarPane extends ChromeObject {
  */
 class Button extends ChromeObject {
   Button();
-  Button.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Button.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Updates the attributes of the button. If some of the arguments are omitted
@@ -516,7 +556,11 @@ class Button extends ChromeObject {
   }
 }
 
-ElementsPanel _createElementsPanel(JsObject jsProxy) => jsProxy == null ? null : new ElementsPanel.fromProxy(jsProxy);
-ExtensionPanel _createExtensionPanel(JsObject jsProxy, JsObject status) => jsProxy == null ? null : new ExtensionPanel.fromProxy(jsProxy);
-ExtensionSidebarPane _createExtensionSidebarPane(JsObject jsProxy) => jsProxy == null ? null : new ExtensionSidebarPane.fromProxy(jsProxy);
-Button _createButton(JsObject jsProxy) => jsProxy == null ? null : new Button.fromProxy(jsProxy);
+ElementsPanel _createElementsPanel(JsObject jsProxy) =>
+    jsProxy == null ? null : new ElementsPanel.fromProxy(jsProxy);
+ExtensionPanel _createExtensionPanel(JsObject jsProxy, JsObject status) =>
+    jsProxy == null ? null : new ExtensionPanel.fromProxy(jsProxy);
+ExtensionSidebarPane _createExtensionSidebarPane(JsObject jsProxy) =>
+    jsProxy == null ? null : new ExtensionSidebarPane.fromProxy(jsProxy);
+Button _createButton(JsObject jsProxy) =>
+    jsProxy == null ? null : new Button.fromProxy(jsProxy);

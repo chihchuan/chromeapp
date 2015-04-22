@@ -9,8 +9,8 @@ import 'package:barback/barback.dart';
 import 'rewrite.dart';
 
 /// Like [RewriteTransformer], but declares its assets ahead of time.
-class DeclaringRewriteTransformer extends RewriteTransformer
-    implements DeclaringTransformer {
+class DeclaringRewriteTransformer extends RewriteTransformer implements
+    DeclaringTransformer {
   DeclaringRewriteTransformer(String from, String to)
       : super(from, to);
 

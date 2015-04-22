@@ -12,7 +12,8 @@ import '../src/common.dart';
 /**
  * Accessor for the `chrome.fileBrowserHandler` namespace.
  */
-final ChromeFileBrowserHandler fileBrowserHandler = new ChromeFileBrowserHandler._();
+final ChromeFileBrowserHandler fileBrowserHandler =
+    new ChromeFileBrowserHandler._();
 
 class ChromeFileBrowserHandler extends ChromeApi {
   JsObject get _fileBrowserHandler => chrome['fileBrowserHandler'];
@@ -25,7 +26,10 @@ class ChromeFileBrowserHandler extends ChromeApi {
 
   ChromeFileBrowserHandler._() {
     var getApi = () => _fileBrowserHandler;
-    _onExecute = new ChromeStreamController<OnExecuteEvent>.twoArgs(getApi, 'onExecute', _createOnExecuteEvent);
+    _onExecute = new ChromeStreamController<OnExecuteEvent>.twoArgs(
+        getApi,
+        'onExecute',
+        _createOnExecuteEvent);
   }
 
   bool get available => _fileBrowserHandler != null;
@@ -47,7 +51,9 @@ class ChromeFileBrowserHandler extends ChromeApi {
     if (_fileBrowserHandler == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<Map>.oneArg(mapify);
-    _fileBrowserHandler.callMethod('selectFile', [jsify(selectionParams), completer.callback]);
+    _fileBrowserHandler.callMethod(
+        'selectFile',
+        [jsify(selectionParams), completer.callback]);
     return completer.future;
   }
 
@@ -81,7 +87,8 @@ class FileHandlerExecuteEventDetails extends ChromeObject {
     if (entries != null) this.entries = entries;
     if (tab_id != null) this.tab_id = tab_id;
   }
-  FileHandlerExecuteEventDetails.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  FileHandlerExecuteEventDetails.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Array of Entry instances representing files that are targets of this action
@@ -99,11 +106,14 @@ class FileHandlerExecuteEventDetails extends ChromeObject {
 }
 
 class FileBrowserHandlerSelectFileParams extends ChromeObject {
-  FileBrowserHandlerSelectFileParams({String suggestedName, List<String> allowedFileExtensions}) {
+  FileBrowserHandlerSelectFileParams({String suggestedName,
+      List<String> allowedFileExtensions}) {
     if (suggestedName != null) this.suggestedName = suggestedName;
-    if (allowedFileExtensions != null) this.allowedFileExtensions = allowedFileExtensions;
+    if (allowedFileExtensions != null) this.allowedFileExtensions =
+        allowedFileExtensions;
   }
-  FileBrowserHandlerSelectFileParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  FileBrowserHandlerSelectFileParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Suggested name for the file.
@@ -117,10 +127,14 @@ class FileBrowserHandlerSelectFileParams extends ChromeObject {
    * with the listed extensions are only shown in the dialog. Extensions should
    * not include the leading '.'. Example: ['jpg', 'png']
    */
-  List<String> get allowedFileExtensions => listify(jsProxy['allowedFileExtensions']);
-  set allowedFileExtensions(List<String> value) => jsProxy['allowedFileExtensions'] = jsify(value);
+  List<String> get allowedFileExtensions =>
+      listify(jsProxy['allowedFileExtensions']);
+  set allowedFileExtensions(List<String> value) => jsProxy['allowedFileExtensions'] =
+      jsify(value);
 }
 
 OnExecuteEvent _createOnExecuteEvent(String id, JsObject details) =>
     new OnExecuteEvent(id, _createFileHandlerExecuteEventDetails(details));
-FileHandlerExecuteEventDetails _createFileHandlerExecuteEventDetails(JsObject jsProxy) => jsProxy == null ? null : new FileHandlerExecuteEventDetails.fromProxy(jsProxy);
+FileHandlerExecuteEventDetails
+    _createFileHandlerExecuteEventDetails(JsObject jsProxy) =>
+    jsProxy == null ? null : new FileHandlerExecuteEventDetails.fromProxy(jsProxy);

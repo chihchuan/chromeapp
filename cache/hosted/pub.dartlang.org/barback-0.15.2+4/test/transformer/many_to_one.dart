@@ -26,9 +26,8 @@ class ManyToOneTransformer extends MockTransformer {
   bool doIsPrimary(AssetId id) => id.extension == ".$extension";
 
   Future doApply(Transform transform) {
-    return getPrimary(transform)
-        .then((primary) => primary.readAsString())
-        .then((contents) {
+    return getPrimary(
+        transform).then((primary) => primary.readAsString()).then((contents) {
       // Get all of the included inputs.
       return Future.wait(contents.split(",").map((path) {
         var id;

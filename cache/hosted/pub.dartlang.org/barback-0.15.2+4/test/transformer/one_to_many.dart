@@ -24,9 +24,8 @@ class OneToManyTransformer extends MockTransformer {
   bool doIsPrimary(AssetId id) => id.extension == ".$extension";
 
   Future doApply(Transform transform) {
-    return getPrimary(transform)
-        .then((input) => input.readAsString())
-        .then((lines) {
+    return getPrimary(
+        transform).then((input) => input.readAsString()).then((lines) {
       for (var line in lines.split(",")) {
         var id = new AssetId(transform.primaryInput.id.package, line);
         transform.addOutput(new Asset.fromString(id, "spread $extension"));

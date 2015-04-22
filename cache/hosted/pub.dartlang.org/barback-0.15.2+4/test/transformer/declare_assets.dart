@@ -9,8 +9,8 @@ import 'package:barback/barback.dart';
 import 'mock.dart';
 
 /// A transformer that declares some outputs and emits others.
-class DeclareAssetsTransformer extends MockTransformer
-    implements DeclaringTransformer {
+class DeclareAssetsTransformer extends MockTransformer implements
+    DeclaringTransformer {
   /// The assets that the transformer declares that it will emit.
   final List<AssetId> declared;
 
@@ -23,10 +23,11 @@ class DeclareAssetsTransformer extends MockTransformer
   final AssetId input;
 
   DeclareAssetsTransformer(Iterable<String> declared, {Iterable<String> emitted,
-        String input})
+      String input})
       : this.declared = declared.map((id) => new AssetId.parse(id)).toList(),
-        this.emitted = (emitted == null ? declared : emitted)
-            .map((id) => new AssetId.parse(id)).toList(),
+        this.emitted = (emitted == null ?
+          declared :
+          emitted).map((id) => new AssetId.parse(id)).toList(),
         this.input = input == null ? null : new AssetId.parse(input);
 
   bool doIsPrimary(AssetId id) => input == null || id == input;

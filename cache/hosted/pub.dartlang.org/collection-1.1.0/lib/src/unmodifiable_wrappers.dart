@@ -26,8 +26,8 @@ part of dart.pkg.collection.wrappers;
  * You can, for example, [sort] the list.
  * Permitted operations defer to the wrapped list.
  */
-class NonGrowableListView<E> extends DelegatingList<E>
-                             with NonGrowableListMixin<E> {
+class NonGrowableListView<E> extends DelegatingList<E> with
+    NonGrowableListMixin<E> {
   NonGrowableListView(List<E> listBase) : super(listBase);
 }
 
@@ -129,8 +129,8 @@ abstract class NonGrowableListMixin<E> implements List<E> {
  * such as [add] and [remove], throw an [UnsupportedError].
  * Permitted operations defer to the wrapped set.
  */
-class UnmodifiableSetView<E> extends DelegatingSet<E>
-                             with UnmodifiableSetMixin<E> {
+class UnmodifiableSetView<E> extends DelegatingSet<E> with
+    UnmodifiableSetMixin<E> {
   UnmodifiableSetView(Set<E> setBase) : super(setBase);
 }
 
@@ -201,8 +201,8 @@ abstract class UnmodifiableSetMixin<E> implements Set<E> {
  * such as [addAll] and [remove], throw an [UnsupportedError].
  * Permitted operations defer to the wrapped map.
  */
-class UnmodifiableMapView<K, V> extends DelegatingMap<K, V>
-                                with UnmodifiableMapMixin<K, V> {
+class UnmodifiableMapView<K, V> extends DelegatingMap<K, V> with
+    UnmodifiableMapMixin<K, V> {
   UnmodifiableMapView(Map<K, V> baseMap) : super(baseMap);
 }
 

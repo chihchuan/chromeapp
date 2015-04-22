@@ -52,13 +52,10 @@ const COMMON_PATHS = const ['.', '..', 'out/ReleaseIA32/packages'];
 
 final STYLE_PATHS = {
   path.Style.posix: [
-    '/home/user/dart/sdk/lib/indexed_db/dart2js/indexed_db_dart2js.dart',
-  ],
+      '/home/user/dart/sdk/lib/indexed_db/dart2js/indexed_db_dart2js.dart',],
   path.Style.url: [
-    'https://example.server.org/443643002/path?top=yes#fragment',
-  ],
+      'https://example.server.org/443643002/path?top=yes#fragment',],
   path.Style.windows: [
-    r'C:\User\me\',
-    r'\\server\share\my\folders\some\file.data',
-  ],
+      r'C:\User\me\',
+      r'\\server\share\my\folders\some\file.data',],
 };

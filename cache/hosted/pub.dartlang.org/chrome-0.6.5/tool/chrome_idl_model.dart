@@ -52,10 +52,10 @@ class IDLTypeDeclaration {
   final List<String> documentation;
 
   IDLTypeDeclaration(this.name, this.members, {this.methods, this.attribute,
-    this.documentation});
+      this.documentation});
 
   String toString() =>
-    "IDLTypeDeclaration($name, $members, $methods, $attribute, $documentation)";
+      "IDLTypeDeclaration($name, $members, $methods, $attribute, $documentation)";
 }
 
 // interface Events
@@ -93,7 +93,7 @@ class IDLEnumDeclaration {
   final List<String> documentation;
 
   IDLEnumDeclaration(this.name, this.enums, {this.attribute,
-    this.documentation});
+      this.documentation});
 
   String toString() =>
       "IDLEnumDeclaration($name, $enums, $attribute, $documentation)";
@@ -113,7 +113,7 @@ class IDLMethod {
   final IDLAttributeDeclaration attribute;
 
   IDLMethod(this.name, this.returnType, this.parameters, {this.attribute,
-    this.documentation});
+      this.documentation});
 
   String toString() =>
       "IDLMethod($name, $returnType, $parameters, $attribute, $documentation})";
@@ -129,8 +129,8 @@ class IDLField {
   final IDLAttributeDeclaration attribute;
   final List<String> documentation;
 
-  IDLField(this.name, this.type,
-      {this.attribute, this.isOptional: false, this.documentation});
+  IDLField(this.name, this.type, {this.attribute, this.isOptional: false,
+      this.documentation});
 
   String toString() =>
       "IDLField($name, $type, $attribute, $isOptional, $documentation)";
@@ -152,8 +152,8 @@ class IDLParameter {
   //     optional CreateWindowCallback callback);
   final bool isCallback;
 
-  IDLParameter(this.name, this.type,
-      {this.attribute, this.isOptional: false, this.isCallback: false});
+  IDLParameter(this.name, this.type, {this.attribute, this.isOptional: false,
+      this.isCallback: false});
 
   String toString() =>
       "IDLParameter($name, $type, $attribute, $isOptional, $isCallback)";
@@ -169,9 +169,17 @@ class IDLAttributeTypeEnum {
 
   const IDLAttributeTypeEnum._(this.type);
 
-  static const List<IDLAttributeTypeEnum> values = const [DEPRECATED,
-    INSTANCE_OF, SUPPORTS_FILTER, NOINLINE_DOC, INLINE_DOC, NODOC, NOCOMPILE,
-    LEGAL_VALUES, PERMISSIONS, MAX_LISTENERS];
+  static const List<IDLAttributeTypeEnum> values = const [
+      DEPRECATED,
+      INSTANCE_OF,
+      SUPPORTS_FILTER,
+      NOINLINE_DOC,
+      INLINE_DOC,
+      NODOC,
+      NOCOMPILE,
+      LEGAL_VALUES,
+      PERMISSIONS,
+      MAX_LISTENERS];
 
   /**
    * Example:

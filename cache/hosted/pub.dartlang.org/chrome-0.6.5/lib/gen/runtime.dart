@@ -65,7 +65,8 @@ class ChromeRuntime extends ChromeApi {
    * event, and your extension has a persistent background page, it behaves as
    * if chrome.runtime.reload() is called in response to this event.
    */
-  Stream<Map<String, dynamic>> get onUpdateAvailable => _onUpdateAvailable.stream;
+  Stream<Map<String, dynamic>> get onUpdateAvailable =>
+      _onUpdateAvailable.stream;
   ChromeStreamController<Map<String, dynamic>> _onUpdateAvailable;
 
   /**
@@ -99,7 +100,8 @@ class ChromeRuntime extends ChromeApi {
    * Fired when a message is sent from another extension/app. Cannot be used in
    * a content script.
    */
-  Stream<OnMessageExternalEvent> get onMessageExternal => _onMessageExternal.stream;
+  Stream<OnMessageExternalEvent> get onMessageExternal =>
+      _onMessageExternal.stream;
   ChromeStreamController<OnMessageExternalEvent> _onMessageExternal;
 
   /**
@@ -115,16 +117,37 @@ class ChromeRuntime extends ChromeApi {
   ChromeRuntime._() {
     var getApi = () => _runtime;
     _onStartup = new ChromeStreamController.noArgs(getApi, 'onStartup');
-    _onInstalled = new ChromeStreamController<Map>.oneArg(getApi, 'onInstalled', mapify);
+    _onInstalled =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onInstalled', mapify);
     _onSuspend = new ChromeStreamController.noArgs(getApi, 'onSuspend');
-    _onSuspendCanceled = new ChromeStreamController.noArgs(getApi, 'onSuspendCanceled');
-    _onUpdateAvailable = new ChromeStreamController<Map<String, dynamic>>.oneArg(getApi, 'onUpdateAvailable', mapify);
-    _onBrowserUpdateAvailable = new ChromeStreamController.noArgs(getApi, 'onBrowserUpdateAvailable');
-    _onConnect = new ChromeStreamController<Port>.oneArg(getApi, 'onConnect', _createPort);
-    _onConnectExternal = new ChromeStreamController<Port>.oneArg(getApi, 'onConnectExternal', _createPort);
-    _onMessage = new ChromeStreamController<OnMessageEvent>.threeArgs(getApi, 'onMessage', _createOnMessageEvent);
-    _onMessageExternal = new ChromeStreamController<OnMessageExternalEvent>.threeArgs(getApi, 'onMessageExternal', _createOnMessageExternalEvent);
-    _onRestartRequired = new ChromeStreamController<String>.oneArg(getApi, 'onRestartRequired', selfConverter);
+    _onSuspendCanceled =
+        new ChromeStreamController.noArgs(getApi, 'onSuspendCanceled');
+    _onUpdateAvailable =
+        new ChromeStreamController<Map<String, dynamic>>.oneArg(
+            getApi,
+            'onUpdateAvailable',
+            mapify);
+    _onBrowserUpdateAvailable =
+        new ChromeStreamController.noArgs(getApi, 'onBrowserUpdateAvailable');
+    _onConnect =
+        new ChromeStreamController<Port>.oneArg(getApi, 'onConnect', _createPort);
+    _onConnectExternal = new ChromeStreamController<Port>.oneArg(
+        getApi,
+        'onConnectExternal',
+        _createPort);
+    _onMessage = new ChromeStreamController<OnMessageEvent>.threeArgs(
+        getApi,
+        'onMessage',
+        _createOnMessageEvent);
+    _onMessageExternal =
+        new ChromeStreamController<OnMessageExternalEvent>.threeArgs(
+            getApi,
+            'onMessageExternal',
+            _createOnMessageExternalEvent);
+    _onRestartRequired = new ChromeStreamController<String>.oneArg(
+        getApi,
+        'onRestartRequired',
+        selfConverter);
   }
 
   bool get available => _runtime != null;
@@ -132,7 +155,8 @@ class ChromeRuntime extends ChromeApi {
   /**
    * This will be defined during an API method callback if there was an error
    */
-  LastErrorRuntime get lastError => _createLastErrorRuntime(_runtime['lastError']);
+  LastErrorRuntime get lastError =>
+      _createLastErrorRuntime(_runtime['lastError']);
 
   /**
    * The ID of the extension/app.
@@ -217,7 +241,8 @@ class ChromeRuntime extends ChromeApi {
   Future<RequestUpdateCheckResult> requestUpdateCheck() {
     if (_runtime == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<RequestUpdateCheckResult>.twoArgs(RequestUpdateCheckResult._create);
+    var completer = new ChromeCompleter<RequestUpdateCheckResult>.twoArgs(
+        RequestUpdateCheckResult._create);
     _runtime.callMethod('requestUpdateCheck', [completer.callback]);
     return completer.future;
   }
@@ -254,7 +279,8 @@ class ChromeRuntime extends ChromeApi {
   Port connect([String extensionId, RuntimeConnectParams connectInfo]) {
     if (_runtime == null) _throwNotAvailable();
 
-    return _createPort(_runtime.callMethod('connect', [extensionId, jsify(connectInfo)]));
+    return _createPort(
+        _runtime.callMethod('connect', [extensionId, jsify(connectInfo)]));
   }
 
   /**
@@ -291,11 +317,14 @@ class ChromeRuntime extends ChromeApi {
    * occurs while connecting to the extension, the callback will be called with
    * no arguments and [runtime.lastError] will be set to the error message.
    */
-  Future<dynamic> sendMessage(dynamic message, [String extensionId, RuntimeSendMessageParams options]) {
+  Future<dynamic> sendMessage(dynamic message, [String extensionId,
+      RuntimeSendMessageParams options]) {
     if (_runtime == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<dynamic>.oneArg();
-    _runtime.callMethod('sendMessage', [extensionId, jsify(message), jsify(options), completer.callback]);
+    _runtime.callMethod(
+        'sendMessage',
+        [extensionId, jsify(message), jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -311,11 +340,14 @@ class ChromeRuntime extends ChromeApi {
    * while connecting to the native messaging host, the callback will be called
    * with no arguments and [runtime.lastError] will be set to the error message.
    */
-  Future<dynamic> sendNativeMessage(String application, Map<String, dynamic> message) {
+  Future<dynamic> sendNativeMessage(String application, Map<String,
+      dynamic> message) {
     if (_runtime == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<dynamic>.oneArg();
-    _runtime.callMethod('sendNativeMessage', [application, jsify(message), completer.callback]);
+    _runtime.callMethod(
+        'sendNativeMessage',
+        [application, jsify(message), completer.callback]);
     return completer.future;
   }
 
@@ -325,7 +357,8 @@ class ChromeRuntime extends ChromeApi {
   Future<PlatformInfo> getPlatformInfo() {
     if (_runtime == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<PlatformInfo>.oneArg(_createPlatformInfo);
+    var completer =
+        new ChromeCompleter<PlatformInfo>.oneArg(_createPlatformInfo);
     _runtime.callMethod('getPlatformInfo', [completer.callback]);
     return completer.future;
   }
@@ -336,7 +369,8 @@ class ChromeRuntime extends ChromeApi {
   Future<DirectoryEntry> getPackageDirectoryEntry() {
     if (_runtime == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<DirectoryEntry>.oneArg(_createDirectoryEntry);
+    var completer =
+        new ChromeCompleter<DirectoryEntry>.oneArg(_createDirectoryEntry);
     _runtime.callMethod('getPackageDirectoryEntry', [completer.callback]);
     return completer.future;
   }
@@ -406,7 +440,7 @@ class OnMessageExternalEvent {
 
 class LastErrorRuntime extends ChromeObject {
   LastErrorRuntime();
-  LastErrorRuntime.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  LastErrorRuntime.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Details about the error which occurred.
@@ -422,30 +456,33 @@ class Port extends ChromeObject {
     if (name != null) this.name = name;
     if (sender != null) this.sender = sender;
   }
-  Port.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Port.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get name => jsProxy['name'];
   set name(String value) => jsProxy['name'] = value;
 
   void disconnect([var arg1]) =>
-         jsProxy.callMethod('disconnect', [jsify(arg1)]);
+      jsProxy.callMethod('disconnect', [jsify(arg1)]);
 
   ChromeStreamController _onDisconnect;
   Stream get onDisconnect {
-    if (_onDisconnect == null)
-      _onDisconnect = new ChromeStreamController.noArgs(()=>jsProxy, 'onDisconnect');
+    if (_onDisconnect == null) _onDisconnect =
+        new ChromeStreamController.noArgs(() => jsProxy, 'onDisconnect');
     return _onDisconnect.stream;
   }
 
   ChromeStreamController<OnMessageEvent> _onMessage;
   Stream<OnMessageEvent> get onMessage {
-    if (_onMessage == null)
-      _onMessage = new ChromeStreamController<OnMessageEvent>.threeArgs(()=>jsProxy, 'onMessage', _createOnMessageEvent);
+    if (_onMessage ==
+        null) _onMessage = new ChromeStreamController<OnMessageEvent>.threeArgs(
+            () => jsProxy,
+            'onMessage',
+            _createOnMessageEvent);
     return _onMessage.stream;
   }
 
   void postMessage([var arg1]) =>
-         jsProxy.callMethod('postMessage', [jsify(arg1)]);
+      jsProxy.callMethod('postMessage', [jsify(arg1)]);
 
   /**
    * This property will <b>only</b> be present on ports passed to
@@ -466,7 +503,7 @@ class MessageSender extends ChromeObject {
     if (url != null) this.url = url;
     if (tlsChannelId != null) this.tlsChannelId = tlsChannelId;
   }
-  MessageSender.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  MessageSender.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The [tabs.Tab] which opened the connection, if any. This property will
@@ -507,7 +544,7 @@ class PlatformInfo extends ChromeObject {
     if (arch != null) this.arch = arch;
     if (nacl_arch != null) this.nacl_arch = nacl_arch;
   }
-  PlatformInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  PlatformInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The operating system chrome is running on.
@@ -535,9 +572,10 @@ class PlatformInfo extends ChromeObject {
 class RuntimeConnectParams extends ChromeObject {
   RuntimeConnectParams({String name, bool includeTlsChannelId}) {
     if (name != null) this.name = name;
-    if (includeTlsChannelId != null) this.includeTlsChannelId = includeTlsChannelId;
+    if (includeTlsChannelId != null) this.includeTlsChannelId =
+        includeTlsChannelId;
   }
-  RuntimeConnectParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  RuntimeConnectParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Will be passed into onConnect for processes that are listening for the
@@ -556,9 +594,11 @@ class RuntimeConnectParams extends ChromeObject {
 
 class RuntimeSendMessageParams extends ChromeObject {
   RuntimeSendMessageParams({bool includeTlsChannelId}) {
-    if (includeTlsChannelId != null) this.includeTlsChannelId = includeTlsChannelId;
+    if (includeTlsChannelId != null) this.includeTlsChannelId =
+        includeTlsChannelId;
   }
-  RuntimeSendMessageParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  RuntimeSendMessageParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Whether the TLS channel ID will be passed into onMessageExternal for
@@ -582,14 +622,23 @@ class RequestUpdateCheckResult {
   RequestUpdateCheckResult._(this.status, this.details);
 }
 
-Port _createPort(JsObject jsProxy) => jsProxy == null ? null : new Port.fromProxy(jsProxy);
-OnMessageEvent _createOnMessageEvent(JsObject message, JsObject sender, JsObject sendResponse) =>
+Port _createPort(JsObject jsProxy) =>
+    jsProxy == null ? null : new Port.fromProxy(jsProxy);
+OnMessageEvent _createOnMessageEvent(JsObject message, JsObject sender,
+    JsObject sendResponse) =>
     new OnMessageEvent(message, _createMessageSender(sender), sendResponse);
-OnMessageExternalEvent _createOnMessageExternalEvent(JsObject message, JsObject sender, JsObject sendResponse) =>
+OnMessageExternalEvent _createOnMessageExternalEvent(JsObject message,
+    JsObject sender, JsObject sendResponse) =>
     new OnMessageExternalEvent(message, _createMessageSender(sender), sendResponse);
-LastErrorRuntime _createLastErrorRuntime(JsObject jsProxy) => jsProxy == null ? null : new LastErrorRuntime.fromProxy(jsProxy);
-Window _createWindow(JsObject jsProxy) => jsProxy == null ? null : new Window.fromProxy(jsProxy);
-PlatformInfo _createPlatformInfo(JsObject jsProxy) => jsProxy == null ? null : new PlatformInfo.fromProxy(jsProxy);
-DirectoryEntry _createDirectoryEntry(JsObject jsProxy) => jsProxy == null ? null : new CrDirectoryEntry.fromProxy(jsProxy);
-MessageSender _createMessageSender(JsObject jsProxy) => jsProxy == null ? null : new MessageSender.fromProxy(jsProxy);
-Tab _createTab(JsObject jsProxy) => jsProxy == null ? null : new Tab.fromProxy(jsProxy);
+LastErrorRuntime _createLastErrorRuntime(JsObject jsProxy) =>
+    jsProxy == null ? null : new LastErrorRuntime.fromProxy(jsProxy);
+Window _createWindow(JsObject jsProxy) =>
+    jsProxy == null ? null : new Window.fromProxy(jsProxy);
+PlatformInfo _createPlatformInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new PlatformInfo.fromProxy(jsProxy);
+DirectoryEntry _createDirectoryEntry(JsObject jsProxy) =>
+    jsProxy == null ? null : new CrDirectoryEntry.fromProxy(jsProxy);
+MessageSender _createMessageSender(JsObject jsProxy) =>
+    jsProxy == null ? null : new MessageSender.fromProxy(jsProxy);
+Tab _createTab(JsObject jsProxy) =>
+    jsProxy == null ? null : new Tab.fromProxy(jsProxy);

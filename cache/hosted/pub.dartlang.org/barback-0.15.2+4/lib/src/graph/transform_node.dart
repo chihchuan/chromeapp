@@ -62,7 +62,8 @@ class TransformNode {
       return NodeStatus.IDLE;
     }
 
-    if (_declaring && _state != _State.DECLARING &&
+    if (_declaring &&
+        _state != _State.DECLARING &&
         _state != _State.NEEDS_DECLARE) {
       return NodeStatus.MATERIALIZING;
     } else {
@@ -74,8 +75,8 @@ class TransformNode {
   ///
   /// [TransformInfo] is the publicly-visible representation of a transform
   /// node.
-  TransformInfo get info => new TransformInfo(transformer,
-      new AssetId(phase.cascade.package, key));
+  TransformInfo get info =>
+      new TransformInfo(transformer, new AssetId(phase.cascade.package, key));
 
   /// Whether this is a declaring transform.
   ///
@@ -83,8 +84,9 @@ class TransformNode {
   /// DeclaringAggregateTransformer`, but if a declaring and non-lazy
   /// transformer emits an error during `declareOutputs` it's treated as though
   /// it wasn't declaring.
-  bool get _declaring => transformer is DeclaringAggregateTransformer &&
-      (_state == _State.DECLARING || _declaredOutputs != null);
+  bool get _declaring =>
+      transformer is DeclaringAggregateTransformer &&
+          (_state == _State.DECLARING || _declaredOutputs != null);
 
   /// Whether this transform has been forced since it last finished applying.
   ///
@@ -129,8 +131,9 @@ class TransformNode {
   // can run [apply] even if [force] hasn't been called, since [transformer]
   // should run eagerly if possible.
   bool get _canRunDeclaringEagerly =>
-      _declaring && transformer is! LazyAggregateTransformer &&
-      _primaries.every((input) => input.state.isAvailable);
+      _declaring &&
+          transformer is! LazyAggregateTransformer &&
+          _primaries.every((input) => input.state.isAvailable);
 
   /// Which primary inputs the most recent run of this transform has declared
   /// that it consumes.
@@ -207,8 +210,8 @@ class TransformNode {
     _primaries.add(input);
     if (_forced) input.force();
 
-    _primarySubscriptions[input.id] = input.onStateChange
-        .listen((_) => _onPrimaryStateChange(input));
+    _primarySubscriptions[input.id] =
+        input.onStateChange.listen((_) => _onPrimaryStateChange(input));
 
     if (_state == _State.DECLARING && !_declareController.isDone) {
       // If we're running `declareOutputs` and its id stream isn't closed yet,
@@ -279,7 +282,8 @@ class TransformNode {
   /// being added or removed are handled by [addInput] and
   /// [_onPrimaryStateChange].
   void _dirty() {
-    if (_state == _State.DECLARING || _state == _State.NEEDS_DECLARE ||
+    if (_state == _State.DECLARING ||
+        _state == _State.NEEDS_DECLARE ||
         _state == _State.NEEDS_APPLY) {
       // If we already know that [_apply] needs to be run, there's nothing to do
       // here.
@@ -353,7 +357,8 @@ class TransformNode {
       }
     } else {
       if (_forced) input.force();
-      if (_state == _State.APPLYING && !_applyController.addedId(input.id) &&
+      if (_state == _State.APPLYING &&
+          !_applyController.addedId(input.id) &&
           (_forced || !input.isLazy)) {
         // If the input hasn't yet been added to the transform's input stream,
         // there's no need to consider the transformation dirty. However, if the
@@ -422,8 +427,8 @@ class TransformNode {
     _maybeFinishDeclareController();
 
     syncFuture(() {
-      return (transformer as DeclaringAggregateTransformer)
-          .declareOutputs(controller.transform);
+      return (transformer as DeclaringAggregateTransformer).declareOutputs(
+          controller.transform);
     }).whenComplete(() {
       // Cancel the controller here even if `declareOutputs` wasn't interrupted.
       // Since the declaration is finished, we want to close out the
@@ -447,8 +452,8 @@ class TransformNode {
 
       _consumedPrimaries = controller.consumedPrimaries;
       _declaredOutputs = controller.outputIds;
-      var invalidIds = _declaredOutputs
-          .where((id) => id.package != phase.cascade.package).toSet();
+      var invalidIds =
+          _declaredOutputs.where((id) => id.package != phase.cascade.package).toSet();
       for (var id in invalidIds) {
         _declaredOutputs.remove(id);
         // TODO(nweiz): report this as a warning rather than a failing error.
@@ -479,9 +484,9 @@ class TransformNode {
     assert(_declaredOutputs != null);
     for (var id in _declaredOutputs) {
       if (_outputControllers.containsKey(id)) continue;
-      var controller = _forced
-          ? new AssetNodeController(id, this)
-          : new AssetNodeController.lazy(id, force, this);
+      var controller = _forced ?
+          new AssetNodeController(id, this) :
+          new AssetNodeController.lazy(id, force, this);
       _outputControllers[id] = controller;
       _streams.onAssetController.add(controller.node);
     }
@@ -630,18 +635,20 @@ class TransformNode {
       var ranLong = _timeInTransformer.elapsed > new Duration(seconds: 1);
       var ranLongLocally =
           _timeInTransformer.elapsed - _timeAwaitingInputs.elapsed >
-            new Duration(milliseconds: 200);
+          new Duration(milliseconds: 200);
 
       // Report the transformer's timing information if it spent more than 0.2s
       // doing things other than waiting for its secondary inputs or if it spent
       // more than 1s in total.
       if (ranLongLocally || ranLong) {
-        _streams.onLogController.add(new LogEntry(
-            info, info.primaryId, LogLevel.FINE,
-            "Took ${niceDuration(_timeInTransformer.elapsed)} "
-              "(${niceDuration(_timeAwaitingInputs.elapsed)} awaiting "
-              "secondary inputs).",
-            null));
+        _streams.onLogController.add(
+            new LogEntry(
+                info,
+                info.primaryId,
+                LogLevel.FINE,
+                "Took ${niceDuration(_timeInTransformer.elapsed)} "
+                    "(${niceDuration(_timeAwaitingInputs.elapsed)} awaiting " "secondary inputs).",
+                null));
       }
 
       _handleApplyResults(controller);
@@ -667,10 +674,8 @@ class TransformNode {
 
     var newOutputs = controller.outputs;
     // Any ids that are for a different package are invalid.
-    var invalidIds = newOutputs
-        .map((asset) => asset.id)
-        .where((id) => id.package != phase.cascade.package)
-        .toSet();
+    var invalidIds = newOutputs.map(
+        (asset) => asset.id).where((id) => id.package != phase.cascade.package).toSet();
     for (var id in invalidIds) {
       newOutputs.removeId(id);
       // TODO(nweiz): report this as a warning rather than a failing error.
@@ -781,7 +786,7 @@ class TransformNode {
 
   String toString() =>
       "transform node in $_location for $transformer on ${info.primaryId} "
-      "($_state, $status, ${_forced ? '' : 'un'}forced)";
+          "($_state, $status, ${_forced ? '' : 'un'}forced)";
 }
 
 /// The enum of states that [TransformNode] can be in.

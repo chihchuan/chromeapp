@@ -44,13 +44,14 @@ class WrappingAggregateTransformer implements AggregateTransformer {
   WrappingAggregateTransformer._(this.transformer);
 
   Future<String> classifyPrimary(AssetId id) {
-    return syncFuture(() => transformer.isPrimary(id))
-        .then((isPrimary) => isPrimary ? id.path : null);
+    return syncFuture(
+        () =>
+            transformer.isPrimary(id)).then((isPrimary) => isPrimary ? id.path : null);
   }
 
   Future apply(AggregateTransform aggregateTransform) {
-    return newTransform(aggregateTransform)
-        .then((transform) => transformer.apply(transform));
+    return newTransform(
+        aggregateTransform).then((transform) => transformer.apply(transform));
   }
 
   String toString() => transformer.toString();
@@ -58,9 +59,8 @@ class WrappingAggregateTransformer implements AggregateTransformer {
 
 /// A wrapper for [DeclaringTransformer]s that implements
 /// [DeclaringAggregateTransformer].
-class _DeclaringWrappingAggregateTransformer
-    extends WrappingAggregateTransformer
-    implements DeclaringAggregateTransformer {
+class _DeclaringWrappingAggregateTransformer extends
+    WrappingAggregateTransformer implements DeclaringAggregateTransformer {
   final DeclaringTransformer _declaring;
 
   _DeclaringWrappingAggregateTransformer(DeclaringTransformer transformer)
@@ -76,9 +76,8 @@ class _DeclaringWrappingAggregateTransformer
 
 /// A wrapper for [LazyTransformer]s that implements
 /// [LazyAggregateTransformer].
-class _LazyWrappingAggregateTransformer
-    extends _DeclaringWrappingAggregateTransformer
-    implements LazyAggregateTransformer {
+class _LazyWrappingAggregateTransformer extends
+    _DeclaringWrappingAggregateTransformer implements LazyAggregateTransformer {
   _LazyWrappingAggregateTransformer(LazyTransformer transformer)
       : super(transformer);
 }

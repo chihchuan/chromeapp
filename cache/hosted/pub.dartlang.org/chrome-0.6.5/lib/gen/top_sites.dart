@@ -26,7 +26,8 @@ class ChromeTopSites extends ChromeApi {
   Future<List<MostVisitedURL>> get() {
     if (_topSites == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<MostVisitedURL>>.oneArg((e) => listify(e, _createMostVisitedURL));
+    var completer = new ChromeCompleter<List<MostVisitedURL>>.oneArg(
+        (e) => listify(e, _createMostVisitedURL));
     _topSites.callMethod('get', [completer.callback]);
     return completer.future;
   }
@@ -45,7 +46,7 @@ class MostVisitedURL extends ChromeObject {
     if (url != null) this.url = url;
     if (title != null) this.title = title;
   }
-  MostVisitedURL.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  MostVisitedURL.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The most visited URL.
@@ -60,4 +61,5 @@ class MostVisitedURL extends ChromeObject {
   set title(String value) => jsProxy['title'] = value;
 }
 
-MostVisitedURL _createMostVisitedURL(JsObject jsProxy) => jsProxy == null ? null : new MostVisitedURL.fromProxy(jsProxy);
+MostVisitedURL _createMostVisitedURL(JsObject jsProxy) =>
+    jsProxy == null ? null : new MostVisitedURL.fromProxy(jsProxy);

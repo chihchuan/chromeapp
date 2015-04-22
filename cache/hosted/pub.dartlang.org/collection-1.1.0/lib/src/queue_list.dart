@@ -23,7 +23,9 @@ class QueueList<E> extends Object with ListMixin<E> implements Queue<E> {
    * If [initialCapacity] is given, prepare the queue for at least that many
    * elements.
    */
-  QueueList([int initialCapacity]) : _head = 0, _tail = 0 {
+  QueueList([int initialCapacity])
+      : _head = 0,
+        _tail = 0 {
     if (initialCapacity == null || initialCapacity < _INITIAL_CAPACITY) {
       initialCapacity = _INITIAL_CAPACITY;
     } else if (!_isPowerOf2(initialCapacity)) {
@@ -88,7 +90,9 @@ class QueueList<E> extends Object with ListMixin<E> implements Queue<E> {
 
   // Queue interface.
 
-  void addLast(E element) { _add(element); }
+  void addLast(E element) {
+    _add(element);
+  }
 
   void addFirst(E element) {
     _head = (_head - 1) & (_table.length - 1);
@@ -131,7 +135,7 @@ class QueueList<E> extends Object with ListMixin<E> implements Queue<E> {
     int newTail = _tail + delta; // [delta] is negative.
     if (newTail >= 0) {
       _table.fillRange(newTail, _tail, null);
-    } else { 
+    } else {
       newTail += _table.length;
       _table.fillRange(0, _tail, null);
       _table.fillRange(newTail, _table.length, null);
@@ -147,7 +151,7 @@ class QueueList<E> extends Object with ListMixin<E> implements Queue<E> {
     return _table[(_head + index) & (_table.length - 1)];
   }
 
-  void operator[]=(int index, E value) {
+  void operator []=(int index, E value) {
     if (index < 0 || index >= length) {
       throw new RangeError("Index $index must be in the range [0..$length).");
     }
@@ -174,7 +178,7 @@ class QueueList<E> extends Object with ListMixin<E> implements Queue<E> {
   static int _nextPowerOf2(int number) {
     assert(number > 0);
     number = (number << 1) - 1;
-    for(;;) {
+    for ( ; ; ) {
       int nextNumber = number & (number - 1);
       if (nextNumber == 0) return number;
       number = nextNumber;

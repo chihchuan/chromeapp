@@ -26,7 +26,8 @@ class ChromeScriptBadge extends ChromeApi {
 
   ChromeScriptBadge._() {
     var getApi = () => _scriptBadge;
-    _onClicked = new ChromeStreamController<Tab>.oneArg(getApi, 'onClicked', _createTab);
+    _onClicked =
+        new ChromeStreamController<Tab>.oneArg(getApi, 'onClicked', _createTab);
   }
 
   bool get available => _scriptBadge != null;
@@ -75,7 +76,8 @@ class ScriptBadgeSetPopupParams extends ChromeObject {
     if (tabId != null) this.tabId = tabId;
     if (popup != null) this.popup = popup;
   }
-  ScriptBadgeSetPopupParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ScriptBadgeSetPopupParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * The id of the tab for which you want to modify the script badge.
@@ -95,7 +97,8 @@ class ScriptBadgeGetPopupParams extends ChromeObject {
   ScriptBadgeGetPopupParams({int tabId}) {
     if (tabId != null) this.tabId = tabId;
   }
-  ScriptBadgeGetPopupParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ScriptBadgeGetPopupParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Specify the tab to get the popup from.
@@ -108,7 +111,8 @@ class ScriptBadgeGetAttentionParams extends ChromeObject {
   ScriptBadgeGetAttentionParams({int tabId}) {
     if (tabId != null) this.tabId = tabId;
   }
-  ScriptBadgeGetAttentionParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ScriptBadgeGetAttentionParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Specify the tab to request to act on.
@@ -117,4 +121,5 @@ class ScriptBadgeGetAttentionParams extends ChromeObject {
   set tabId(int value) => jsProxy['tabId'] = value;
 }
 
-Tab _createTab(JsObject jsProxy) => jsProxy == null ? null : new Tab.fromProxy(jsProxy);
+Tab _createTab(JsObject jsProxy) =>
+    jsProxy == null ? null : new Tab.fromProxy(jsProxy);

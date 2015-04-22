@@ -14,40 +14,39 @@ import '../../utils.dart';
 main() {
   initConfig();
   test("gets a transformed asset with a different path", () {
-    initGraph(["app|foo.blub"], {"app": [
-      [new RewriteTransformer("blub", "blab")]
-    ]});
+    initGraph(["app|foo.blub"], {
+      "app": [[new RewriteTransformer("blub", "blab")]]
+    });
     updateSources(["app|foo.blub"]);
     expectAsset("app|foo.blab", "foo.blab");
     buildShouldSucceed();
   });
 
   test("gets a transformed asset with the same path", () {
-    initGraph(["app|foo.blub"], {"app": [
-      [new RewriteTransformer("blub", "blub")]
-    ]});
+    initGraph(["app|foo.blub"], {
+      "app": [[new RewriteTransformer("blub", "blub")]]
+    });
     updateSources(["app|foo.blub"]);
     expectAsset("app|foo.blub", "foo.blub");
     buildShouldSucceed();
   });
 
   test("doesn't find an output from a later phase", () {
-    initGraph(["app|foo.a"], {"app": [
-      [new RewriteTransformer("b", "c")],
-      [new RewriteTransformer("a", "b")]
-    ]});
+    initGraph(["app|foo.a"], {
+      "app": [
+          [new RewriteTransformer("b", "c")],
+          [new RewriteTransformer("a", "b")]]
+    });
     updateSources(["app|foo.a"]);
     expectNoAsset("app|foo.c");
     buildShouldSucceed();
   });
 
   test("doesn't find an output from the same phase", () {
-    initGraph(["app|foo.a"], {"app": [
-      [
-        new RewriteTransformer("a", "b"),
-        new RewriteTransformer("b", "c")
-      ]
-    ]});
+    initGraph(["app|foo.a"], {
+      "app": [
+          [new RewriteTransformer("a", "b"), new RewriteTransformer("b", "c")]]
+    });
     updateSources(["app|foo.a"]);
     expectAsset("app|foo.b", "foo.b");
     expectNoAsset("app|foo.c");
@@ -55,32 +54,33 @@ main() {
   });
 
   test("finds the latest output before the transformer's phase", () {
-    initGraph(["app|foo.blub"], {"app": [
-      [new RewriteTransformer("blub", "blub")],
-      [
-        new RewriteTransformer("blub", "blub"),
-        new RewriteTransformer("blub", "done")
-      ],
-      [new RewriteTransformer("blub", "blub")]
-    ]});
+    initGraph(["app|foo.blub"], {
+      "app": [
+          [new RewriteTransformer("blub", "blub")],
+          [
+              new RewriteTransformer("blub", "blub"),
+              new RewriteTransformer("blub", "done")],
+          [new RewriteTransformer("blub", "blub")]]
+    });
     updateSources(["app|foo.blub"]);
     expectAsset("app|foo.done", "foo.blub.done");
     buildShouldSucceed();
   });
 
   test("applies multiple transformations to an asset", () {
-    initGraph(["app|foo.a"], {"app": [
-      [new RewriteTransformer("a", "b")],
-      [new RewriteTransformer("b", "c")],
-      [new RewriteTransformer("c", "d")],
-      [new RewriteTransformer("d", "e")],
-      [new RewriteTransformer("e", "f")],
-      [new RewriteTransformer("f", "g")],
-      [new RewriteTransformer("g", "h")],
-      [new RewriteTransformer("h", "i")],
-      [new RewriteTransformer("i", "j")],
-      [new RewriteTransformer("j", "k")],
-    ]});
+    initGraph(["app|foo.a"], {
+      "app": [
+          [new RewriteTransformer("a", "b")],
+          [new RewriteTransformer("b", "c")],
+          [new RewriteTransformer("c", "d")],
+          [new RewriteTransformer("d", "e")],
+          [new RewriteTransformer("e", "f")],
+          [new RewriteTransformer("f", "g")],
+          [new RewriteTransformer("g", "h")],
+          [new RewriteTransformer("h", "i")],
+          [new RewriteTransformer("i", "j")],
+          [new RewriteTransformer("j", "k")],]
+    });
     updateSources(["app|foo.a"]);
     expectAsset("app|foo.k", "foo.b.c.d.e.f.g.h.i.j.k");
     buildShouldSucceed();
@@ -88,7 +88,9 @@ main() {
 
   test("only runs a transform once for all of its outputs", () {
     var transformer = new RewriteTransformer("blub", "a b c");
-    initGraph(["app|foo.blub"], {"app": [[transformer]]});
+    initGraph(["app|foo.blub"], {
+      "app": [[transformer]]
+    });
     updateSources(["app|foo.blub"]);
     expectAsset("app|foo.a", "foo.a");
     expectAsset("app|foo.b", "foo.b");
@@ -98,10 +100,11 @@ main() {
   });
 
   test("outputs are passed through transformers by default", () {
-    initGraph(["app|foo.a"], {"app": [
-      [new RewriteTransformer("a", "b")],
-      [new RewriteTransformer("a", "c")]
-    ]});
+    initGraph(["app|foo.a"], {
+      "app": [
+          [new RewriteTransformer("a", "b")],
+          [new RewriteTransformer("a", "c")]]
+    });
     updateSources(["app|foo.a"]);
     expectAsset("app|foo.a", "foo");
     expectAsset("app|foo.b", "foo.b");
@@ -111,7 +114,9 @@ main() {
 
   test("does not reapply transform when inputs are not modified", () {
     var transformer = new RewriteTransformer("blub", "blab");
-    initGraph(["app|foo.blub"], {"app": [[transformer]]});
+    initGraph(["app|foo.blub"], {
+      "app": [[transformer]]
+    });
     updateSources(["app|foo.blub"]);
     expectAsset("app|foo.blab", "foo.blab");
     expectAsset("app|foo.blab", "foo.blab");
@@ -123,7 +128,9 @@ main() {
 
   test("reapplies a transform when its input is modified", () {
     var transformer = new RewriteTransformer("blub", "blab");
-    initGraph(["app|foo.blub"], {"app": [[transformer]]});
+    initGraph(["app|foo.blub"], {
+      "app": [[transformer]]
+    });
 
     updateSources(["app|foo.blub"]);
     expectAsset("app|foo.blab", "foo.blab");
@@ -146,7 +153,9 @@ main() {
       "app|a.txt": "a.inc,b.inc",
       "app|a.inc": "a",
       "app|b.inc": "b"
-    }, {"app": [[transformer]]});
+    }, {
+      "app": [[transformer]]
+    });
 
     updateSources(["app|a.txt", "app|a.inc", "app|b.inc"]);
 
@@ -170,9 +179,11 @@ main() {
   });
 
   test("allows a transform to generate multiple outputs", () {
-    initGraph({"app|foo.txt": "a.out,b.out"}, {"app": [
-      [new OneToManyTransformer("txt")]
-    ]});
+    initGraph({
+      "app|foo.txt": "a.out,b.out"
+    }, {
+      "app": [[new OneToManyTransformer("txt")]]
+    });
 
     updateSources(["app|foo.txt"]);
 
@@ -186,10 +197,9 @@ main() {
     var aa = new RewriteTransformer("aa", "aaa");
     var b = new RewriteTransformer("b", "bb");
     var bb = new RewriteTransformer("bb", "bbb");
-    initGraph(["app|foo.a", "app|foo.b"], {"app": [
-      [a, b],
-      [aa, bb],
-    ]});
+    initGraph(["app|foo.a", "app|foo.b"], {
+      "app": [[a, b], [aa, bb],]
+    });
 
     updateSources(["app|foo.a"]);
     updateSources(["app|foo.b"]);
@@ -207,11 +217,12 @@ main() {
     expect(bb.numRuns, completion(equals(1)));
   });
 
-  test("doesn't get an output from a transform whose primary input is removed",
+  test(
+      "doesn't get an output from a transform whose primary input is removed",
       () {
-    initGraph(["app|foo.txt"], {"app": [
-      [new RewriteTransformer("txt", "out")]
-    ]});
+    initGraph(["app|foo.txt"], {
+      "app": [[new RewriteTransformer("txt", "out")]]
+    });
 
     updateSources(["app|foo.txt"]);
     expectAsset("app|foo.out", "foo.out");
@@ -226,7 +237,9 @@ main() {
     initGraph({
       "app|a.txt": "a.inc",
       "app|a.inc": "a"
-    }, {"app": [[new ManyToOneTransformer("txt")]]});
+    }, {
+      "app": [[new ManyToOneTransformer("txt")]]
+    });
 
     updateSources(["app|a.txt", "app|a.inc"]);
     expectAsset("app|a.out", "a");
@@ -242,7 +255,9 @@ main() {
   test("applies a transform when it becomes newly primary", () {
     initGraph({
       "app|foo.txt": "this",
-    }, {"app": [[new CheckContentTransformer("that", " and the other")]]});
+    }, {
+      "app": [[new CheckContentTransformer("that", " and the other")]]
+    });
 
     updateSources(["app|foo.txt"]);
     expectAsset("app|foo.txt", "this");
@@ -260,9 +275,9 @@ main() {
     initGraph({
       "app|a.a": "a.out,shared.out",
       "app|b.b": "b.out"
-    }, {"app": [
-      [new OneToManyTransformer("a"), new OneToManyTransformer("b")]
-    ]});
+    }, {
+      "app": [[new OneToManyTransformer("a"), new OneToManyTransformer("b")]]
+    });
 
     updateSources(["app|a.a", "app|b.b"]);
 
@@ -286,10 +301,10 @@ main() {
   test("applies transforms to the correct packages", () {
     var rewrite1 = new RewriteTransformer("txt", "out1");
     var rewrite2 = new RewriteTransformer("txt", "out2");
-    initGraph([
-      "pkg1|foo.txt",
-      "pkg2|foo.txt"
-    ], {"pkg1": [[rewrite1]], "pkg2": [[rewrite2]]});
+    initGraph(["pkg1|foo.txt", "pkg2|foo.txt"], {
+      "pkg1": [[rewrite1]],
+      "pkg2": [[rewrite2]]
+    });
 
     updateSources(["pkg1|foo.txt", "pkg2|foo.txt"]);
     expectAsset("pkg1|foo.out1", "foo.out1");
@@ -300,7 +315,10 @@ main() {
   test("transforms don't see generated assets in other packages", () {
     var fooToBar = new RewriteTransformer("foo", "bar");
     var barToBaz = new RewriteTransformer("bar", "baz");
-    initGraph(["pkg1|file.foo"], {"pkg1": [[fooToBar]], "pkg2": [[barToBaz]]});
+    initGraph(["pkg1|file.foo"], {
+      "pkg1": [[fooToBar]],
+      "pkg2": [[barToBaz]]
+    });
 
     updateSources(["pkg1|file.foo"]);
     expectAsset("pkg1|file.bar", "file.bar");
@@ -308,12 +326,14 @@ main() {
     buildShouldSucceed();
   });
 
-  test("removes pipelined transforms when the root primary input is removed",
+  test(
+      "removes pipelined transforms when the root primary input is removed",
       () {
-    initGraph(["app|foo.txt"], {"app": [
-      [new RewriteTransformer("txt", "mid")],
-      [new RewriteTransformer("mid", "out")]
-    ]});
+    initGraph(["app|foo.txt"], {
+      "app": [
+          [new RewriteTransformer("txt", "mid")],
+          [new RewriteTransformer("mid", "out")]]
+    });
 
     updateSources(["app|foo.txt"]);
     expectAsset("app|foo.out", "foo.mid.out");
@@ -324,12 +344,17 @@ main() {
     buildShouldSucceed();
   });
 
-  test("removes pipelined transforms when the parent ceases to generate the "
-      "primary input", () {
-    initGraph({"app|foo.txt": "foo.mid"}, {'app': [
-      [new OneToManyTransformer('txt')],
-      [new RewriteTransformer('mid', 'out')]
-    ]});
+  test(
+      "removes pipelined transforms when the parent ceases to generate the "
+          "primary input",
+      () {
+    initGraph({
+      "app|foo.txt": "foo.mid"
+    }, {
+      'app': [
+          [new OneToManyTransformer('txt')],
+          [new RewriteTransformer('mid', 'out')]]
+    });
 
     updateSources(['app|foo.txt']);
     expectAsset('app|foo.out', 'spread txt.out');
@@ -343,9 +368,9 @@ main() {
   });
 
   test("gets an asset transformed by a sync transformer", () {
-    initGraph(["app|foo.blub"], {"app": [
-      [new SyncRewriteTransformer("blub", "blab")]
-    ]});
+    initGraph(["app|foo.blub"], {
+      "app": [[new SyncRewriteTransformer("blub", "blab")]]
+    });
     updateSources(["app|foo.blub"]);
     expectAsset("app|foo.blab", "new.blab");
     buildShouldSucceed();
@@ -353,20 +378,22 @@ main() {
 
   group("Transform.hasInput", () {
     test("returns whether an input exists", () {
-      initGraph(["app|foo.txt", "app|bar.txt"], {'app': [
-        [new HasInputTransformer(['app|foo.txt', 'app|bar.txt', 'app|baz.txt'])]
-      ]});
+      initGraph(["app|foo.txt", "app|bar.txt"], {
+        'app': [
+            [new HasInputTransformer(['app|foo.txt', 'app|bar.txt', 'app|baz.txt'])]]
+      });
 
       updateSources(['app|foo.txt', 'app|bar.txt']);
-      expectAsset('app|foo.txt',
+      expectAsset(
+          'app|foo.txt',
           'app|foo.txt: true, app|bar.txt: true, app|baz.txt: false');
       buildShouldSucceed();
     });
 
     test("re-runs the transformer when an input stops existing", () {
-      initGraph(["app|foo.txt", "app|bar.txt"], {'app': [
-        [new HasInputTransformer(['app|bar.txt'])]
-      ]});
+      initGraph(["app|foo.txt", "app|bar.txt"], {
+        'app': [[new HasInputTransformer(['app|bar.txt'])]]
+      });
 
       updateSources(['app|foo.txt', 'app|bar.txt']);
       expectAsset('app|foo.txt', 'app|bar.txt: true');
@@ -378,14 +405,14 @@ main() {
     });
 
     test("re-runs the transformer when an input starts existing", () {
-      initGraph(["app|foo.txt", "app|bar.txt"], {'app': [
-        [new HasInputTransformer(['app|bar.txt'])]
-      ]});
-    
+      initGraph(["app|foo.txt", "app|bar.txt"], {
+        'app': [[new HasInputTransformer(['app|bar.txt'])]]
+      });
+
       updateSources(['app|foo.txt']);
       expectAsset('app|foo.txt', 'app|bar.txt: false');
       buildShouldSucceed();
-    
+
       updateSources(['app|bar.txt']);
       expectAsset('app|foo.txt', 'app|bar.txt: true');
       buildShouldSucceed();

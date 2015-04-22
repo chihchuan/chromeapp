@@ -1,4 +1,3 @@
-
 library chrome.src.common_exp;
 
 import 'dart:js';
@@ -54,10 +53,11 @@ abstract class ChromeEnum {
 
 // This is chared in common by app.window and system.display.
 class Bounds extends ChromeObject {
-  static Bounds create(JsObject jsProxy) => jsProxy == null ? null : new Bounds.fromProxy(jsProxy);
+  static Bounds create(JsObject jsProxy) =>
+      jsProxy == null ? null : new Bounds.fromProxy(jsProxy);
 
   Bounds();
-  Bounds.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Bounds.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get left => jsProxy['left'];
   set left(int value) => jsProxy['left'] = value;
@@ -73,7 +73,8 @@ class Bounds extends ChromeObject {
 }
 
 class ArrayBuffer extends ChromeObject {
-  static ArrayBuffer create(/*JsObject*/ jsProxy) => new ArrayBuffer.fromProxy(jsProxy);
+  static ArrayBuffer create(/*JsObject*/ jsProxy) =>
+      new ArrayBuffer.fromProxy(jsProxy);
 
   ArrayBuffer();
   ArrayBuffer._proxy(jsProxy) : super.fromProxy(jsProxy);
@@ -83,18 +84,20 @@ class ArrayBuffer extends ChromeObject {
 //    if (jsProxy is typed_data.Uint8List) {
 //      return new _Uint8ListArrayBuffer(jsProxy);
 //    } else {
-      return new ArrayBuffer._proxy(jsProxy);
+    return new ArrayBuffer._proxy(jsProxy);
 //    }
   }
 
   factory ArrayBuffer.fromBytes(List<int> data) {
-    var uint8Array = new JsObject(context['Uint8Array'], [new JsArray.from(data)]);
+    var uint8Array =
+        new JsObject(context['Uint8Array'], [new JsArray.from(data)]);
 
     return new ArrayBuffer.fromProxy(uint8Array['buffer']);
   }
 
   factory ArrayBuffer.fromString(String str) {
-    var uint8Array = new JsObject(context['Uint8Array'], [new JsArray.from(str.codeUnits)]);
+    var uint8Array =
+        new JsObject(context['Uint8Array'], [new JsArray.from(str.codeUnits)]);
 
     return new ArrayBuffer.fromProxy(uint8Array['buffer']);
   }
@@ -122,7 +125,7 @@ class _Uint8ListArrayBuffer implements ArrayBuffer {
   List<int> _bytes;
   JsObject _jsProxy;
 
-  _Uint8ListArrayBuffer( typed_data.Uint8List list) {
+  _Uint8ListArrayBuffer(typed_data.Uint8List list) {
     _bytes = list.toList();
   }
 
@@ -151,8 +154,9 @@ class SuggestFilenameCallback {
 
 // TODO:
 class LocalMediaStream extends ChromeObject {
-  static LocalMediaStream create(JsObject jsProxy) => new LocalMediaStream.fromProxy(jsProxy);
+  static LocalMediaStream create(JsObject jsProxy) =>
+      new LocalMediaStream.fromProxy(jsProxy);
 
   LocalMediaStream();
-  LocalMediaStream.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  LocalMediaStream.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 }

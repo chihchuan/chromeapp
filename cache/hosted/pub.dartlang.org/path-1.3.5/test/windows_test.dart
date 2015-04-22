@@ -208,7 +208,8 @@ main() {
       expect(context.join('a', 'b', 'c', 'd', 'e'), r'a\b\c\d\e');
       expect(context.join('a', 'b', 'c', 'd', 'e', 'f'), r'a\b\c\d\e\f');
       expect(context.join('a', 'b', 'c', 'd', 'e', 'f', 'g'), r'a\b\c\d\e\f\g');
-      expect(context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'),
+      expect(
+          context.join('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'),
           r'a\b\c\d\e\f\g\h');
     });
 
@@ -246,7 +247,8 @@ main() {
 
     test('join does not modify internal ., .., or trailing separators', () {
       expect(context.join('a/', 'b/c/'), 'a/b/c/');
-      expect(context.join(r'a\b\./c\..\\', r'd\..\.\..\\e\f\\'),
+      expect(
+          context.join(r'a\b\./c\..\\', r'd\..\.\..\\e\f\\'),
           r'a\b\./c\..\\d\..\.\..\\e\f\\');
       expect(context.join(r'a\b', r'c\..\..\..\..'), r'a\b\c\..\..\..\..');
       expect(context.join(r'a', 'b${context.separator}'), r'a\b\');
@@ -255,7 +257,8 @@ main() {
 
   group('joinAll', () {
     test('allows more than eight parts', () {
-      expect(context.joinAll(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']),
+      expect(
+          context.joinAll(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']),
           r'a\b\c\d\e\f\g\h\i');
     });
 
@@ -282,7 +285,8 @@ main() {
       expect(context.split('foo'), equals(['foo']));
       expect(context.split(r'foo\bar.txt'), equals(['foo', 'bar.txt']));
       expect(context.split(r'foo\bar/baz'), equals(['foo', 'bar', 'baz']));
-      expect(context.split(r'foo\..\bar\.\baz'),
+      expect(
+          context.split(r'foo\..\bar\.\baz'),
           equals(['foo', '..', 'bar', '.', 'baz']));
       expect(context.split(r'foo\\bar\\\baz'), equals(['foo', 'bar', 'baz']));
       expect(context.split(r'foo\/\baz'), equals(['foo', 'baz']));
@@ -293,16 +297,19 @@ main() {
     });
 
     test('includes the root for absolute paths', () {
-      expect(context.split(r'C:\foo\bar\baz'),
+      expect(
+          context.split(r'C:\foo\bar\baz'),
           equals([r'C:\', 'foo', 'bar', 'baz']));
       expect(context.split(r'C:\\'), equals([r'C:\']));
 
-      expect(context.split(r'\\server\share\foo\bar\baz'),
+      expect(
+          context.split(r'\\server\share\foo\bar\baz'),
           equals([r'\\server\share', 'foo', 'bar', 'baz']));
       expect(context.split(r'\\server\share'), equals([r'\\server\share']));
 
       expect(
-          context.split(r'\foo\bar\baz'), equals([r'\', 'foo', 'bar', 'baz']));
+          context.split(r'\foo\bar\baz'),
+          equals([r'\', 'foo', 'bar', 'baz']));
       expect(context.split(r'\'), equals([r'\']));
     });
   });
@@ -320,7 +327,8 @@ main() {
       expect(context.normalize('C:/'), r'C:\');
       expect(context.normalize(r'C:\'), r'C:\');
       expect(context.normalize(r'\\server\share'), r'\\server\share');
-      expect(context.normalize('a\\.\\\xc5\u0bf8-;\u{1f085}\u{00}\\c\\d\\..\\'),
+      expect(
+          context.normalize('a\\.\\\xc5\u0bf8-;\u{1f085}\u{00}\\c\\d\\..\\'),
           'a\\\xc5\u0bf8-;\u{1f085}\u{00}\x5cc');
     });
 
@@ -351,7 +359,8 @@ main() {
       expect(context.normalize(r'../..\..\'), r'..\..\..');
       expect(context.normalize(r'\\server\share\..'), r'\\server\share');
       expect(
-          context.normalize(r'\\server\share\..\../..\a'), r'\\server\share\a');
+          context.normalize(r'\\server\share\..\../..\a'),
+          r'\\server\share\a');
       expect(context.normalize(r'c:\..'), r'c:\');
       expect(context.normalize(r'A:/..\..\..'), r'A:\');
       expect(context.normalize(r'b:\..\..\..\a'), r'b:\a');
@@ -489,22 +498,26 @@ main() {
     });
 
     test('with a root parameter', () {
-      expect(context.relative(r'C:\foo\bar\baz', from: r'C:\foo\bar'),
+      expect(
+          context.relative(r'C:\foo\bar\baz', from: r'C:\foo\bar'),
           equals('baz'));
       expect(
-          context.relative('..', from: r'C:\foo\bar'), equals(r'..\..\root'));
+          context.relative('..', from: r'C:\foo\bar'),
+          equals(r'..\..\root'));
       expect(context.relative('..', from: r'D:\foo\bar'), equals(r'C:\root'));
-      expect(context.relative(r'C:\foo\bar\baz', from: r'foo\bar'),
+      expect(
+          context.relative(r'C:\foo\bar\baz', from: r'foo\bar'),
           equals(r'..\..\..\..\foo\bar\baz'));
       expect(context.relative('..', from: r'foo\bar'), equals(r'..\..\..'));
     });
 
     test('with a root parameter and a relative root', () {
-      var r = new path.Context(
-          style: path.Style.windows, current: r'relative\root');
+      var r =
+          new path.Context(style: path.Style.windows, current: r'relative\root');
       expect(r.relative(r'C:\foo\bar\baz', from: r'C:\foo\bar'), equals('baz'));
       expect(() => r.relative('..', from: r'C:\foo\bar'), throwsPathException);
-      expect(r.relative(r'C:\foo\bar\baz', from: r'foo\bar'),
+      expect(
+          r.relative(r'C:\foo\bar\baz', from: r'foo\bar'),
           equals(r'C:\foo\bar\baz'));
       expect(r.relative('..', from: r'foo\bar'), equals(r'..\..\..'));
     });
@@ -554,10 +567,13 @@ main() {
       expect(context.absolute('a', 'b', 'c'), r'C:\root\path\a\b\c');
       expect(context.absolute('a', 'b', 'c', 'd'), r'C:\root\path\a\b\c\d');
       expect(
-          context.absolute('a', 'b', 'c', 'd', 'e'), r'C:\root\path\a\b\c\d\e');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e', 'f'),
+          context.absolute('a', 'b', 'c', 'd', 'e'),
+          r'C:\root\path\a\b\c\d\e');
+      expect(
+          context.absolute('a', 'b', 'c', 'd', 'e', 'f'),
           r'C:\root\path\a\b\c\d\e\f');
-      expect(context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g'),
+      expect(
+          context.absolute('a', 'b', 'c', 'd', 'e', 'f', 'g'),
           r'C:\root\path\a\b\c\d\e\f\g');
     });
 
@@ -595,27 +611,35 @@ main() {
 
   group('fromUri', () {
     test('with a URI', () {
-      expect(context.fromUri(Uri.parse('file:///C:/path/to/foo')),
+      expect(
+          context.fromUri(Uri.parse('file:///C:/path/to/foo')),
           r'C:\path\to\foo');
-      expect(context.fromUri(Uri.parse('file://server/share/path/to/foo')),
+      expect(
+          context.fromUri(Uri.parse('file://server/share/path/to/foo')),
           r'\\server\share\path\to\foo');
       expect(context.fromUri(Uri.parse('file:///C:/')), r'C:\');
       expect(
-          context.fromUri(Uri.parse('file://server/share')), r'\\server\share');
+          context.fromUri(Uri.parse('file://server/share')),
+          r'\\server\share');
       expect(context.fromUri(Uri.parse('foo/bar')), r'foo\bar');
       expect(context.fromUri(Uri.parse('/C:/path/to/foo')), r'C:\path\to\foo');
       expect(
-          context.fromUri(Uri.parse('///C:/path/to/foo')), r'C:\path\to\foo');
-      expect(context.fromUri(Uri.parse('//server/share/path/to/foo')),
+          context.fromUri(Uri.parse('///C:/path/to/foo')),
+          r'C:\path\to\foo');
+      expect(
+          context.fromUri(Uri.parse('//server/share/path/to/foo')),
           r'\\server\share\path\to\foo');
-      expect(context.fromUri(Uri.parse('file:///C:/path/to/foo%23bar')),
+      expect(
+          context.fromUri(Uri.parse('file:///C:/path/to/foo%23bar')),
           r'C:\path\to\foo#bar');
       expect(
           context.fromUri(Uri.parse('file://server/share/path/to/foo%23bar')),
           r'\\server\share\path\to\foo#bar');
-      expect(context.fromUri(Uri.parse('_%7B_%7D_%60_%5E_%20_%22_%25_')),
+      expect(
+          context.fromUri(Uri.parse('_%7B_%7D_%60_%5E_%20_%22_%25_')),
           r'_{_}_`_^_ _"_%_');
-      expect(() => context.fromUri(Uri.parse('http://dartlang.org')),
+      expect(
+          () => context.fromUri(Uri.parse('http://dartlang.org')),
           throwsArgumentError);
     });
 
@@ -626,21 +650,28 @@ main() {
 
   test('toUri', () {
     expect(
-        context.toUri(r'C:\path\to\foo'), Uri.parse('file:///C:/path/to/foo'));
-    expect(context.toUri(r'C:\path\to\foo\'),
+        context.toUri(r'C:\path\to\foo'),
+        Uri.parse('file:///C:/path/to/foo'));
+    expect(
+        context.toUri(r'C:\path\to\foo\'),
         Uri.parse('file:///C:/path/to/foo/'));
     expect(context.toUri(r'C:\'), Uri.parse('file:///C:/'));
     expect(context.toUri(r'\\server\share'), Uri.parse('file://server/share'));
     expect(
-        context.toUri(r'\\server\share\'), Uri.parse('file://server/share/'));
+        context.toUri(r'\\server\share\'),
+        Uri.parse('file://server/share/'));
     expect(context.toUri(r'foo\bar'), Uri.parse('foo/bar'));
-    expect(context.toUri(r'C:\path\to\foo#bar'),
+    expect(
+        context.toUri(r'C:\path\to\foo#bar'),
         Uri.parse('file:///C:/path/to/foo%23bar'));
-    expect(context.toUri(r'\\server\share\path\to\foo#bar'),
+    expect(
+        context.toUri(r'\\server\share\path\to\foo#bar'),
         Uri.parse('file://server/share/path/to/foo%23bar'));
-    expect(context.toUri(r'C:\_{_}_`_^_ _"_%_'),
+    expect(
+        context.toUri(r'C:\_{_}_`_^_ _"_%_'),
         Uri.parse('file:///C:/_%7B_%7D_%60_%5E_%20_%22_%25_'));
-    expect(context.toUri(r'_{_}_`_^_ _"_%_'),
+    expect(
+        context.toUri(r'_{_}_`_^_ _"_%_'),
         Uri.parse('_%7B_%7D_%60_%5E_%20_%22_%25_'));
   });
 
@@ -649,14 +680,17 @@ main() {
       expect(context.prettyUri('file:///C:/root/path/a/b'), r'a\b');
       expect(context.prettyUri('file:///C:/root/path/a/../b'), r'b');
       expect(
-          context.prettyUri('file:///C:/other/path/a/b'), r'C:\other\path\a\b');
+          context.prettyUri('file:///C:/other/path/a/b'),
+          r'C:\other\path\a\b');
       expect(
-          context.prettyUri('file:///D:/root/path/a/b'), r'D:\root\path\a\b');
+          context.prettyUri('file:///D:/root/path/a/b'),
+          r'D:\root\path\a\b');
       expect(context.prettyUri('file:///C:/root/other'), r'..\other');
     });
 
     test('with an http: URI', () {
-      expect(context.prettyUri('http://dartlang.org/a/b'),
+      expect(
+          context.prettyUri('http://dartlang.org/a/b'),
           'http://dartlang.org/a/b');
     });
 

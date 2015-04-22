@@ -72,7 +72,7 @@ class CpuTime extends ChromeObject {
     if (idle != null) this.idle = idle;
     if (total != null) this.total = total;
   }
-  CpuTime.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CpuTime.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   num get user => jsProxy['user'];
   set user(num value) => jsProxy['user'] = jsify(value);
@@ -91,21 +91,22 @@ class ProcessorInfo extends ChromeObject {
   ProcessorInfo({CpuTime usage}) {
     if (usage != null) this.usage = usage;
   }
-  ProcessorInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ProcessorInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   CpuTime get usage => _createCpuTime(jsProxy['usage']);
   set usage(CpuTime value) => jsProxy['usage'] = jsify(value);
 }
 
 class CpuInfo extends ChromeObject {
-  CpuInfo({int numOfProcessors, String archName, String modelName, List<String> features, List<ProcessorInfo> processors}) {
+  CpuInfo({int numOfProcessors, String archName, String modelName,
+      List<String> features, List<ProcessorInfo> processors}) {
     if (numOfProcessors != null) this.numOfProcessors = numOfProcessors;
     if (archName != null) this.archName = archName;
     if (modelName != null) this.modelName = modelName;
     if (features != null) this.features = features;
     if (processors != null) this.processors = processors;
   }
-  CpuInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CpuInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get numOfProcessors => jsProxy['numOfProcessors'];
   set numOfProcessors(int value) => jsProxy['numOfProcessors'] = value;
@@ -119,13 +120,18 @@ class CpuInfo extends ChromeObject {
   List<String> get features => listify(jsProxy['features']);
   set features(List<String> value) => jsProxy['features'] = jsify(value);
 
-  List<ProcessorInfo> get processors => listify(jsProxy['processors'], _createProcessorInfo);
-  set processors(List<ProcessorInfo> value) => jsProxy['processors'] = jsify(value);
+  List<ProcessorInfo> get processors =>
+      listify(jsProxy['processors'], _createProcessorInfo);
+  set processors(List<ProcessorInfo> value) => jsProxy['processors'] =
+      jsify(value);
 }
 
-CpuInfo _createCpuInfo(JsObject jsProxy) => jsProxy == null ? null : new CpuInfo.fromProxy(jsProxy);
-CpuTime _createCpuTime(JsObject jsProxy) => jsProxy == null ? null : new CpuTime.fromProxy(jsProxy);
-ProcessorInfo _createProcessorInfo(JsObject jsProxy) => jsProxy == null ? null : new ProcessorInfo.fromProxy(jsProxy);
+CpuInfo _createCpuInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new CpuInfo.fromProxy(jsProxy);
+CpuTime _createCpuTime(JsObject jsProxy) =>
+    jsProxy == null ? null : new CpuTime.fromProxy(jsProxy);
+ProcessorInfo _createProcessorInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new ProcessorInfo.fromProxy(jsProxy);
 
 /**
  * Use the `system.display` API to query display metadata.
@@ -138,7 +144,8 @@ class ChromeSystemDisplay extends ChromeApi {
 
   ChromeSystemDisplay._() {
     var getApi = () => _system_display;
-    _onDisplayChanged = new ChromeStreamController.noArgs(getApi, 'onDisplayChanged');
+    _onDisplayChanged =
+        new ChromeStreamController.noArgs(getApi, 'onDisplayChanged');
   }
 
   bool get available => _system_display != null;
@@ -149,7 +156,8 @@ class ChromeSystemDisplay extends ChromeApi {
   Future<List<DisplayUnitInfo>> getInfo() {
     if (_system_display == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<DisplayUnitInfo>>.oneArg((e) => listify(e, _createDisplayUnitInfo));
+    var completer = new ChromeCompleter<List<DisplayUnitInfo>>.oneArg(
+        (e) => listify(e, _createDisplayUnitInfo));
     _system_display.callMethod('getInfo', [completer.callback]);
     return completer.future;
   }
@@ -168,7 +176,9 @@ class ChromeSystemDisplay extends ChromeApi {
     if (_system_display == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _system_display.callMethod('setDisplayProperties', [id, jsify(info), completer.callback]);
+    _system_display.callMethod(
+        'setDisplayProperties',
+        [id, jsify(info), completer.callback]);
     return completer.future;
   }
 
@@ -184,7 +194,7 @@ class Insets extends ChromeObject {
     if (right != null) this.right = right;
     if (bottom != null) this.bottom = bottom;
   }
-  Insets.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Insets.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get left => jsProxy['left'];
   set left(int value) => jsProxy['left'] = value;
@@ -200,7 +210,9 @@ class Insets extends ChromeObject {
 }
 
 class DisplayUnitInfo extends ChromeObject {
-  DisplayUnitInfo({String id, String name, String mirroringSourceId, bool isPrimary, bool isInternal, bool isEnabled, num dpiX, num dpiY, int rotation, Bounds bounds, Insets overscan, Bounds workArea}) {
+  DisplayUnitInfo({String id, String name, String mirroringSourceId,
+      bool isPrimary, bool isInternal, bool isEnabled, num dpiX, num dpiY,
+      int rotation, Bounds bounds, Insets overscan, Bounds workArea}) {
     if (id != null) this.id = id;
     if (name != null) this.name = name;
     if (mirroringSourceId != null) this.mirroringSourceId = mirroringSourceId;
@@ -214,7 +226,7 @@ class DisplayUnitInfo extends ChromeObject {
     if (overscan != null) this.overscan = overscan;
     if (workArea != null) this.workArea = workArea;
   }
-  DisplayUnitInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  DisplayUnitInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get id => jsProxy['id'];
   set id(String value) => jsProxy['id'] = value;
@@ -254,7 +266,8 @@ class DisplayUnitInfo extends ChromeObject {
 }
 
 class DisplayProperties extends ChromeObject {
-  DisplayProperties({String mirroringSourceId, bool isPrimary, Insets overscan, int rotation, int boundsOriginX, int boundsOriginY}) {
+  DisplayProperties({String mirroringSourceId, bool isPrimary, Insets overscan,
+      int rotation, int boundsOriginX, int boundsOriginY}) {
     if (mirroringSourceId != null) this.mirroringSourceId = mirroringSourceId;
     if (isPrimary != null) this.isPrimary = isPrimary;
     if (overscan != null) this.overscan = overscan;
@@ -262,7 +275,7 @@ class DisplayProperties extends ChromeObject {
     if (boundsOriginX != null) this.boundsOriginX = boundsOriginX;
     if (boundsOriginY != null) this.boundsOriginY = boundsOriginY;
   }
-  DisplayProperties.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  DisplayProperties.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get mirroringSourceId => jsProxy['mirroringSourceId'];
   set mirroringSourceId(String value) => jsProxy['mirroringSourceId'] = value;
@@ -283,9 +296,12 @@ class DisplayProperties extends ChromeObject {
   set boundsOriginY(int value) => jsProxy['boundsOriginY'] = value;
 }
 
-DisplayUnitInfo _createDisplayUnitInfo(JsObject jsProxy) => jsProxy == null ? null : new DisplayUnitInfo.fromProxy(jsProxy);
-Bounds _createBounds(JsObject jsProxy) => jsProxy == null ? null : new Bounds.fromProxy(jsProxy);
-Insets _createInsets(JsObject jsProxy) => jsProxy == null ? null : new Insets.fromProxy(jsProxy);
+DisplayUnitInfo _createDisplayUnitInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new DisplayUnitInfo.fromProxy(jsProxy);
+Bounds _createBounds(JsObject jsProxy) =>
+    jsProxy == null ? null : new Bounds.fromProxy(jsProxy);
+Insets _createInsets(JsObject jsProxy) =>
+    jsProxy == null ? null : new Insets.fromProxy(jsProxy);
 
 /**
  * The `chrome.system.memory` API.
@@ -318,16 +334,18 @@ class MemoryInfo extends ChromeObject {
     if (capacity != null) this.capacity = capacity;
     if (availableCapacity != null) this.availableCapacity = availableCapacity;
   }
-  MemoryInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  MemoryInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   num get capacity => jsProxy['capacity'];
   set capacity(num value) => jsProxy['capacity'] = jsify(value);
 
   num get availableCapacity => jsProxy['availableCapacity'];
-  set availableCapacity(num value) => jsProxy['availableCapacity'] = jsify(value);
+  set availableCapacity(num value) => jsProxy['availableCapacity'] =
+      jsify(value);
 }
 
-MemoryInfo _createMemoryInfo(JsObject jsProxy) => jsProxy == null ? null : new MemoryInfo.fromProxy(jsProxy);
+MemoryInfo _createMemoryInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new MemoryInfo.fromProxy(jsProxy);
 
 /**
  * Use the `chrome.system.network` API.
@@ -351,7 +369,8 @@ class ChromeSystemNetwork extends ChromeApi {
   Future<List<NetworkInterface>> getNetworkInterfaces() {
     if (_system_network == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<NetworkInterface>>.oneArg((e) => listify(e, _createNetworkInterface));
+    var completer = new ChromeCompleter<List<NetworkInterface>>.oneArg(
+        (e) => listify(e, _createNetworkInterface));
     _system_network.callMethod('getNetworkInterfaces', [completer.callback]);
     return completer.future;
   }
@@ -367,7 +386,7 @@ class NetworkInterface extends ChromeObject {
     if (address != null) this.address = address;
     if (prefixLength != null) this.prefixLength = prefixLength;
   }
-  NetworkInterface.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  NetworkInterface.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get name => jsProxy['name'];
   set name(String value) => jsProxy['name'] = value;
@@ -379,7 +398,8 @@ class NetworkInterface extends ChromeObject {
   set prefixLength(int value) => jsProxy['prefixLength'] = value;
 }
 
-NetworkInterface _createNetworkInterface(JsObject jsProxy) => jsProxy == null ? null : new NetworkInterface.fromProxy(jsProxy);
+NetworkInterface _createNetworkInterface(JsObject jsProxy) =>
+    jsProxy == null ? null : new NetworkInterface.fromProxy(jsProxy);
 
 /**
  * Use the `chrome.system.storage` API to query storage device information and
@@ -396,8 +416,12 @@ class ChromeSystemStorage extends ChromeApi {
 
   ChromeSystemStorage._() {
     var getApi = () => _system_storage;
-    _onAttached = new ChromeStreamController<StorageUnitInfo>.oneArg(getApi, 'onAttached', _createStorageUnitInfo);
-    _onDetached = new ChromeStreamController<String>.oneArg(getApi, 'onDetached', selfConverter);
+    _onAttached = new ChromeStreamController<StorageUnitInfo>.oneArg(
+        getApi,
+        'onAttached',
+        _createStorageUnitInfo);
+    _onDetached =
+        new ChromeStreamController<String>.oneArg(getApi, 'onDetached', selfConverter);
   }
 
   bool get available => _system_storage != null;
@@ -409,7 +433,8 @@ class ChromeSystemStorage extends ChromeApi {
   Future<List<StorageUnitInfo>> getInfo() {
     if (_system_storage == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<StorageUnitInfo>>.oneArg((e) => listify(e, _createStorageUnitInfo));
+    var completer = new ChromeCompleter<List<StorageUnitInfo>>.oneArg(
+        (e) => listify(e, _createStorageUnitInfo));
     _system_storage.callMethod('getInfo', [completer.callback]);
     return completer.future;
   }
@@ -420,7 +445,8 @@ class ChromeSystemStorage extends ChromeApi {
   Future<EjectDeviceResultCode> ejectDevice(String id) {
     if (_system_storage == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<EjectDeviceResultCode>.oneArg(_createEjectDeviceResultCode);
+    var completer = new ChromeCompleter<EjectDeviceResultCode>.oneArg(
+        _createEjectDeviceResultCode);
     _system_storage.callMethod('ejectDevice', [id, completer.callback]);
     return completer.future;
   }
@@ -432,8 +458,11 @@ class ChromeSystemStorage extends ChromeApi {
   Future<StorageAvailableCapacityInfo> getAvailableCapacity(String id) {
     if (_system_storage == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<StorageAvailableCapacityInfo>.oneArg(_createStorageAvailableCapacityInfo);
-    _system_storage.callMethod('getAvailableCapacity', [id, completer.callback]);
+    var completer = new ChromeCompleter<StorageAvailableCapacityInfo>.oneArg(
+        _createStorageAvailableCapacityInfo);
+    _system_storage.callMethod(
+        'getAvailableCapacity',
+        [id, completer.callback]);
     return completer.future;
   }
 
@@ -447,30 +476,39 @@ class StorageUnitType extends ChromeEnum {
   static const StorageUnitType REMOVABLE = const StorageUnitType._('removable');
   static const StorageUnitType UNKNOWN = const StorageUnitType._('unknown');
 
-  static const List<StorageUnitType> VALUES = const[FIXED, REMOVABLE, UNKNOWN];
+  static const List<StorageUnitType> VALUES = const [FIXED, REMOVABLE, UNKNOWN];
 
-  const StorageUnitType._(String str): super(str);
+  const StorageUnitType._(String str) : super(str);
 }
 
 class EjectDeviceResultCode extends ChromeEnum {
-  static const EjectDeviceResultCode SUCCESS = const EjectDeviceResultCode._('success');
-  static const EjectDeviceResultCode IN_USE = const EjectDeviceResultCode._('in_use');
-  static const EjectDeviceResultCode NO_SUCH_DEVICE = const EjectDeviceResultCode._('no_such_device');
-  static const EjectDeviceResultCode FAILURE = const EjectDeviceResultCode._('failure');
+  static const EjectDeviceResultCode SUCCESS =
+      const EjectDeviceResultCode._('success');
+  static const EjectDeviceResultCode IN_USE =
+      const EjectDeviceResultCode._('in_use');
+  static const EjectDeviceResultCode NO_SUCH_DEVICE =
+      const EjectDeviceResultCode._('no_such_device');
+  static const EjectDeviceResultCode FAILURE =
+      const EjectDeviceResultCode._('failure');
 
-  static const List<EjectDeviceResultCode> VALUES = const[SUCCESS, IN_USE, NO_SUCH_DEVICE, FAILURE];
+  static const List<EjectDeviceResultCode> VALUES = const [
+      SUCCESS,
+      IN_USE,
+      NO_SUCH_DEVICE,
+      FAILURE];
 
-  const EjectDeviceResultCode._(String str): super(str);
+  const EjectDeviceResultCode._(String str) : super(str);
 }
 
 class StorageUnitInfo extends ChromeObject {
-  StorageUnitInfo({String id, String name, StorageUnitType type, num capacity}) {
+  StorageUnitInfo({String id, String name, StorageUnitType type, num capacity})
+      {
     if (id != null) this.id = id;
     if (name != null) this.name = name;
     if (type != null) this.type = type;
     if (capacity != null) this.capacity = capacity;
   }
-  StorageUnitInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  StorageUnitInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get id => jsProxy['id'];
   set id(String value) => jsProxy['id'] = value;
@@ -490,16 +528,23 @@ class StorageAvailableCapacityInfo extends ChromeObject {
     if (id != null) this.id = id;
     if (availableCapacity != null) this.availableCapacity = availableCapacity;
   }
-  StorageAvailableCapacityInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  StorageAvailableCapacityInfo.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   String get id => jsProxy['id'];
   set id(String value) => jsProxy['id'] = value;
 
   num get availableCapacity => jsProxy['availableCapacity'];
-  set availableCapacity(num value) => jsProxy['availableCapacity'] = jsify(value);
+  set availableCapacity(num value) => jsProxy['availableCapacity'] =
+      jsify(value);
 }
 
-StorageUnitInfo _createStorageUnitInfo(JsObject jsProxy) => jsProxy == null ? null : new StorageUnitInfo.fromProxy(jsProxy);
-EjectDeviceResultCode _createEjectDeviceResultCode(String value) => EjectDeviceResultCode.VALUES.singleWhere((ChromeEnum e) => e.value == value);
-StorageAvailableCapacityInfo _createStorageAvailableCapacityInfo(JsObject jsProxy) => jsProxy == null ? null : new StorageAvailableCapacityInfo.fromProxy(jsProxy);
-StorageUnitType _createStorageUnitType(String value) => StorageUnitType.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+StorageUnitInfo _createStorageUnitInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new StorageUnitInfo.fromProxy(jsProxy);
+EjectDeviceResultCode _createEjectDeviceResultCode(String value) =>
+    EjectDeviceResultCode.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+StorageAvailableCapacityInfo
+    _createStorageAvailableCapacityInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new StorageAvailableCapacityInfo.fromProxy(jsProxy);
+StorageUnitType _createStorageUnitType(String value) =>
+    StorageUnitType.VALUES.singleWhere((ChromeEnum e) => e.value == value);

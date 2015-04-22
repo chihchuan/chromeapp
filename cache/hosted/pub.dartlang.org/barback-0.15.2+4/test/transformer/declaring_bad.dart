@@ -11,8 +11,8 @@ import 'mock.dart';
 
 /// A transformer that throws an exception when run, after generating the
 /// given outputs.
-class DeclaringBadTransformer extends MockTransformer
-    implements DeclaringTransformer {
+class DeclaringBadTransformer extends MockTransformer implements
+    DeclaringTransformer {
   /// Whether this should throw an error in [declareOutputs].
   final bool declareError;
 
@@ -23,7 +23,7 @@ class DeclaringBadTransformer extends MockTransformer
   final AssetId output;
 
   DeclaringBadTransformer(String output, {bool declareError: true,
-          bool applyError: false})
+      bool applyError: false})
       : this.output = new AssetId.parse(output),
         this.declareError = declareError,
         this.applyError = applyError;

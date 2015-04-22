@@ -14,27 +14,31 @@ void main() {
 
 void testInt(PriorityQueue<int> create()) {
   for (int count in [1, 5, 127, 128]) {
-    testQueue("int:$count",
-              create,
-              new List<int>.generate(count, (x) => x),
-              count);
+    testQueue(
+        "int:$count",
+        create,
+        new List<int>.generate(count, (x) => x),
+        count);
   }
 }
 
 void testCustom(PriorityQueue<C> create(comparator)) {
   for (int count in [1, 5, 127, 128]) {
-    testQueue("Custom:$count/null",
-              () => create(null),
-              new List<C>.generate(count, (x) => new C(x)),
-              new C(count));
-    testQueue("Custom:$count/compare",
-              () => create(compare),
-              new List<C>.generate(count, (x) => new C(x)),
-              new C(count));
-    testQueue("Custom:$count/compareNeg",
-              () => create(compareNeg),
-              new List<C>.generate(count, (x) => new C(count - x)),
-              new C(0));
+    testQueue(
+        "Custom:$count/null",
+        () => create(null),
+        new List<C>.generate(count, (x) => new C(x)),
+        new C(count));
+    testQueue(
+        "Custom:$count/compare",
+        () => create(compare),
+        new List<C>.generate(count, (x) => new C(x)),
+        new C(count));
+    testQueue(
+        "Custom:$count/compareNeg",
+        () => create(compareNeg),
+        new List<C>.generate(count, (x) => new C(count - x)),
+        new C(0));
   }
 }
 
@@ -51,8 +55,12 @@ void testQueueBody(PriorityQueue create(), List elements, notElement) {
   PriorityQueue q = create();
   expect(q.isEmpty, isTrue);
   expect(q, hasLength(0));
-  expect(() { q.first; }, throwsStateError);
-  expect(() { q.removeFirst(); }, throwsStateError);
+  expect(() {
+    q.first;
+  }, throwsStateError);
+  expect(() {
+    q.removeFirst();
+  }, throwsStateError);
 
   // Tests removeFirst, first, contains, toList and toSet.
   void testElements() {
@@ -90,7 +98,8 @@ void testQueueBody(PriorityQueue create(), List elements, notElement) {
   testElements();
 
   // Add elements in a non-linear order (gray order).
-  for (int i = 0, j = 0; i < elements.length; i++) {
+  for (int i = 0,
+      j = 0; i < elements.length; i++) {
     int gray;
     do {
       gray = j ^ (j >> 1);
@@ -160,7 +169,7 @@ class C implements Comparable {
   final int value;
   const C(this.value);
   int get hashCode => value;
-  bool operator==(Object other) => other is C && value == other.value;
+  bool operator ==(Object other) => other is C && value == other.value;
   int compareTo(C other) => value - other.value;
   String toString() => "C($value)";
 }

@@ -24,7 +24,10 @@ class ChromeStorage extends ChromeApi {
 
   ChromeStorage._() {
     var getApi = () => _storage;
-    _onChanged = new ChromeStreamController<StorageOnChangedEvent>.twoArgs(getApi, 'onChanged', _createOnChangedEvent);
+    _onChanged = new ChromeStreamController<StorageOnChangedEvent>.twoArgs(
+        getApi,
+        'onChanged',
+        _createOnChangedEvent);
   }
 
   bool get available => _storage != null;
@@ -72,7 +75,7 @@ class StorageOnChangedEvent {
 
 class SyncStorageArea extends StorageArea {
   SyncStorageArea();
-  SyncStorageArea.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  SyncStorageArea.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The maximum total amount (in bytes) of data that can be stored in sync
@@ -102,19 +105,21 @@ class SyncStorageArea extends StorageArea {
    * performed each hour. Updates that would cause this limit to be exceeded
    * fail immediately and set [runtime.lastError].
    */
-  int get MAX_WRITE_OPERATIONS_PER_HOUR => jsProxy['MAX_WRITE_OPERATIONS_PER_HOUR'];
+  int get MAX_WRITE_OPERATIONS_PER_HOUR =>
+      jsProxy['MAX_WRITE_OPERATIONS_PER_HOUR'];
 
   /**
    * The maximum number of `set`, `remove`, or `clear` operations that can be
    * performed each minute, sustained over 10 minutes. Updates that would cause
    * this limit to be exceeded fail immediately and set [runtime.lastError].
    */
-  int get MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE => jsProxy['MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE'];
+  int get MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE =>
+      jsProxy['MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE'];
 }
 
 class LocalStorageArea extends StorageArea {
   LocalStorageArea();
-  LocalStorageArea.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  LocalStorageArea.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The maximum amount (in bytes) of data that can be stored in local storage,
@@ -131,7 +136,7 @@ class StorageChange extends ChromeObject {
     if (oldValue != null) this.oldValue = oldValue;
     if (newValue != null) this.newValue = newValue;
   }
-  StorageChange.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  StorageChange.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The old value of the item, if there was an old value.
@@ -148,7 +153,7 @@ class StorageChange extends ChromeObject {
 
 class StorageArea extends ChromeObject {
   StorageArea();
-  StorageArea.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  StorageArea.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Gets one or more items from storage.
@@ -221,8 +226,12 @@ class StorageArea extends ChromeObject {
   }
 }
 
-StorageOnChangedEvent _createOnChangedEvent(JsObject changes, String areaName) =>
+StorageOnChangedEvent _createOnChangedEvent(JsObject changes, String areaName)
+    =>
     new StorageOnChangedEvent(mapify(changes), areaName);
-SyncStorageArea _createSyncStorageArea(JsObject jsProxy) => jsProxy == null ? null : new SyncStorageArea.fromProxy(jsProxy);
-LocalStorageArea _createLocalStorageArea(JsObject jsProxy) => jsProxy == null ? null : new LocalStorageArea.fromProxy(jsProxy);
-StorageArea _createStorageArea(JsObject jsProxy) => jsProxy == null ? null : new StorageArea.fromProxy(jsProxy);
+SyncStorageArea _createSyncStorageArea(JsObject jsProxy) =>
+    jsProxy == null ? null : new SyncStorageArea.fromProxy(jsProxy);
+LocalStorageArea _createLocalStorageArea(JsObject jsProxy) =>
+    jsProxy == null ? null : new LocalStorageArea.fromProxy(jsProxy);
+StorageArea _createStorageArea(JsObject jsProxy) =>
+    jsProxy == null ? null : new StorageArea.fromProxy(jsProxy);

@@ -27,8 +27,14 @@ class ChromeLocation extends ChromeApi {
 
   ChromeLocation._() {
     var getApi = () => _location;
-    _onLocationUpdate = new ChromeStreamController<Location>.oneArg(getApi, 'onLocationUpdate', _createLocation);
-    _onLocationError = new ChromeStreamController<String>.oneArg(getApi, 'onLocationError', selfConverter);
+    _onLocationUpdate = new ChromeStreamController<Location>.oneArg(
+        getApi,
+        'onLocationUpdate',
+        _createLocation);
+    _onLocationError = new ChromeStreamController<String>.oneArg(
+        getApi,
+        'onLocationError',
+        selfConverter);
   }
 
   bool get available => _location != null;
@@ -67,7 +73,8 @@ class ChromeLocation extends ChromeApi {
  * Coordinates part of the Location object.
  */
 class Coordinates extends ChromeObject {
-  Coordinates({num latitude, num longitude, num altitude, num accuracy, num altitudeAccuracy, num heading, num speed}) {
+  Coordinates({num latitude, num longitude, num altitude, num accuracy,
+      num altitudeAccuracy, num heading, num speed}) {
     if (latitude != null) this.latitude = latitude;
     if (longitude != null) this.longitude = longitude;
     if (altitude != null) this.altitude = altitude;
@@ -76,7 +83,7 @@ class Coordinates extends ChromeObject {
     if (heading != null) this.heading = heading;
     if (speed != null) this.speed = speed;
   }
-  Coordinates.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Coordinates.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   num get latitude => jsProxy['latitude'];
   set latitude(num value) => jsProxy['latitude'] = jsify(value);
@@ -109,7 +116,7 @@ class Location extends ChromeObject {
     if (coords != null) this.coords = coords;
     if (timestamp != null) this.timestamp = timestamp;
   }
-  Location.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Location.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get name => jsProxy['name'];
   set name(String value) => jsProxy['name'] = value;
@@ -125,22 +132,30 @@ class Location extends ChromeObject {
  * Parameter of watchLocation call.
  */
 class WatchLocationRequestInfo extends ChromeObject {
-  WatchLocationRequestInfo({num minDistanceInMeters, num minTimeInMilliseconds, int maximumAge}) {
-    if (minDistanceInMeters != null) this.minDistanceInMeters = minDistanceInMeters;
-    if (minTimeInMilliseconds != null) this.minTimeInMilliseconds = minTimeInMilliseconds;
+  WatchLocationRequestInfo({num minDistanceInMeters, num minTimeInMilliseconds,
+      int maximumAge}) {
+    if (minDistanceInMeters != null) this.minDistanceInMeters =
+        minDistanceInMeters;
+    if (minTimeInMilliseconds != null) this.minTimeInMilliseconds =
+        minTimeInMilliseconds;
     if (maximumAge != null) this.maximumAge = maximumAge;
   }
-  WatchLocationRequestInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  WatchLocationRequestInfo.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   num get minDistanceInMeters => jsProxy['minDistanceInMeters'];
-  set minDistanceInMeters(num value) => jsProxy['minDistanceInMeters'] = jsify(value);
+  set minDistanceInMeters(num value) => jsProxy['minDistanceInMeters'] =
+      jsify(value);
 
   num get minTimeInMilliseconds => jsProxy['minTimeInMilliseconds'];
-  set minTimeInMilliseconds(num value) => jsProxy['minTimeInMilliseconds'] = jsify(value);
+  set minTimeInMilliseconds(num value) => jsProxy['minTimeInMilliseconds'] =
+      jsify(value);
 
   int get maximumAge => jsProxy['maximumAge'];
   set maximumAge(int value) => jsProxy['maximumAge'] = value;
 }
 
-Location _createLocation(JsObject jsProxy) => jsProxy == null ? null : new Location.fromProxy(jsProxy);
-Coordinates _createCoordinates(JsObject jsProxy) => jsProxy == null ? null : new Coordinates.fromProxy(jsProxy);
+Location _createLocation(JsObject jsProxy) =>
+    jsProxy == null ? null : new Location.fromProxy(jsProxy);
+Coordinates _createCoordinates(JsObject jsProxy) =>
+    jsProxy == null ? null : new Coordinates.fromProxy(jsProxy);

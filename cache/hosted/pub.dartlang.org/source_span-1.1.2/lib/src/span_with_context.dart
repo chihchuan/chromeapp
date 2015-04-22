@@ -21,8 +21,8 @@ class SourceSpanWithContext extends SourceSpanBase {
   /// distance between [start] and [end]. [context] must contain [text], and
   /// [text] should start at `start.column` from the beginning of a line in
   /// [context].
-  SourceSpanWithContext(
-      SourceLocation start, SourceLocation end, String text, this.context)
+  SourceSpanWithContext(SourceLocation start, SourceLocation end, String text,
+      this.context)
       : super(start, end, text) {
     if (!context.contains(text)) {
       throw new ArgumentError(
@@ -30,8 +30,9 @@ class SourceSpanWithContext extends SourceSpanBase {
     }
 
     if (findLineStart(context, text, start.column) == null) {
-      throw new ArgumentError('The span text "$text" must start at '
-          'column ${start.column + 1} in a line within "$context".');
+      throw new ArgumentError(
+          'The span text "$text" must start at '
+              'column ${start.column + 1} in a line within "$context".');
     }
   }
 }

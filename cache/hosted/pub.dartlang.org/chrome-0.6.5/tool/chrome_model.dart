@@ -1,4 +1,3 @@
-
 /**
  * A set of model classes used to represent Chrome libraries, classes, and
  * methods.
@@ -41,7 +40,10 @@ class ChromeLibrary extends ChromeElement {
   bool hasDeclaredType(String name) => types.any((t) => t.name == name);
 
   void addImport(String str) {
-    if (str != null && str != name && !imports.contains(str) && !str.startsWith('devtools')) {
+    if (str != null &&
+        str != name &&
+        !imports.contains(str) &&
+        !str.startsWith('devtools')) {
       imports.add(str);
       imports.sort();
     }
@@ -53,7 +55,8 @@ class ChromeLibrary extends ChromeElement {
     }
   }
 
-  Iterable<ChromeProperty> get filteredProperties => properties.where((p) => !p.nodoc);
+  Iterable<ChromeProperty> get filteredProperties =>
+      properties.where((p) => !p.nodoc);
 
   bool isEnumType(ChromeType refType) {
     if (!refType.isAny) return false;
@@ -244,7 +247,8 @@ class ChromeType extends ChromeElement {
   bool get isPrimitive => isString || isBool || isInt;
   bool get hasEnums => enumOptions != null;
 
-  Iterable<ChromeProperty> get filteredProperties => properties.where((p) => !p.nodoc);
+  Iterable<ChromeProperty> get filteredProperties =>
+      properties.where((p) => !p.nodoc);
 
   String toParamString([bool useDynamic = false]) {
     if (isAny && !isReferencedType) {
@@ -252,7 +256,8 @@ class ChromeType extends ChromeElement {
     } else if (parameters.isEmpty) {
       return refName != null ? refName : type;
     } else {
-      return "${type}<${parameters.map((t) => t.toParamString(true)).join(', ')}>";
+      return
+          "${type}<${parameters.map((t) => t.toParamString(true)).join(', ')}>";
     }
   }
 

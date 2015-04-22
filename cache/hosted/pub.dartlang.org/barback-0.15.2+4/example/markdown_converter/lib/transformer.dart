@@ -24,9 +24,10 @@ class ConvertMarkdown extends Transformer {
       // The extension of the output is changed to ".html".
       var id = transform.primaryInput.id.changeExtension(".html");
 
-      String newContent = "<html><body>"
-                        + markdownToHtml(content)
-                        + "</body></html>";
+      String newContent =
+          "<html><body>" +
+          markdownToHtml(content) +
+          "</body></html>";
       transform.addOutput(new Asset.fromString(id, newContent));
     });
   }

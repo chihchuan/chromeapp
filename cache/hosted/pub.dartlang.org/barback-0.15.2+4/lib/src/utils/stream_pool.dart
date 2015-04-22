@@ -44,7 +44,8 @@ class StreamPool<T> {
   /// they'll be emitted asynchronously.
   void add(Stream<T> stream) {
     if (_subscriptions.containsKey(stream)) return;
-    _subscriptions[stream] = stream.listen(_controller.add,
+    _subscriptions[stream] = stream.listen(
+        _controller.add,
         onError: _controller.addError,
         onDone: () => remove(stream));
   }

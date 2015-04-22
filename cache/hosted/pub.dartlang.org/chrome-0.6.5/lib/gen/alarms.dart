@@ -21,7 +21,8 @@ class ChromeAlarms extends ChromeApi {
 
   ChromeAlarms._() {
     var getApi = () => _alarms;
-    _onAlarm = new ChromeStreamController<Alarm>.oneArg(getApi, 'onAlarm', _createAlarm);
+    _onAlarm =
+        new ChromeStreamController<Alarm>.oneArg(getApi, 'onAlarm', _createAlarm);
   }
 
   bool get available => _alarms != null;
@@ -74,7 +75,8 @@ class ChromeAlarms extends ChromeApi {
   Future<List<Alarm>> getAll() {
     if (_alarms == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<Alarm>>.oneArg((e) => listify(e, _createAlarm));
+    var completer =
+        new ChromeCompleter<List<Alarm>>.oneArg((e) => listify(e, _createAlarm));
     _alarms.callMethod('getAll', [completer.callback]);
     return completer.future;
   }
@@ -113,7 +115,7 @@ class Alarm extends ChromeObject {
     if (scheduledTime != null) this.scheduledTime = scheduledTime;
     if (periodInMinutes != null) this.periodInMinutes = periodInMinutes;
   }
-  Alarm.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Alarm.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get name => jsProxy['name'];
   set name(String value) => jsProxy['name'] = value;
@@ -134,7 +136,7 @@ class AlarmCreateInfo extends ChromeObject {
     if (delayInMinutes != null) this.delayInMinutes = delayInMinutes;
     if (periodInMinutes != null) this.periodInMinutes = periodInMinutes;
   }
-  AlarmCreateInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  AlarmCreateInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   num get when => jsProxy['when'];
   set when(num value) => jsProxy['when'] = jsify(value);
@@ -146,4 +148,5 @@ class AlarmCreateInfo extends ChromeObject {
   set periodInMinutes(num value) => jsProxy['periodInMinutes'] = jsify(value);
 }
 
-Alarm _createAlarm(JsObject jsProxy) => jsProxy == null ? null : new Alarm.fromProxy(jsProxy);
+Alarm _createAlarm(JsObject jsProxy) =>
+    jsProxy == null ? null : new Alarm.fromProxy(jsProxy);

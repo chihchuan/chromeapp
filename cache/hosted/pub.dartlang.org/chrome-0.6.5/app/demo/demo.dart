@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:html';
 
@@ -114,7 +113,9 @@ void main() {
 
   chrome.app.window.onFullscreened.listen((_) => print('window fullscreen'));
   // This prints a lot.
-  //chrome.app.window.onBoundsChanged.listen((_) => print('window bounds changed'));
+
+
+      //chrome.app.window.onBoundsChanged.listen((_) => print('window bounds changed'));
   chrome.app.window.onClosed.listen((_) => print('window closed'));
   chrome.app.window.onMaximized.listen((_) => print('window maximized'));
   chrome.app.window.onMinimized.listen((_) => print('window minimized'));
@@ -221,13 +222,16 @@ void handleGetPackageDirectoryEntry() {
 }
 
 void handleRuntimeRequestUpdateCheck() {
-  chrome.runtime.requestUpdateCheck().then((chrome.RequestUpdateCheckResult result) {
+  chrome.runtime.requestUpdateCheck().then(
+      (chrome.RequestUpdateCheckResult result) {
     summary("${result}, status=${result.status}, ${result.details}");
   });
 }
 
 void handleAlarmsCreate() {
-  chrome.alarms.create(new chrome.AlarmCreateInfo(periodInMinutes: 1.0), 'myNewAlarm');
+  chrome.alarms.create(
+      new chrome.AlarmCreateInfo(periodInMinutes: 1.0),
+      'myNewAlarm');
   summary('alarms.create: firing event in 1 minute');
 }
 
@@ -245,8 +249,11 @@ void handleAppWindowCreate() {
 }
 
 void handleAppWindowCreateOptions() {
-  chrome.app.window.create('demo.html',
-      new chrome.CreateWindowOptions(width: 1200, height: 200)).then((chrome.AppWindow window) {
+  chrome.app.window.create(
+      'demo.html',
+      new chrome.CreateWindowOptions(
+          width: 1200,
+          height: 200)).then((chrome.AppWindow window) {
     window.onClosed.listen((_) => print('window closed'));
   });
 }
@@ -308,32 +315,43 @@ void handleSystemMemory() {
 //}
 
 void handleStorageStore() {
-  summaryFuture(chrome.storage.local.set({'foo': 'bar'}).then((_) {
+  summaryFuture(chrome.storage.local.set({
+    'foo': 'bar'
+  }).then((_) {
     return chrome.storage.local.get(['foo']);
   }));
 }
 
 void handleStorageProp() {
-  summary('max ops per minute = ' + chrome.storage.sync.MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE.toString());
+  summary(
+      'max ops per minute = ' +
+          chrome.storage.sync.MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE.toString());
 }
 
 void handleChooseEntry() {
-  chrome.ChooseEntryOptions options = new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
-  chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
-    summary("result: ${result}, ${result.entry}, name=${result.entry.name}, fullPath=${result.entry.fullPath}");
+  chrome.ChooseEntryOptions options =
+      new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
+  chrome.fileSystem.chooseEntry(
+      options).then((chrome.ChooseEntryResult result) {
+    summary(
+        "result: ${result}, ${result.entry}, name=${result.entry.name}, fullPath=${result.entry.fullPath}");
 
     result.entry.getMetadata().then((chrome.Metadata meta) {
-      print("file mod: ${meta.modificationTime}, file size: ${meta.size}"
-          ",timezone=${meta.modificationTime.timeZoneName}");
+      print(
+          "file mod: ${meta.modificationTime}, file size: ${meta.size}"
+              ",timezone=${meta.modificationTime.timeZoneName}");
     });
   });
 }
 
 void handleChooseEntryDir() {
   // this will fail on older versions of chrome
-  chrome.ChooseEntryOptions options = new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_DIRECTORY);
-  chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
-    summary("result: ${result}, ${result.entry}, name=${result.entry.name}, fullPath=${result.entry.fullPath}");
+  chrome.ChooseEntryOptions options =
+      new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_DIRECTORY);
+  chrome.fileSystem.chooseEntry(
+      options).then((chrome.ChooseEntryResult result) {
+    summary(
+        "result: ${result}, ${result.entry}, name=${result.entry.name}, fullPath=${result.entry.fullPath}");
   });
 }
 
@@ -342,9 +360,11 @@ void handleRequestFileSystem() {
 }
 
 void handleFileRead() {
-  chrome.ChooseEntryOptions options = new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
+  chrome.ChooseEntryOptions options =
+      new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
 
-  Future f = chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
+  Future f =
+      chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
     chrome.ChromeFileEntry entry = result.entry;
     return entry.readText();
   });
@@ -353,9 +373,11 @@ void handleFileRead() {
 }
 
 void handleFileReadBytes() {
-  chrome.ChooseEntryOptions options = new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
+  chrome.ChooseEntryOptions options =
+      new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
 
-  Future f = chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
+  Future f =
+      chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
     chrome.ChromeFileEntry entry = result.entry;
     return entry.readBytes().then((chrome.ArrayBuffer buf) {
       return "read ${buf.getBytes().length} bytes";
@@ -391,8 +413,9 @@ void handleGetFileMetaData() {
   chrome.runtime.getPackageDirectoryEntry().then((chrome.DirectoryEntry dir) {
     dir.getFile('manifest.json').then((Entry entry) {
       entry.getMetadata().then((chrome.Metadata meta) {
-        summary("file mod: ${meta.modificationTime}, file size: ${meta.size}"
-            ",timezone=${meta.modificationTime.timeZoneName}");
+        summary(
+            "file mod: ${meta.modificationTime}, file size: ${meta.size}"
+                ",timezone=${meta.modificationTime.timeZoneName}");
       });
     });
   });
@@ -407,9 +430,11 @@ void handleDirListings() {
 }
 
 void handleFileCreate() {
-  chrome.ChooseEntryOptions options = new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_DIRECTORY);
+  chrome.ChooseEntryOptions options =
+      new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_DIRECTORY);
 
-  Future f = chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
+  Future f =
+      chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
     chrome.DirectoryEntry entry = result.entry;
 
     return entry.createFile("myfoofile.txt").then((Entry fileEntry) {
@@ -421,9 +446,11 @@ void handleFileCreate() {
 }
 
 void handleFileWrite() {
-  chrome.ChooseEntryOptions options = new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
+  chrome.ChooseEntryOptions options =
+      new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
 
-  Future f = chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
+  Future f =
+      chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
     chrome.ChromeFileEntry entry = result.entry;
 
     return entry.writeText("foo bar baz").then((_) {
@@ -435,11 +462,14 @@ void handleFileWrite() {
 }
 
 void handleFileWriteBytes() {
-  chrome.ChooseEntryOptions options = new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
+  chrome.ChooseEntryOptions options =
+      new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
 
-  Future f = chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
+  Future f =
+      chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
     chrome.ChromeFileEntry entry = result.entry;
-    chrome.ArrayBuffer buf = new chrome.ArrayBuffer.fromBytes([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    chrome.ArrayBuffer buf =
+        new chrome.ArrayBuffer.fromBytes([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
     List<int> data = buf.getBytes();
     print(data);
@@ -453,9 +483,11 @@ void handleFileWriteBytes() {
 }
 
 void handleFileRename() {
-  chrome.ChooseEntryOptions options = new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
+  chrome.ChooseEntryOptions options =
+      new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
 
-  Future f = chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
+  Future f =
+      chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
     chrome.ChromeFileEntry entry = result.entry;
 
     return entry.getParent().then((Entry parent) {
@@ -467,9 +499,11 @@ void handleFileRename() {
 }
 
 void handleFileDelete() {
-  chrome.ChooseEntryOptions options = new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
+  chrome.ChooseEntryOptions options =
+      new chrome.ChooseEntryOptions(type: chrome.ChooseEntryType.OPEN_WRITABLE_FILE);
 
-  Future f = chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
+  Future f =
+      chrome.fileSystem.chooseEntry(options).then((chrome.ChooseEntryResult result) {
     chrome.ChromeFileEntry entry = result.entry;
 
     return entry.remove().then((_) {
@@ -485,8 +519,9 @@ void handleBrowserAvailable() {
 }
 
 void handleBrowserOpenTab() {
-  summaryFuture(chrome.browser.openTab(
-      new chrome.OpenTabOptions(url: 'http://www.google.com')));
+  summaryFuture(
+      chrome.browser.openTab(
+          new chrome.OpenTabOptions(url: 'http://www.google.com')));
 }
 
 void handleBluetoothAvailable() {
@@ -495,13 +530,13 @@ void handleBluetoothAvailable() {
 
 void handleBluetoothGetAdapterState() {
   if (chrome.bluetooth.available) {
-    Future f = chrome.bluetooth.getAdapterState()
-        .then((chrome.AdapterState adapterState) {
-          return "adapterState.address = ${adapterState.address}, "
+    Future f =
+        chrome.bluetooth.getAdapterState().then((chrome.AdapterState adapterState) {
+      return "adapterState.address = ${adapterState.address}, "
           "adapterState.available = ${adapterState.available}, "
           "adapterState.discovering = ${adapterState.discovering}, "
           "adapterState.powered = ${adapterState.powered}";
-        });
+    });
 
     summaryFuture(f);
   } else {
@@ -510,12 +545,11 @@ void handleBluetoothGetAdapterState() {
 
 }
 
-void handleIdentityGetAuthToken()  {
+void handleIdentityGetAuthToken() {
   if (chrome.identity.available) {
-    Future f = chrome.identity.getAuthToken()
-        .then((String token) {
-          return "token = ${token}, ";
-        });
+    Future f = chrome.identity.getAuthToken().then((String token) {
+      return "token = ${token}, ";
+    });
 
     summaryFuture(f);
   } else {

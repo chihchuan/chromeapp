@@ -1,4 +1,3 @@
-
 library model_json;
 
 import 'chrome_model.dart';
@@ -20,12 +19,12 @@ class JsonNamespace extends JsonObject {
   final List<JsonEvent> events;
   final List<JsonDeclaredType> types;
 
-  JsonNamespace(json) :
-    properties = JsonProperty.parse(json['properties']),
-    functions = JsonFunction.parse(json['functions']),
-    events = JsonEvent.parse(json['events']),
-    types = JsonDeclaredType.parse(json['types']),
-    super(json);
+  JsonNamespace(json)
+      : properties = JsonProperty.parse(json['properties']),
+        functions = JsonFunction.parse(json['functions']),
+        events = JsonEvent.parse(json['events']),
+        types = JsonDeclaredType.parse(json['types']),
+        super(json);
 
   String get namespace => json['namespace'];
 
@@ -50,7 +49,7 @@ class JsonProperty extends JsonObject {
     return properties;
   }
 
-  JsonProperty(this.name, this.type): super(null);
+  JsonProperty(this.name, this.type) : super(null);
 
   String get description => type.description;
   bool get nodoc => type.nodoc;
@@ -74,14 +73,17 @@ class JsonFunction extends JsonObject {
   final JsonReturnType returns;
 
   static List<JsonFunction> parse(List jsons) {
-    return (jsons == null ? [] : jsons.map((j) => new JsonFunction(j)).toList());
+    return (jsons == null ?
+        [] :
+        jsons.map((j) => new JsonFunction(j)).toList());
   }
 
-  JsonFunction(json) :
-    parameters = JsonParamType.parse(json['parameters']),
-    returns = json.containsKey('returns') ?
-        new JsonReturnType(json['returns']) : null,
-    super(json);
+  JsonFunction(json)
+      : parameters = JsonParamType.parse(json['parameters']),
+        returns = json.containsKey('returns') ?
+          new JsonReturnType(json['returns']) :
+          null,
+        super(json);
 
   String get name => json['name'];
   String get type => json['type'];
@@ -94,10 +96,10 @@ class JsonType extends JsonObject {
   final List<JsonParamType> parameters;
   final List<JsonProperty> properties;
 
-  JsonType(json):
-    this.parameters = JsonParamType.parse(json['parameters']),
-    this.properties = JsonProperty.parse(json['properties']),
-    super(json) {
+  JsonType(json)
+      : this.parameters = JsonParamType.parse(json['parameters']),
+        this.properties = JsonProperty.parse(json['properties']),
+        super(json) {
 
     if (parameters.isEmpty && json.containsKey('items')) {
       parameters.add(new JsonType(json['items']));
@@ -113,7 +115,8 @@ class JsonType extends JsonObject {
   bool get optional => _bool('optional');
   bool get nocompile => _bool('nocompile');
   bool get nodoc => _bool('nodoc');
-  bool get isCallback => type == 'function' && (name == 'callback' || name == 'responseCallback');
+  bool get isCallback =>
+      type == 'function' && (name == 'callback' || name == 'responseCallback');
 
   String toString() => "${runtimeType.toString()} ${type} (${ref})";
 }
@@ -121,10 +124,12 @@ class JsonType extends JsonObject {
 class JsonParamType extends JsonType {
 
   static List<JsonType> parse(List jsons) {
-    return (jsons == null ? [] : jsons.map((j) => new JsonParamType(j)).toList());
+    return (jsons == null ?
+        [] :
+        jsons.map((j) => new JsonParamType(j)).toList());
   }
 
-  JsonParamType(json): super(json);
+  JsonParamType(json) : super(json);
 
   String get name => json['name'];
 
@@ -137,7 +142,7 @@ class JsonParamType extends JsonType {
 
 class JsonReturnType extends JsonParamType {
 
-  JsonReturnType(json): super(json);
+  JsonReturnType(json) : super(json);
 }
 
 class JsonEvent extends JsonParamType {
@@ -146,19 +151,21 @@ class JsonEvent extends JsonParamType {
     return (jsons == null ? [] : jsons.map((j) => new JsonEvent(j)).toList());
   }
 
-  JsonEvent(json): super(json);
+  JsonEvent(json) : super(json);
 }
 
 class JsonDeclaredType extends JsonType {
   final List<JsonFunction> functions;
 
   static List<JsonDeclaredType> parse(List jsons) {
-    return (jsons == null ? [] : jsons.map((j) => new JsonDeclaredType(j)).toList());
+    return (jsons == null ?
+        [] :
+        jsons.map((j) => new JsonDeclaredType(j)).toList());
   }
 
-  JsonDeclaredType(Map<String, dynamic> json) :
-      this.functions = JsonFunction.parse(json['functions']),
-      super(json);
+  JsonDeclaredType(Map<String, dynamic> json)
+      : this.functions = JsonFunction.parse(json['functions']),
+        super(json);
 
   String get id => json['id'];
 
@@ -188,7 +195,8 @@ class JsonConverter {
     library.documentation = convertHtmlToDartdoc(namespace.description);
 
     library.methods.addAll(namespace.functions.map(_convertMethod));
-    library.properties.addAll(namespace.properties.map((p) => _convertProperty(p, true)));
+    library.properties.addAll(
+        namespace.properties.map((p) => _convertProperty(p, true)));
     // We call `toList` on the intermediate iterable because a side effect of
     // lazily traversing the list is to modify the `library.types` list.
     library.types.addAll(namespace.types.map(_convertDeclaredType).toList());
@@ -198,7 +206,8 @@ class JsonConverter {
     return library;
   }
 
-  ChromeProperty _convertProperty(JsonProperty p, [bool onlyReturnType = false]) {
+  ChromeProperty _convertProperty(JsonProperty p, [bool onlyReturnType =
+      false]) {
     ChromeProperty property = new ChromeProperty(p.name, _convertType(p.type));
 
     property.documentation = convertHtmlToDartdoc(p.description);
@@ -233,8 +242,8 @@ class JsonConverter {
     method.name = f.name;
     method.documentation = convertHtmlToDartdoc(f.description);
     method.returns = _convertType(f.returns);
-    method.params = f.parameters.map(
-      (JsonParamType param) => _convertType(param, f)).toList();
+    method.params =
+        f.parameters.map((JsonParamType param) => _convertType(param, f)).toList();
 
     if (method.returns == null) {
       if (!f.parameters.isEmpty && f.parameters.last.isCallback) {
@@ -256,7 +265,7 @@ class JsonConverter {
   ChromeDeclaredType _convertDeclaredType(JsonDeclaredType t) {
     ChromeDeclaredType type = _convertType_(t, new ChromeDeclaredType());
 
-    type.methods =  t.functions.map(_convertMethod).toList();
+    type.methods = t.functions.map(_convertMethod).toList();
 
     int index = type.name.lastIndexOf('.');
 
@@ -290,16 +299,16 @@ class JsonConverter {
       future.parameters.add(params.first);
       future.documentation = params.first.documentation;
     } else if (params.length == 2) {
-      ChromeType type = new ChromeType(
-          type: 'var', refName: "${titleCase(method.name)}Result");
+      ChromeType type =
+          new ChromeType(type: 'var', refName: "${titleCase(method.name)}Result");
       type.combinedReturnValue = true;
       type.parameters.addAll(params);
 
       library.returnTypes.add(new ChromeReturnType(type.refName, params));
 
       future.parameters.add(type);
-      future.documentation = params.map(
-          (p) => "[${p.name}] ${p.documentation}").join('\n');
+      future.documentation =
+          params.map((p) => "[${p.name}] ${p.documentation}").join('\n');
     } else if (params.length > 2) {
       throw new UnsupportedError(
           "unable to convert ${params.length} return values into a single return");
@@ -308,7 +317,8 @@ class JsonConverter {
     return future;
   }
 
-  ChromeType _convertType_(JsonType t, ChromeType type, [JsonFunction function]) {
+  ChromeType _convertType_(JsonType t, ChromeType type,
+      [JsonFunction function]) {
     type.name = t.name;
     type.documentation = convertHtmlToDartdoc(t.description);
 
@@ -331,8 +341,8 @@ class JsonConverter {
         type.parameters = [ChromeType.STRING, ChromeType.VAR];
       } else if (function != null) {
 
-        String name = "${titleCase(toCamelCase(library.name))}"
-                      "${titleCase(function.name)}Params";
+        String name =
+            "${titleCase(toCamelCase(library.name))}" "${titleCase(function.name)}Params";
 
         JsonDeclaredType declaredType = new JsonDeclaredType({
           'id': name

@@ -66,13 +66,13 @@ class SourceSpanBase extends SourceSpanMixin {
 
   SourceSpanBase(this.start, this.end, this.text) {
     if (end.sourceUrl != start.sourceUrl) {
-      throw new ArgumentError("Source URLs \"${start.sourceUrl}\" and "
-          " \"${end.sourceUrl}\" don't match.");
+      throw new ArgumentError(
+          "Source URLs \"${start.sourceUrl}\" and " " \"${end.sourceUrl}\" don't match.");
     } else if (end.offset < start.offset) {
       throw new ArgumentError('End $end must come after start $start.');
     } else if (text.length != start.distance(end)) {
-      throw new ArgumentError('Text "$text" must be ${start.distance(end)} '
-          'characters long.');
+      throw new ArgumentError(
+          'Text "$text" must be ${start.distance(end)} ' 'characters long.');
     }
   }
 }

@@ -29,21 +29,24 @@ class ChromeContentSettings extends ChromeApi {
    * <br>Default is [allow].<br>The primary URL is the URL representing the
    * cookie origin. The secondary URL is the URL of the top-level frame.
    */
-  ContentSetting get cookies => _createContentSetting(_contentSettings['cookies']);
+  ContentSetting get cookies =>
+      _createContentSetting(_contentSettings['cookies']);
 
   /**
    * Whether to show images. One of<br>[allow]: Show images,<br>[block]: Don't
    * show images. <br>Default is [allow].<br>The primary URL is the main-frame
    * URL. The secondary URL is the URL of the image.
    */
-  ContentSetting get images => _createContentSetting(_contentSettings['images']);
+  ContentSetting get images =>
+      _createContentSetting(_contentSettings['images']);
 
   /**
    * Whether to run JavaScript. One of<br>[allow]: Run JavaScript,<br>[block]:
    * Don't run JavaScript. <br>Default is [allow].<br>The primary URL is the
    * main-frame URL. The secondary URL is not used.
    */
-  ContentSetting get javascript => _createContentSetting(_contentSettings['javascript']);
+  ContentSetting get javascript =>
+      _createContentSetting(_contentSettings['javascript']);
 
   /**
    * Whether to run plug-ins. One of<br>[allow]: Run plug-ins
@@ -51,7 +54,8 @@ class ChromeContentSettings extends ChromeApi {
    * [allow].<br>The primary URL is the main-frame URL. The secondary URL is not
    * used.
    */
-  ContentSetting get plugins => _createContentSetting(_contentSettings['plugins']);
+  ContentSetting get plugins =>
+      _createContentSetting(_contentSettings['plugins']);
 
   /**
    * Whether to allow sites to show pop-ups. One of<br>[allow]: Allow sites to
@@ -59,7 +63,8 @@ class ChromeContentSettings extends ChromeApi {
    * [block].<br>The primary URL is the main-frame URL. The secondary URL is not
    * used.
    */
-  ContentSetting get popups => _createContentSetting(_contentSettings['popups']);
+  ContentSetting get popups =>
+      _createContentSetting(_contentSettings['popups']);
 
   /**
    * Whether to allow sites to show desktop notifications. One of<br>[allow]:
@@ -68,7 +73,8 @@ class ChromeContentSettings extends ChromeApi {
    * notifications. <br>Default is [ask].<br>The primary URL is the main-frame
    * URL. The secondary URL is not used.
    */
-  ContentSetting get notifications => _createContentSetting(_contentSettings['notifications']);
+  ContentSetting get notifications =>
+      _createContentSetting(_contentSettings['notifications']);
 
   void _throwNotAvailable() {
     throw new UnsupportedError("'chrome.contentSettings' is not available");
@@ -85,7 +91,7 @@ class ResourceIdentifier extends ChromeObject {
     if (id != null) this.id = id;
     if (description != null) this.description = description;
   }
-  ResourceIdentifier.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ResourceIdentifier.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The resource identifier for the given content type.
@@ -102,7 +108,7 @@ class ResourceIdentifier extends ChromeObject {
 
 class ContentSetting extends ChromeObject {
   ContentSetting();
-  ContentSetting.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ContentSetting.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Clear all content setting rules set by this extension.
@@ -137,7 +143,8 @@ class ContentSetting extends ChromeObject {
    * this content type does not use resource identifiers.
    */
   Future<List<ResourceIdentifier>> getResourceIdentifiers() {
-    var completer = new ChromeCompleter<List<ResourceIdentifier>>.oneArg((e) => listify(e, _createResourceIdentifier));
+    var completer = new ChromeCompleter<List<ResourceIdentifier>>.oneArg(
+        (e) => listify(e, _createResourceIdentifier));
     jsProxy.callMethod('getResourceIdentifiers', [completer.callback]);
     return completer.future;
   }
@@ -147,7 +154,8 @@ class ContentSettingsClearParams extends ChromeObject {
   ContentSettingsClearParams({String scope}) {
     if (scope != null) this.scope = scope;
   }
-  ContentSettingsClearParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ContentSettingsClearParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Where to clear the setting (default: regular). One of<br>[regular]: setting
@@ -162,13 +170,16 @@ class ContentSettingsClearParams extends ChromeObject {
 }
 
 class ContentSettingsGetParams extends ChromeObject {
-  ContentSettingsGetParams({String primaryUrl, String secondaryUrl, ResourceIdentifier resourceIdentifier, bool incognito}) {
+  ContentSettingsGetParams({String primaryUrl, String secondaryUrl,
+      ResourceIdentifier resourceIdentifier, bool incognito}) {
     if (primaryUrl != null) this.primaryUrl = primaryUrl;
     if (secondaryUrl != null) this.secondaryUrl = secondaryUrl;
-    if (resourceIdentifier != null) this.resourceIdentifier = resourceIdentifier;
+    if (resourceIdentifier != null) this.resourceIdentifier =
+        resourceIdentifier;
     if (incognito != null) this.incognito = incognito;
   }
-  ContentSettingsGetParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ContentSettingsGetParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * The primary URL for which the content setting should be retrieved. Note
@@ -189,8 +200,10 @@ class ContentSettingsGetParams extends ChromeObject {
    * A more specific identifier of the type of content for which the settings
    * should be retrieved.
    */
-  ResourceIdentifier get resourceIdentifier => _createResourceIdentifier(jsProxy['resourceIdentifier']);
-  set resourceIdentifier(ResourceIdentifier value) => jsProxy['resourceIdentifier'] = jsify(value);
+  ResourceIdentifier get resourceIdentifier =>
+      _createResourceIdentifier(jsProxy['resourceIdentifier']);
+  set resourceIdentifier(ResourceIdentifier value) => jsProxy['resourceIdentifier'] =
+      jsify(value);
 
   /**
    * Whether to check the content settings for an incognito session. (default
@@ -201,14 +214,17 @@ class ContentSettingsGetParams extends ChromeObject {
 }
 
 class ContentSettingsSetParams extends ChromeObject {
-  ContentSettingsSetParams({String primaryPattern, String secondaryPattern, ResourceIdentifier resourceIdentifier, var setting, String scope}) {
+  ContentSettingsSetParams({String primaryPattern, String secondaryPattern,
+      ResourceIdentifier resourceIdentifier, var setting, String scope}) {
     if (primaryPattern != null) this.primaryPattern = primaryPattern;
     if (secondaryPattern != null) this.secondaryPattern = secondaryPattern;
-    if (resourceIdentifier != null) this.resourceIdentifier = resourceIdentifier;
+    if (resourceIdentifier != null) this.resourceIdentifier =
+        resourceIdentifier;
     if (setting != null) this.setting = setting;
     if (scope != null) this.scope = scope;
   }
-  ContentSettingsSetParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ContentSettingsSetParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * The pattern for the primary URL. For details on the format of a pattern,
@@ -228,8 +244,10 @@ class ContentSettingsSetParams extends ChromeObject {
   /**
    * The resource identifier for the content type.
    */
-  ResourceIdentifier get resourceIdentifier => _createResourceIdentifier(jsProxy['resourceIdentifier']);
-  set resourceIdentifier(ResourceIdentifier value) => jsProxy['resourceIdentifier'] = jsify(value);
+  ResourceIdentifier get resourceIdentifier =>
+      _createResourceIdentifier(jsProxy['resourceIdentifier']);
+  set resourceIdentifier(ResourceIdentifier value) => jsProxy['resourceIdentifier'] =
+      jsify(value);
 
   /**
    * The setting applied by this rule. See the description of the individual
@@ -250,5 +268,7 @@ class ContentSettingsSetParams extends ChromeObject {
   set scope(String value) => jsProxy['scope'] = value;
 }
 
-ContentSetting _createContentSetting(JsObject jsProxy) => jsProxy == null ? null : new ContentSetting.fromProxy(jsProxy);
-ResourceIdentifier _createResourceIdentifier(JsObject jsProxy) => jsProxy == null ? null : new ResourceIdentifier.fromProxy(jsProxy);
+ContentSetting _createContentSetting(JsObject jsProxy) =>
+    jsProxy == null ? null : new ContentSetting.fromProxy(jsProxy);
+ResourceIdentifier _createResourceIdentifier(JsObject jsProxy) =>
+    jsProxy == null ? null : new ResourceIdentifier.fromProxy(jsProxy);

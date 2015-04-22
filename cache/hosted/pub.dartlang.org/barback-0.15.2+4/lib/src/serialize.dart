@@ -13,16 +13,22 @@ import 'asset/asset_id.dart';
 import 'utils.dart';
 
 /// Converts [id] into a serializable map.
-Map serializeId(AssetId id) => {'package': id.package, 'path': id.path};
+Map serializeId(AssetId id) => {
+  'package': id.package,
+  'path': id.path
+};
 
 /// Converts [stream] into a [SendPort] with which another isolate can request
 /// the data from [stream].
 SendPort serializeStream(Stream stream) {
   var receivePort = new ReceivePort();
   receivePort.first.then((sendPort) {
-    stream.listen((data) => sendPort.send({'type': 'data', 'data': data}),
-        onDone: () => sendPort.send({'type': 'done'}),
-        onError: (error, stackTrace) {
+    stream.listen((data) => sendPort.send({
+      'type': 'data',
+      'data': data
+    }), onDone: () => sendPort.send({
+      'type': 'done'
+    }), onError: (error, stackTrace) {
       sendPort.send({
         'type': 'error',
         'error': CrossIsolateException.serialize(error, stackTrace)
@@ -54,8 +60,8 @@ Stream deserializeStream(SendPort sendPort) {
 /// sent by [serializeStream].
 StreamSubscription _deserializeTransformer(Stream input, bool cancelOnError) {
   var subscription;
-  var transformed = input.transform(new StreamTransformer.fromHandlers(
-      handleData: (data, sink) {
+  var transformed =
+      input.transform(new StreamTransformer.fromHandlers(handleData: (data, sink) {
     if (data['type'] == 'data') {
       sink.add(data['data']);
     } else if (data['type'] == 'error') {
@@ -95,8 +101,9 @@ class CrossIsolateException implements Exception {
   CrossIsolateException.deserialize(Map error)
       : type = error['type'],
         message = error['message'],
-        stackTrace = error['stack'] == null ? null :
-            new Chain.parse(error['stack']);
+        stackTrace = error['stack'] == null ?
+          null :
+          new Chain.parse(error['stack']);
 
   /// Serializes [error] to an object that can safely be passed across isolate
   /// boundaries.

@@ -37,8 +37,14 @@ class ChromeDebugger extends ChromeApi {
 
   ChromeDebugger._() {
     var getApi = () => _debugger;
-    _onEvent = new ChromeStreamController<OnEventEvent>.threeArgs(getApi, 'onEvent', _createOnEventEvent);
-    _onDetach = new ChromeStreamController<OnDetachEvent>.twoArgs(getApi, 'onDetach', _createOnDetachEvent);
+    _onEvent = new ChromeStreamController<OnEventEvent>.threeArgs(
+        getApi,
+        'onEvent',
+        _createOnEventEvent);
+    _onDetach = new ChromeStreamController<OnDetachEvent>.twoArgs(
+        getApi,
+        'onDetach',
+        _createOnDetachEvent);
   }
 
   bool get available => _debugger != null;
@@ -57,7 +63,9 @@ class ChromeDebugger extends ChromeApi {
     if (_debugger == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _debugger.callMethod('attach', [jsify(target), requiredVersion, completer.callback]);
+    _debugger.callMethod(
+        'attach',
+        [jsify(target), requiredVersion, completer.callback]);
     return completer.future;
   }
 
@@ -91,11 +99,14 @@ class ChromeDebugger extends ChromeApi {
    * on the method name and is defined by the 'returns' attribute of the command
    * description in the remote debugging protocol.
    */
-  Future<Map<String, dynamic>> sendCommand(Debuggee target, String method, [Map<String, dynamic> commandParams]) {
+  Future<Map<String, dynamic>> sendCommand(Debuggee target, String method,
+      [Map<String, dynamic> commandParams]) {
     if (_debugger == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<Map<String, dynamic>>.oneArg(mapify);
-    _debugger.callMethod('sendCommand', [jsify(target), method, jsify(commandParams), completer.callback]);
+    _debugger.callMethod(
+        'sendCommand',
+        [jsify(target), method, jsify(commandParams), completer.callback]);
     return completer.future;
   }
 
@@ -108,7 +119,8 @@ class ChromeDebugger extends ChromeApi {
   Future<List<TargetInfo>> getTargets() {
     if (_debugger == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<TargetInfo>>.oneArg((e) => listify(e, _createTargetInfo));
+    var completer = new ChromeCompleter<List<TargetInfo>>.oneArg(
+        (e) => listify(e, _createTargetInfo));
     _debugger.callMethod('getTargets', [completer.callback]);
     return completer.future;
   }
@@ -178,7 +190,7 @@ class Debuggee extends ChromeObject {
     if (extensionId != null) this.extensionId = extensionId;
     if (targetId != null) this.targetId = targetId;
   }
-  Debuggee.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Debuggee.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The id of the tab which you intend to debug.
@@ -205,7 +217,8 @@ class Debuggee extends ChromeObject {
  * Debug target information
  */
 class TargetInfo extends ChromeObject {
-  TargetInfo({String type, String id, int tabId, String extensionId, bool attached, String title, String url, String faviconUrl}) {
+  TargetInfo({String type, String id, int tabId, String extensionId,
+      bool attached, String title, String url, String faviconUrl}) {
     if (type != null) this.type = type;
     if (id != null) this.id = id;
     if (tabId != null) this.tabId = tabId;
@@ -215,7 +228,7 @@ class TargetInfo extends ChromeObject {
     if (url != null) this.url = url;
     if (faviconUrl != null) this.faviconUrl = faviconUrl;
   }
-  TargetInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  TargetInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Target type.
@@ -267,9 +280,12 @@ class TargetInfo extends ChromeObject {
   set faviconUrl(String value) => jsProxy['faviconUrl'] = value;
 }
 
-OnEventEvent _createOnEventEvent(JsObject source, String method, JsObject params) =>
+OnEventEvent _createOnEventEvent(JsObject source, String method,
+    JsObject params) =>
     new OnEventEvent(_createDebuggee(source), method, mapify(params));
 OnDetachEvent _createOnDetachEvent(JsObject source, String reason) =>
     new OnDetachEvent(_createDebuggee(source), reason);
-TargetInfo _createTargetInfo(JsObject jsProxy) => jsProxy == null ? null : new TargetInfo.fromProxy(jsProxy);
-Debuggee _createDebuggee(JsObject jsProxy) => jsProxy == null ? null : new Debuggee.fromProxy(jsProxy);
+TargetInfo _createTargetInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new TargetInfo.fromProxy(jsProxy);
+Debuggee _createDebuggee(JsObject jsProxy) =>
+    jsProxy == null ? null : new Debuggee.fromProxy(jsProxy);

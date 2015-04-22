@@ -40,9 +40,14 @@ class ChromeWindows extends ChromeApi {
 
   ChromeWindows._() {
     var getApi = () => _windows;
-    _onCreated = new ChromeStreamController<Window>.oneArg(getApi, 'onCreated', _createWindow);
-    _onRemoved = new ChromeStreamController<int>.oneArg(getApi, 'onRemoved', selfConverter);
-    _onFocusChanged = new ChromeStreamController<int>.oneArg(getApi, 'onFocusChanged', selfConverter);
+    _onCreated =
+        new ChromeStreamController<Window>.oneArg(getApi, 'onCreated', _createWindow);
+    _onRemoved =
+        new ChromeStreamController<int>.oneArg(getApi, 'onRemoved', selfConverter);
+    _onFocusChanged = new ChromeStreamController<int>.oneArg(
+        getApi,
+        'onFocusChanged',
+        selfConverter);
   }
 
   bool get available => _windows != null;
@@ -106,7 +111,8 @@ class ChromeWindows extends ChromeApi {
   Future<List<Window>> getAll([WindowsGetAllParams getInfo]) {
     if (_windows == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<Window>>.oneArg((e) => listify(e, _createWindow));
+    var completer =
+        new ChromeCompleter<List<Window>>.oneArg((e) => listify(e, _createWindow));
     _windows.callMethod('getAll', [jsify(getInfo), completer.callback]);
     return completer.future;
   }
@@ -134,7 +140,9 @@ class ChromeWindows extends ChromeApi {
     if (_windows == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<Window>.oneArg(_createWindow);
-    _windows.callMethod('update', [windowId, jsify(updateInfo), completer.callback]);
+    _windows.callMethod(
+        'update',
+        [windowId, jsify(updateInfo), completer.callback]);
     return completer.future;
   }
 
@@ -155,7 +163,9 @@ class ChromeWindows extends ChromeApi {
 }
 
 class Window extends ChromeObject {
-  Window({int id, bool focused, int top, int left, int width, int height, List<Tab> tabs, bool incognito, String type, String state, bool alwaysOnTop, String sessionId}) {
+  Window({int id, bool focused, int top, int left, int width, int height,
+      List<Tab> tabs, bool incognito, String type, String state, bool alwaysOnTop,
+      String sessionId}) {
     if (id != null) this.id = id;
     if (focused != null) this.focused = focused;
     if (top != null) this.top = top;
@@ -169,7 +179,7 @@ class Window extends ChromeObject {
     if (alwaysOnTop != null) this.alwaysOnTop = alwaysOnTop;
     if (sessionId != null) this.sessionId = sessionId;
   }
-  Window.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Window.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The ID of the window. Window IDs are unique within a browser session. Under
@@ -266,7 +276,7 @@ class WindowsGetParams extends ChromeObject {
   WindowsGetParams({bool populate}) {
     if (populate != null) this.populate = populate;
   }
-  WindowsGetParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  WindowsGetParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * If true, the [windows.Window] object will have a [tabs] property that
@@ -282,7 +292,8 @@ class WindowsGetCurrentParams extends ChromeObject {
   WindowsGetCurrentParams({bool populate}) {
     if (populate != null) this.populate = populate;
   }
-  WindowsGetCurrentParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  WindowsGetCurrentParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * If true, the [windows.Window] object will have a [tabs] property that
@@ -298,7 +309,8 @@ class WindowsGetLastFocusedParams extends ChromeObject {
   WindowsGetLastFocusedParams({bool populate}) {
     if (populate != null) this.populate = populate;
   }
-  WindowsGetLastFocusedParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  WindowsGetLastFocusedParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * If true, the [windows.Window] object will have a [tabs] property that
@@ -314,7 +326,7 @@ class WindowsGetAllParams extends ChromeObject {
   WindowsGetAllParams({bool populate}) {
     if (populate != null) this.populate = populate;
   }
-  WindowsGetAllParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  WindowsGetAllParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * If true, each [windows.Window] object will have a [tabs] property that
@@ -327,7 +339,8 @@ class WindowsGetAllParams extends ChromeObject {
 }
 
 class WindowsCreateParams extends ChromeObject {
-  WindowsCreateParams({var url, int tabId, int left, int top, int width, int height, bool focused, bool incognito, String type}) {
+  WindowsCreateParams({var url, int tabId, int left, int top, int width,
+      int height, bool focused, bool incognito, String type}) {
     if (url != null) this.url = url;
     if (tabId != null) this.tabId = tabId;
     if (left != null) this.left = left;
@@ -338,7 +351,7 @@ class WindowsCreateParams extends ChromeObject {
     if (incognito != null) this.incognito = incognito;
     if (type != null) this.type = type;
   }
-  WindowsCreateParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  WindowsCreateParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * A URL or array of URLs to open as tabs in the window. Fully-qualified URLs
@@ -408,7 +421,8 @@ class WindowsCreateParams extends ChromeObject {
 }
 
 class WindowsUpdateParams extends ChromeObject {
-  WindowsUpdateParams({int left, int top, int width, int height, bool focused, bool drawAttention, String state}) {
+  WindowsUpdateParams({int left, int top, int width, int height, bool focused,
+      bool drawAttention, String state}) {
     if (left != null) this.left = left;
     if (top != null) this.top = top;
     if (width != null) this.width = width;
@@ -417,7 +431,7 @@ class WindowsUpdateParams extends ChromeObject {
     if (drawAttention != null) this.drawAttention = drawAttention;
     if (state != null) this.state = state;
   }
-  WindowsUpdateParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  WindowsUpdateParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The offset from the left edge of the screen to move the window to in
@@ -473,5 +487,7 @@ class WindowsUpdateParams extends ChromeObject {
   set state(String value) => jsProxy['state'] = value;
 }
 
-Window _createWindow(JsObject jsProxy) => jsProxy == null ? null : new Window.fromProxy(jsProxy);
-Tab _createTab(JsObject jsProxy) => jsProxy == null ? null : new Tab.fromProxy(jsProxy);
+Window _createWindow(JsObject jsProxy) =>
+    jsProxy == null ? null : new Window.fromProxy(jsProxy);
+Tab _createTab(JsObject jsProxy) =>
+    jsProxy == null ? null : new Tab.fromProxy(jsProxy);

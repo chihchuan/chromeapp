@@ -15,7 +15,9 @@ main() {
     initGraph({
       "pkg1|a.txt": "pkg2|a.inc",
       "pkg2|a.inc": "a"
-    }, {"pkg1": [[new ManyToOneTransformer("txt")]]});
+    }, {
+      "pkg1": [[new ManyToOneTransformer("txt")]]
+    });
 
     updateSources(["pkg1|a.txt", "pkg2|a.inc"]);
     expectAsset("pkg1|a.out", "a");
@@ -54,8 +56,9 @@ main() {
     buildShouldSucceed();
   });
 
-  test("re-runs a transform when a transformed input from another package "
-      "changes", () {
+  test(
+      "re-runs a transform when a transformed input from another package " "changes",
+      () {
     initGraph({
       "pkg1|a.txt": "pkg2|a.inc",
       "pkg2|a.txt": "a"
@@ -74,8 +77,10 @@ main() {
     buildShouldSucceed();
   });
 
-  test("doesn't complete the build until all packages' transforms are "
-      "finished running", () {
+  test(
+      "doesn't complete the build until all packages' transforms are "
+          "finished running",
+      () {
     var transformer = new ManyToOneTransformer("txt");
     initGraph({
       "pkg1|a.txt": "pkg2|a.inc",
@@ -97,17 +102,17 @@ main() {
     buildShouldSucceed();
   });
 
-  test("runs a transform that's added because of a change in another package",
+  test(
+      "runs a transform that's added because of a change in another package",
       () {
     initGraph({
       "pkg1|a.txt": "pkg2|a.inc",
       "pkg2|a.inc": "b"
     }, {
       "pkg1": [
-        [new ManyToOneTransformer("txt")],
-        [new OneToManyTransformer("out")],
-        [new RewriteTransformer("md", "done")]
-      ],
+          [new ManyToOneTransformer("txt")],
+          [new OneToManyTransformer("out")],
+          [new RewriteTransformer("md", "done")]],
     });
 
     // pkg1|a.txt generates outputs based on the contents of pkg2|a.inc. At
@@ -126,17 +131,18 @@ main() {
     buildShouldSucceed();
   });
 
-  test("doesn't run a transform that's removed because of a change in "
-      "another package", () {
+  test(
+      "doesn't run a transform that's removed because of a change in "
+          "another package",
+      () {
     initGraph({
       "pkg1|a.txt": "pkg2|a.inc",
       "pkg2|a.inc": "b,c.md"
     }, {
       "pkg1": [
-        [new ManyToOneTransformer("txt")],
-        [new OneToManyTransformer("out")],
-        [new RewriteTransformer("md", "done")]
-      ],
+          [new ManyToOneTransformer("txt")],
+          [new OneToManyTransformer("out")],
+          [new RewriteTransformer("md", "done")]],
     });
 
     updateSources(["pkg1|a.txt", "pkg2|a.inc"]);
@@ -151,8 +157,9 @@ main() {
     buildShouldSucceed();
   });
 
-  test("sees a transformer that's newly applied to a cross-package "
-      "dependency", () {
+  test(
+      "sees a transformer that's newly applied to a cross-package " "dependency",
+      () {
     initGraph({
       "pkg1|a.txt": "pkg2|a.inc",
       "pkg2|a.inc": "a"
@@ -171,8 +178,10 @@ main() {
     buildShouldSucceed();
   });
 
-  test("doesn't see a transformer that's newly not applied to a "
-      "cross-package dependency", () {
+  test(
+      "doesn't see a transformer that's newly not applied to a "
+          "cross-package dependency",
+      () {
     initGraph({
       "pkg1|a.txt": "pkg2|a.inc",
       "pkg2|a.inc": "a"

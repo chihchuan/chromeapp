@@ -85,8 +85,9 @@ class SourceFile {
     if (offset < 0) {
       throw new RangeError("Offset may not be negative, was $offset.");
     } else if (offset > length) {
-      throw new RangeError("Offset $offset must not be greater than the number "
-          "of characters in the file, $length.");
+      throw new RangeError(
+          "Offset $offset must not be greater than the number "
+              "of characters in the file, $length.");
     }
     return binarySearch(_lineStarts, (o) => o > offset) - 1;
   }
@@ -99,8 +100,9 @@ class SourceFile {
     if (offset < 0) {
       throw new RangeError("Offset may not be negative, was $offset.");
     } else if (offset > length) {
-      throw new RangeError("Offset $offset must be not be greater than the "
-          "number of characters in the file, $length.");
+      throw new RangeError(
+          "Offset $offset must be not be greater than the "
+              "number of characters in the file, $length.");
     }
 
     if (line == null) {
@@ -108,8 +110,8 @@ class SourceFile {
     } else if (line < 0) {
       throw new RangeError("Line may not be negative, was $line.");
     } else if (line >= lines) {
-      throw new RangeError("Line $line must be less than the number of "
-          "lines in the file, $lines.");
+      throw new RangeError(
+          "Line $line must be less than the number of " "lines in the file, $lines.");
     }
 
     var lineStart = _lineStarts[line];
@@ -129,8 +131,8 @@ class SourceFile {
     if (line < 0) {
       throw new RangeError("Line may not be negative, was $line.");
     } else if (line >= lines) {
-      throw new RangeError("Line $line must be less than the number of "
-          "lines in the file, $lines.");
+      throw new RangeError(
+          "Line $line must be less than the number of " "lines in the file, $lines.");
     } else if (column < 0) {
       throw new RangeError("Column may not be negative, was $column.");
     }
@@ -168,8 +170,9 @@ class FileLocation extends SourceLocation {
   FileLocation._(this.file, int offset)
       : super(offset) {
     if (offset > file.length) {
-      throw new RangeError("Offset $offset must not be greater than the number "
-          "of characters in the file, ${file.length}.");
+      throw new RangeError(
+          "Offset $offset must not be greater than the number "
+              "of characters in the file, ${file.length}.");
     }
   }
 
@@ -205,15 +208,18 @@ class FileSpan extends SourceSpanMixin implements SourceSpanWithContext {
   FileLocation get start => new FileLocation._(file, _start);
   FileLocation get end => new FileLocation._(file, _end);
   String get text => file.getText(_start, _end);
-  String get context => file.getText(file.getOffset(start.line),
-      end.line == file.lines - 1 ? null : file.getOffset(end.line + 1));
+  String get context =>
+      file.getText(
+          file.getOffset(start.line),
+          end.line == file.lines - 1 ? null : file.getOffset(end.line + 1));
 
   FileSpan._(this.file, this._start, this._end) {
     if (_end < _start) {
       throw new ArgumentError('End $_end must come after start $_start.');
     } else if (_end > file.length) {
-      throw new RangeError("End $_end must not be greater than the number "
-          "of characters in the file, ${file.length}.");
+      throw new RangeError(
+          "End $_end must not be greater than the number "
+              "of characters in the file, ${file.length}.");
     } else if (_start < 0) {
       throw new RangeError("Start may not be negative, was $_start.");
     }
@@ -243,12 +249,13 @@ class FileSpan extends SourceSpanMixin implements SourceSpanWithContext {
 
   bool operator ==(other) {
     if (other is! FileSpan) return super == other;
-    return _start == other._start && _end == other._end &&
+    return _start == other._start &&
+        _end == other._end &&
         sourceUrl == other.sourceUrl;
   }
 
-  int get hashCode => _start.hashCode + 5 * _end.hashCode +
-      7 * sourceUrl.hashCode;
+  int get hashCode =>
+      _start.hashCode + 5 * _end.hashCode + 7 * sourceUrl.hashCode;
 
   /// Returns a new span that covers both [this] and [other].
   ///
@@ -256,8 +263,8 @@ class FileSpan extends SourceSpanMixin implements SourceSpanWithContext {
   /// between the two will be covered by the returned span.
   FileSpan expand(FileSpan other) {
     if (sourceUrl != other.sourceUrl) {
-      throw new ArgumentError("Source URLs \"${sourceUrl}\" and "
-          " \"${other.sourceUrl}\" don't match.");
+      throw new ArgumentError(
+          "Source URLs \"${sourceUrl}\" and " " \"${other.sourceUrl}\" don't match.");
     }
 
     var start = math.min(this._start, other._start);

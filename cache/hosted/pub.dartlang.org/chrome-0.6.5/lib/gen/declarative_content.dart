@@ -12,7 +12,8 @@ import '../src/common.dart';
 /**
  * Accessor for the `chrome.declarativeContent` namespace.
  */
-final ChromeDeclarativeContent declarativeContent = new ChromeDeclarativeContent._();
+final ChromeDeclarativeContent declarativeContent =
+    new ChromeDeclarativeContent._();
 
 class ChromeDeclarativeContent extends ChromeApi {
   JsObject get _declarativeContent => chrome['declarativeContent'];
@@ -40,7 +41,7 @@ class PageStateMatcher extends ChromeObject {
     if (pageUrl != null) this.pageUrl = pageUrl;
     if (css != null) this.css = css;
   }
-  PageStateMatcher.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  PageStateMatcher.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Matches if the condition of the UrlFilter are fulfilled for the top-level
@@ -71,7 +72,8 @@ class PageStateMatcher extends ChromeObject {
  */
 class ShowPageAction extends ChromeObject {
   ShowPageAction();
-  ShowPageAction.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ShowPageAction.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 }
 
-UrlFilter _createUrlFilter(JsObject jsProxy) => jsProxy == null ? null : new UrlFilter.fromProxy(jsProxy);
+UrlFilter _createUrlFilter(JsObject jsProxy) =>
+    jsProxy == null ? null : new UrlFilter.fromProxy(jsProxy);

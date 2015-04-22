@@ -33,7 +33,9 @@ class ChromeSocket extends ChromeApi {
     if (_socket == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<CreateInfo>.oneArg(_createCreateInfo);
-    _socket.callMethod('create', [jsify(type), jsify(options), completer.callback]);
+    _socket.callMethod(
+        'create',
+        [jsify(type), jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -60,7 +62,9 @@ class ChromeSocket extends ChromeApi {
     if (_socket == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<int>.oneArg();
-    _socket.callMethod('connect', [socketId, hostname, port, completer.callback]);
+    _socket.callMethod(
+        'connect',
+        [socketId, hostname, port, completer.callback]);
     return completer.future;
   }
 
@@ -115,7 +119,8 @@ class ChromeSocket extends ChromeApi {
   Future<SocketWriteInfo> write(int socketId, ArrayBuffer data) {
     if (_socket == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<SocketWriteInfo>.oneArg(_createWriteInfo);
+    var completer =
+        new ChromeCompleter<SocketWriteInfo>.oneArg(_createWriteInfo);
     _socket.callMethod('write', [socketId, jsify(data), completer.callback]);
     return completer.future;
   }
@@ -129,7 +134,8 @@ class ChromeSocket extends ChromeApi {
   Future<RecvFromInfo> recvFrom(int socketId, [int bufferSize]) {
     if (_socket == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<RecvFromInfo>.oneArg(_createRecvFromInfo);
+    var completer =
+        new ChromeCompleter<RecvFromInfo>.oneArg(_createRecvFromInfo);
     _socket.callMethod('recvFrom', [socketId, bufferSize, completer.callback]);
     return completer.future;
   }
@@ -143,11 +149,15 @@ class ChromeSocket extends ChromeApi {
    * [callback]: Called when the send operation completes without blocking or an
    * error occurs.
    */
-  Future<SocketWriteInfo> sendTo(int socketId, ArrayBuffer data, String address, int port) {
+  Future<SocketWriteInfo> sendTo(int socketId, ArrayBuffer data, String address,
+      int port) {
     if (_socket == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<SocketWriteInfo>.oneArg(_createWriteInfo);
-    _socket.callMethod('sendTo', [socketId, jsify(data), address, port, completer.callback]);
+    var completer =
+        new ChromeCompleter<SocketWriteInfo>.oneArg(_createWriteInfo);
+    _socket.callMethod(
+        'sendTo',
+        [socketId, jsify(data), address, port, completer.callback]);
     return completer.future;
   }
 
@@ -166,7 +176,9 @@ class ChromeSocket extends ChromeApi {
     if (_socket == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<int>.oneArg();
-    _socket.callMethod('listen', [socketId, address, port, backlog, completer.callback]);
+    _socket.callMethod(
+        'listen',
+        [socketId, address, port, backlog, completer.callback]);
     return completer.future;
   }
 
@@ -198,7 +210,9 @@ class ChromeSocket extends ChromeApi {
     if (_socket == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<bool>.oneArg();
-    _socket.callMethod('setKeepAlive', [socketId, enable, delay, completer.callback]);
+    _socket.callMethod(
+        'setKeepAlive',
+        [socketId, enable, delay, completer.callback]);
     return completer.future;
   }
 
@@ -237,7 +251,8 @@ class ChromeSocket extends ChromeApi {
   Future<List<NetworkInterface>> getNetworkList() {
     if (_socket == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<NetworkInterface>>.oneArg((e) => listify(e, _createNetworkInterface));
+    var completer = new ChromeCompleter<List<NetworkInterface>>.oneArg(
+        (e) => listify(e, _createNetworkInterface));
     _socket.callMethod('getNetworkList', [completer.callback]);
     return completer.future;
   }
@@ -294,7 +309,9 @@ class ChromeSocket extends ChromeApi {
     if (_socket == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<int>.oneArg();
-    _socket.callMethod('setMulticastTimeToLive', [socketId, ttl, completer.callback]);
+    _socket.callMethod(
+        'setMulticastTimeToLive',
+        [socketId, ttl, completer.callback]);
     return completer.future;
   }
 
@@ -321,7 +338,9 @@ class ChromeSocket extends ChromeApi {
     if (_socket == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<int>.oneArg();
-    _socket.callMethod('setMulticastLoopbackMode', [socketId, enabled, completer.callback]);
+    _socket.callMethod(
+        'setMulticastLoopbackMode',
+        [socketId, enabled, completer.callback]);
     return completer.future;
   }
 
@@ -347,9 +366,9 @@ class SocketType extends ChromeEnum {
   static const SocketType TCP = const SocketType._('tcp');
   static const SocketType UDP = const SocketType._('udp');
 
-  static const List<SocketType> VALUES = const[TCP, UDP];
+  static const List<SocketType> VALUES = const [TCP, UDP];
 
-  const SocketType._(String str): super(str);
+  const SocketType._(String str) : super(str);
 }
 
 /**
@@ -357,14 +376,14 @@ class SocketType extends ChromeEnum {
  */
 class CreateOptions extends ChromeObject {
   CreateOptions();
-  CreateOptions.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CreateOptions.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 }
 
 class CreateInfo extends ChromeObject {
   CreateInfo({int socketId}) {
     if (socketId != null) this.socketId = socketId;
   }
-  CreateInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CreateInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get socketId => jsProxy['socketId'];
   set socketId(int value) => jsProxy['socketId'] = value;
@@ -375,7 +394,7 @@ class AcceptInfo extends ChromeObject {
     if (resultCode != null) this.resultCode = resultCode;
     if (socketId != null) this.socketId = socketId;
   }
-  AcceptInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  AcceptInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get resultCode => jsProxy['resultCode'];
   set resultCode(int value) => jsProxy['resultCode'] = value;
@@ -389,7 +408,7 @@ class SocketReadInfo extends ChromeObject {
     if (resultCode != null) this.resultCode = resultCode;
     if (data != null) this.data = data;
   }
-  SocketReadInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  SocketReadInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get resultCode => jsProxy['resultCode'];
   set resultCode(int value) => jsProxy['resultCode'] = value;
@@ -402,7 +421,7 @@ class SocketWriteInfo extends ChromeObject {
   SocketWriteInfo({int bytesWritten}) {
     if (bytesWritten != null) this.bytesWritten = bytesWritten;
   }
-  SocketWriteInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  SocketWriteInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get bytesWritten => jsProxy['bytesWritten'];
   set bytesWritten(int value) => jsProxy['bytesWritten'] = value;
@@ -415,7 +434,7 @@ class RecvFromInfo extends ChromeObject {
     if (address != null) this.address = address;
     if (port != null) this.port = port;
   }
-  RecvFromInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  RecvFromInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get resultCode => jsProxy['resultCode'];
   set resultCode(int value) => jsProxy['resultCode'] = value;
@@ -431,7 +450,8 @@ class RecvFromInfo extends ChromeObject {
 }
 
 class SocketInfo extends ChromeObject {
-  SocketInfo({SocketType socketType, bool connected, String peerAddress, int peerPort, String localAddress, int localPort}) {
+  SocketInfo({SocketType socketType, bool connected, String peerAddress,
+      int peerPort, String localAddress, int localPort}) {
     if (socketType != null) this.socketType = socketType;
     if (connected != null) this.connected = connected;
     if (peerAddress != null) this.peerAddress = peerAddress;
@@ -439,7 +459,7 @@ class SocketInfo extends ChromeObject {
     if (localAddress != null) this.localAddress = localAddress;
     if (localPort != null) this.localPort = localPort;
   }
-  SocketInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  SocketInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   SocketType get socketType => _createSocketType(jsProxy['socketType']);
   set socketType(SocketType value) => jsProxy['socketType'] = jsify(value);
@@ -466,7 +486,7 @@ class NetworkInterface extends ChromeObject {
     if (address != null) this.address = address;
     if (prefixLength != null) this.prefixLength = prefixLength;
   }
-  NetworkInterface.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  NetworkInterface.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get name => jsProxy['name'];
   set name(String value) => jsProxy['name'] = value;
@@ -478,12 +498,21 @@ class NetworkInterface extends ChromeObject {
   set prefixLength(int value) => jsProxy['prefixLength'] = value;
 }
 
-CreateInfo _createCreateInfo(JsObject jsProxy) => jsProxy == null ? null : new CreateInfo.fromProxy(jsProxy);
-SocketReadInfo _createReadInfo(JsObject jsProxy) => jsProxy == null ? null : new SocketReadInfo.fromProxy(jsProxy);
-SocketWriteInfo _createWriteInfo(JsObject jsProxy) => jsProxy == null ? null : new SocketWriteInfo.fromProxy(jsProxy);
-RecvFromInfo _createRecvFromInfo(JsObject jsProxy) => jsProxy == null ? null : new RecvFromInfo.fromProxy(jsProxy);
-AcceptInfo _createAcceptInfo(JsObject jsProxy) => jsProxy == null ? null : new AcceptInfo.fromProxy(jsProxy);
-SocketInfo _createSocketInfo(JsObject jsProxy) => jsProxy == null ? null : new SocketInfo.fromProxy(jsProxy);
-NetworkInterface _createNetworkInterface(JsObject jsProxy) => jsProxy == null ? null : new NetworkInterface.fromProxy(jsProxy);
-ArrayBuffer _createArrayBuffer(/*JsObject*/ jsProxy) => jsProxy == null ? null : new ArrayBuffer.fromProxy(jsProxy);
-SocketType _createSocketType(String value) => SocketType.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+CreateInfo _createCreateInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new CreateInfo.fromProxy(jsProxy);
+SocketReadInfo _createReadInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new SocketReadInfo.fromProxy(jsProxy);
+SocketWriteInfo _createWriteInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new SocketWriteInfo.fromProxy(jsProxy);
+RecvFromInfo _createRecvFromInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new RecvFromInfo.fromProxy(jsProxy);
+AcceptInfo _createAcceptInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new AcceptInfo.fromProxy(jsProxy);
+SocketInfo _createSocketInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new SocketInfo.fromProxy(jsProxy);
+NetworkInterface _createNetworkInterface(JsObject jsProxy) =>
+    jsProxy == null ? null : new NetworkInterface.fromProxy(jsProxy);
+ArrayBuffer _createArrayBuffer(/*JsObject*/ jsProxy) =>
+    jsProxy == null ? null : new ArrayBuffer.fromProxy(jsProxy);
+SocketType _createSocketType(String value) =>
+    SocketType.VALUES.singleWhere((ChromeEnum e) => e.value == value);

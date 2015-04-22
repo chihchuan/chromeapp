@@ -27,7 +27,10 @@ class ChromeIdle extends ChromeApi {
 
   ChromeIdle._() {
     var getApi = () => _idle;
-    _onStateChanged = new ChromeStreamController<String>.oneArg(getApi, 'onStateChanged', selfConverter);
+    _onStateChanged = new ChromeStreamController<String>.oneArg(
+        getApi,
+        'onStateChanged',
+        selfConverter);
   }
 
   bool get available => _idle != null;
@@ -48,7 +51,9 @@ class ChromeIdle extends ChromeApi {
     if (_idle == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<String>.oneArg();
-    _idle.callMethod('queryState', [detectionIntervalInSeconds, completer.callback]);
+    _idle.callMethod(
+        'queryState',
+        [detectionIntervalInSeconds, completer.callback]);
     return completer.future;
   }
 

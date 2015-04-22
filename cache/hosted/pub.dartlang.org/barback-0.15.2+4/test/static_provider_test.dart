@@ -33,7 +33,8 @@ main() {
   });
 
   test("can list all static assets", () {
-    initStaticGraph(["app|foo.txt", "app|bar.txt", "app|baz.txt"],
+    initStaticGraph(
+        ["app|foo.txt", "app|bar.txt", "app|baz.txt"],
         staticPackages: ["app"]);
     expectAllAssets(["app|foo.txt", "app|bar.txt", "app|baz.txt"]);
   });

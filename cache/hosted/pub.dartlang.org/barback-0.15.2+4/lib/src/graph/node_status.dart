@@ -38,8 +38,7 @@ class NodeStatus {
 
   /// Returns the dirtiest status in [statuses].
   static NodeStatus dirtiest(Iterable<NodeStatus> statuses) =>
-      statuses.fold(NodeStatus.IDLE,
-          (status1, status2) => status1.dirtier(status2));
+      statuses.fold(NodeStatus.IDLE, (status1, status2) => status1.dirtier(status2));
 
   const NodeStatus(this._name);
 

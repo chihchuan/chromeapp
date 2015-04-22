@@ -56,7 +56,10 @@ class ChromeTtsEngine extends ChromeApi {
 
   ChromeTtsEngine._() {
     var getApi = () => _ttsEngine;
-    _onSpeak = new ChromeStreamController<OnSpeakEvent>.threeArgs(getApi, 'onSpeak', _createOnSpeakEvent);
+    _onSpeak = new ChromeStreamController<OnSpeakEvent>.threeArgs(
+        getApi,
+        'onSpeak',
+        _createOnSpeakEvent);
     _onStop = new ChromeStreamController.noArgs(getApi, 'onStop');
     _onPause = new ChromeStreamController.noArgs(getApi, 'onPause');
     _onResume = new ChromeStreamController.noArgs(getApi, 'onResume');
@@ -110,5 +113,6 @@ class OnSpeakEvent {
   OnSpeakEvent(this.utterance, this.options, this.sendTtsEvent);
 }
 
-OnSpeakEvent _createOnSpeakEvent(String utterance, JsObject options, JsObject sendTtsEvent) =>
+OnSpeakEvent _createOnSpeakEvent(String utterance, JsObject options,
+    JsObject sendTtsEvent) =>
     new OnSpeakEvent(utterance, mapify(options), sendTtsEvent);

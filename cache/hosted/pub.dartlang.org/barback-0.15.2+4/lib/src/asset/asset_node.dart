@@ -60,8 +60,8 @@ class AssetNode {
 
   /// Whether this node is lazy, meaning that [force] must be called to
   /// guarantee that it will eventually become available.
-  bool get isLazy => _lazyCallback != null ||
-      (_origin != null && _origin.isLazy);
+  bool get isLazy =>
+      _lazyCallback != null || (_origin != null && _origin.isLazy);
 
   /// A broadcast stream that emits an event whenever the node changes state.
   ///
@@ -85,7 +85,8 @@ class AssetNode {
   /// asset is removed before becoming available, the returned future will throw
   /// an [AssetNotFoundException].
   Future whenAvailable(callback(Asset asset)) {
-    return _waitForState((state) => state.isAvailable || state.isRemoved,
+    return _waitForState(
+        (state) => state.isAvailable || state.isRemoved,
         (state) {
       if (state.isRemoved) throw new AssetNotFoundException(id);
       return callback(asset);
@@ -99,7 +100,7 @@ class AssetNode {
   ///
   /// The return value of [callback] is piped to the returned Future.
   Future whenRemoved(callback()) =>
-    _waitForState((state) => state.isRemoved, (_) => callback());
+      _waitForState((state) => state.isRemoved, (_) => callback());
 
   /// Returns a [Future] that completes when [state] changes from its current
   /// value to any other value.
@@ -173,7 +174,7 @@ class AssetNodeController {
   ///
   /// [callback] is guaranteed to only fire once.
   AssetNodeController.lazy(AssetId id, void callback(),
-          [TransformNode transform])
+      [TransformNode transform])
       : node = new AssetNode._lazy(id, transform, null, callback);
 
   /// Creates a controller for a node whose initial state matches the current

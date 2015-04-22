@@ -92,16 +92,17 @@ class Phase {
     // if any input is dirty.
     if (_classifiers.isEmpty && _groups.isEmpty && previous == null) {
       return _inputs.any((input) => input.state.isDirty) ?
-          NodeStatus.RUNNING : NodeStatus.IDLE;
+          NodeStatus.RUNNING :
+          NodeStatus.IDLE;
     }
 
     var classifierStatus = NodeStatus.dirtiest(
         _classifiers.values.map((classifier) => classifier.status));
-    var groupStatus = NodeStatus.dirtiest(
-        _groups.values.map((group) => group.status));
-    return (previous == null ? NodeStatus.IDLE : previous.status)
-        .dirtier(classifierStatus)
-        .dirtier(groupStatus);
+    var groupStatus =
+        NodeStatus.dirtiest(_groups.values.map((group) => group.status));
+    return (previous == null ?
+        NodeStatus.IDLE :
+        previous.status).dirtier(classifierStatus).dirtier(groupStatus);
   }
 
   /// The previous phase in the cascade, or null if this is the first phase.
@@ -124,10 +125,8 @@ class Phase {
 
   /// Returns all currently-available output assets for this phase.
   Set<AssetNode> get availableOutputs {
-    return _outputs.values
-        .map((output) => output.output)
-        .where((node) => node.state.isAvailable)
-        .toSet();
+    return _outputs.values.map(
+        (output) => output.output).where((node) => node.state.isAvailable).toSet();
   }
 
   // TODO(nweiz): Rather than passing the cascade and the phase everywhere,
@@ -139,8 +138,8 @@ class Phase {
   Phase._(this.cascade, this._location, this._index, [this.previous]) {
     if (previous != null) {
       _previousOnAssetSubscription = previous.onAsset.listen(addInput);
-      _previousStatusSubscription = previous.onStatusChange
-          .listen((_) => _streams.changeStatus(status));
+      _previousStatusSubscription =
+          previous.onStatusChange.listen((_) => _streams.changeStatus(status));
     }
 
     onStatusChange.listen((status) {
@@ -169,8 +168,8 @@ class Phase {
   void addInput(AssetNode node) {
     // Each group is one channel along which an asset may be forwarded, as is
     // each transformer.
-    var forwarder = new PhaseForwarder(
-        node, _classifiers.length, _groups.length);
+    var forwarder =
+        new PhaseForwarder(node, _classifiers.length, _groups.length);
     _forwarders[node.id] = forwarder;
     forwarder.onAsset.listen(_handleOutputWithoutForwarder);
     if (forwarder.output != null) {
@@ -202,7 +201,7 @@ class Phase {
   /// If [id] is for a generated or transformed asset, this will wait until it
   /// has been created and return it. This means that the returned asset will
   /// always be [AssetState.AVAILABLE].
-  /// 
+  ///
   /// If the output cannot be found, returns null.
   Future<AssetNode> getOutput(AssetId id) {
     return syncFuture(() {
@@ -230,25 +229,24 @@ class Phase {
 
       // Otherwise, store a completer for the asset node. If it's generated in
       // the future, we'll complete this completer.
-      var completer = _pendingOutputRequests.putIfAbsent(id,
-          () => new Completer.sync());
+      var completer =
+          _pendingOutputRequests.putIfAbsent(id, () => new Completer.sync());
       return completer.future;
     });
   }
 
   /// Set this phase's transformers to [transformers].
   void updateTransformers(Iterable transformers) {
-    var newTransformers = transformers
-        .where((op) => op is Transformer || op is AggregateTransformer)
-        .toSet();
+    var newTransformers = transformers.where(
+        (op) => op is Transformer || op is AggregateTransformer).toSet();
     var oldTransformers = _classifiers.keys.toSet();
     for (var removed in oldTransformers.difference(newTransformers)) {
       _classifiers.remove(removed).remove();
     }
 
     for (var transformer in newTransformers.difference(oldTransformers)) {
-      var classifier = new TransformerClassifier(
-          this, transformer, "$_location.$_index");
+      var classifier =
+          new TransformerClassifier(this, transformer, "$_location.$_index");
       _classifiers[transformer] = classifier;
       classifier.onAsset.listen(_handleOutput);
       _streams.onLogPool.add(classifier.onLog);
@@ -258,8 +256,7 @@ class Phase {
       }
     }
 
-    var newGroups = transformers.where((op) => op is TransformerGroup)
-        .toSet();
+    var newGroups = transformers.where((op) => op is TransformerGroup).toSet();
     var oldGroups = _groups.keys.toSet();
     for (var removed in oldGroups.difference(newGroups)) {
       _groups.remove(removed).remove();
@@ -353,7 +350,8 @@ class Phase {
       _outputs[asset.id].add(asset);
     } else {
       _outputs[asset.id] = new PhaseOutput(this, asset, "$_location.$_index");
-      _outputs[asset.id].onAsset.listen(_emit,
+      _outputs[asset.id].onAsset.listen(
+          _emit,
           onDone: () => _outputs.remove(asset.id));
       _emit(_outputs[asset.id].output);
     }

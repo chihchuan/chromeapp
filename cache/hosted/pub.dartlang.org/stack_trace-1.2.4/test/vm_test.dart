@@ -43,20 +43,23 @@ void main() {
     test('.parse parses a real stack trace correctly', () {
       var string = getStackTraceString();
       var trace = new Trace.parse(string);
-      expect(path.url.basename(trace.frames.first.uri.path),
+      expect(
+          path.url.basename(trace.frames.first.uri.path),
           equals('vm_test.dart'));
       expect(trace.frames.first.member, equals('getStackTraceString'));
     });
 
     test('converts from a native stack trace correctly', () {
       var trace = new Trace.from(getStackTraceObject());
-      expect(path.url.basename(trace.frames.first.uri.path),
+      expect(
+          path.url.basename(trace.frames.first.uri.path),
           equals('vm_test.dart'));
       expect(trace.frames.first.member, equals('getStackTraceObject'));
     });
 
     group('.current()', () {
-      test('with no argument returns a trace starting at the current frame',
+      test(
+          'with no argument returns a trace starting at the current frame',
           () {
         var trace = new Trace.current();
         expect(trace.frames.first.member, equals('main.<fn>.<fn>.<fn>'));

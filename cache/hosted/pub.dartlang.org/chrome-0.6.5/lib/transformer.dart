@@ -49,17 +49,17 @@ class ChromeTransformer extends Transformer {
     Iterable<Match> matches = _regex1.allMatches(content).toList().reversed;
 
     for (Match match in matches) {
-      String newScript ='<script src="${match.group(1)}.js"></script>';
-      content = content.substring(0, match.start)
-          + newScript + content.substring(match.end);
+      String newScript = '<script src="${match.group(1)}.js"></script>';
+      content =
+          content.substring(0, match.start) + newScript + content.substring(match.end);
     }
 
     matches = _regex2.allMatches(content).toList().reversed;
 
     for (Match match in matches) {
-      String newScript ='<script src="${match.group(1)}.js"></script>';
-      content = content.substring(0, match.start)
-          + newScript + content.substring(match.end);
+      String newScript = '<script src="${match.group(1)}.js"></script>';
+      content =
+          content.substring(0, match.start) + newScript + content.substring(match.end);
     }
 
     return content;

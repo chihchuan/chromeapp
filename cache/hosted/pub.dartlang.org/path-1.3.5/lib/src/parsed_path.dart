@@ -76,8 +76,8 @@ class ParsedPath {
     return new ParsedPath._(style, root, isRootRelative, parts, separators);
   }
 
-  ParsedPath._(
-      this.style, this.root, this.isRootRelative, this.parts, this.separators);
+  ParsedPath._(this.style, this.root, this.isRootRelative, this.parts,
+      this.separators);
 
   String get basename {
     var copy = this.clone();
@@ -131,10 +131,14 @@ class ParsedPath {
 
     // Canonicalize separators.
     var newSeparators = new List<String>.generate(
-        newParts.length, (_) => style.separator, growable: true);
-    newSeparators.insert(0, isAbsolute &&
-        newParts.length > 0 &&
-        style.needsSeparator(root) ? style.separator : '');
+        newParts.length,
+        (_) => style.separator,
+        growable: true);
+    newSeparators.insert(
+        0,
+        isAbsolute && newParts.length > 0 && style.needsSeparator(root) ?
+            style.separator :
+            '');
 
     parts = newParts;
     separators = newSeparators;
@@ -178,6 +182,11 @@ class ParsedPath {
     return [file.substring(0, lastDot), file.substring(lastDot)];
   }
 
-  ParsedPath clone() => new ParsedPath._(style, root, isRootRelative,
-      new List.from(parts), new List.from(separators));
+  ParsedPath clone() =>
+      new ParsedPath._(
+          style,
+          root,
+          isRootRelative,
+          new List.from(parts),
+          new List.from(separators));
 }

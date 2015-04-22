@@ -10,14 +10,13 @@ import 'package:path/path.dart' as path;
 import 'aggregate_many_to_one.dart';
 
 /// Like [AggregateManyToOneTransformer], but declares its assets ahead of time.
-class DeclaringAggregateManyToOneTransformer
-    extends AggregateManyToOneTransformer
-    implements DeclaringAggregateTransformer {
+class DeclaringAggregateManyToOneTransformer extends
+    AggregateManyToOneTransformer implements DeclaringAggregateTransformer {
   DeclaringAggregateManyToOneTransformer(String extension, String output)
       : super(extension, output);
 
   void declareOutputs(DeclaringAggregateTransform transform) {
-    transform.declareOutput(new AssetId(transform.package,
-        path.url.join(transform.key, output)));
+    transform.declareOutput(
+        new AssetId(transform.package, path.url.join(transform.key, output)));
   }
 }

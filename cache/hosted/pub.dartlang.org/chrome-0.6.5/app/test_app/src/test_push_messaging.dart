@@ -11,8 +11,8 @@ void main() {
 
   group('chrome.pushMessaging', () {
     test('getChannelId', () {
-      Future future = chrome.pushMessaging.getChannelId(false)
-      .then((chrome.ChannelIdResult channelId) {
+      Future future = chrome.pushMessaging.getChannelId(
+          false).then((chrome.ChannelIdResult channelId) {
         Logger.root.fine("pushMessaging channelId = ${channelId}");
         expect(true, true);
       }).catchError((var error) {

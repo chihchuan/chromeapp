@@ -60,7 +60,8 @@ zip zap zop
   });
 
   test("works for a point span in an empty file", () {
-    expect(new SourceFile("").location(0).pointSpan().message("oh no"),
+    expect(
+        new SourceFile("").location(0).pointSpan().message("oh no"),
         equals("""
 line 1, column 1: oh no
 
@@ -68,8 +69,7 @@ line 1, column 1: oh no
   });
 
   test("works for a single-line file without a newline", () {
-    expect(new SourceFile("foo bar").span(0, 7).message("oh no"),
-        equals("""
+    expect(new SourceFile("foo bar").span(0, 7).message("oh no"), equals("""
 line 1, column 1: oh no
 foo bar
 ^^^^^^^"""));

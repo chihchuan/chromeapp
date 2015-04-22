@@ -9,8 +9,8 @@ import 'dart:async';
 import 'package:barback/barback.dart';
 
 /// Like [DeclaringRewriteTransformer], but with no methods returning Futures.
-class SyncRewriteTransformer extends Transformer
-    implements DeclaringTransformer {
+class SyncRewriteTransformer extends Transformer implements DeclaringTransformer
+    {
   final String from;
   final String to;
 

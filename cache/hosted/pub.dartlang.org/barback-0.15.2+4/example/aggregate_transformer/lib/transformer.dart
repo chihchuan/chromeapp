@@ -28,7 +28,7 @@ class MakeBook extends AggregateTransformer {
   // output asset.
   Future apply(AggregateTransform transform) {
     var buffer = new StringBuffer()..write('<html><body>');
- 
+
     return transform.primaryInputs.toList().then((assets) {
       // The order of [transform.primaryInputs] is not guaranteed
       // to be stable across multiple runs of the transformer.
@@ -44,8 +44,8 @@ class MakeBook extends AggregateTransformer {
       buffer.write('</body></html>');
       // Write the output back to the same directory,
       // in a file named recipes.html.
-      var id = new AssetId(transform.package,
-                           p.url.join(transform.key, ".recipes.html"));
+      var id =
+          new AssetId(transform.package, p.url.join(transform.key, ".recipes.html"));
       transform.addOutput(new Asset.fromString(id, buffer.toString()));
     });
   }

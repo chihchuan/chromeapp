@@ -28,7 +28,8 @@ class ChromeCookies extends ChromeApi {
 
   ChromeCookies._() {
     var getApi = () => _cookies;
-    _onChanged = new ChromeStreamController<Map>.oneArg(getApi, 'onChanged', mapify);
+    _onChanged =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onChanged', mapify);
   }
 
   bool get available => _cookies != null;
@@ -67,7 +68,8 @@ class ChromeCookies extends ChromeApi {
   Future<List<Cookie>> getAll(CookiesGetAllParams details) {
     if (_cookies == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<Cookie>>.oneArg((e) => listify(e, _createCookie));
+    var completer =
+        new ChromeCompleter<List<Cookie>>.oneArg((e) => listify(e, _createCookie));
     _cookies.callMethod('getAll', [jsify(details), completer.callback]);
     return completer.future;
   }
@@ -118,7 +120,8 @@ class ChromeCookies extends ChromeApi {
   Future<List<CookieStore>> getAllCookieStores() {
     if (_cookies == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<CookieStore>>.oneArg((e) => listify(e, _createCookieStore));
+    var completer = new ChromeCompleter<List<CookieStore>>.oneArg(
+        (e) => listify(e, _createCookieStore));
     _cookies.callMethod('getAllCookieStores', [completer.callback]);
     return completer.future;
   }
@@ -132,7 +135,8 @@ class ChromeCookies extends ChromeApi {
  * Represents information about an HTTP cookie.
  */
 class Cookie extends ChromeObject {
-  Cookie({String name, String value, String domain, bool hostOnly, String path, bool secure, bool httpOnly, bool session, var expirationDate, String storeId}) {
+  Cookie({String name, String value, String domain, bool hostOnly, String path,
+      bool secure, bool httpOnly, bool session, var expirationDate, String storeId}) {
     if (name != null) this.name = name;
     if (value != null) this.value = value;
     if (domain != null) this.domain = domain;
@@ -144,7 +148,7 @@ class Cookie extends ChromeObject {
     if (expirationDate != null) this.expirationDate = expirationDate;
     if (storeId != null) this.storeId = storeId;
   }
-  Cookie.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Cookie.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The name of the cookie.
@@ -222,7 +226,7 @@ class CookieStore extends ChromeObject {
     if (id != null) this.id = id;
     if (tabIds != null) this.tabIds = tabIds;
   }
-  CookieStore.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CookieStore.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The unique identifier for the cookie store.
@@ -243,7 +247,7 @@ class CookiesGetParams extends ChromeObject {
     if (name != null) this.name = name;
     if (storeId != null) this.storeId = storeId;
   }
-  CookiesGetParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CookiesGetParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The URL with which the cookie to retrieve is associated. This argument may
@@ -269,7 +273,8 @@ class CookiesGetParams extends ChromeObject {
 }
 
 class CookiesGetAllParams extends ChromeObject {
-  CookiesGetAllParams({String url, String name, String domain, String path, bool secure, bool session, String storeId}) {
+  CookiesGetAllParams({String url, String name, String domain, String path,
+      bool secure, bool session, String storeId}) {
     if (url != null) this.url = url;
     if (name != null) this.name = name;
     if (domain != null) this.domain = domain;
@@ -278,7 +283,7 @@ class CookiesGetAllParams extends ChromeObject {
     if (session != null) this.session = session;
     if (storeId != null) this.storeId = storeId;
   }
-  CookiesGetAllParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CookiesGetAllParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Restricts the retrieved cookies to those that would match the given URL.
@@ -327,7 +332,8 @@ class CookiesGetAllParams extends ChromeObject {
 }
 
 class CookiesSetParams extends ChromeObject {
-  CookiesSetParams({String url, String name, String value, String domain, String path, bool secure, bool httpOnly, var expirationDate, String storeId}) {
+  CookiesSetParams({String url, String name, String value, String domain,
+      String path, bool secure, bool httpOnly, var expirationDate, String storeId}) {
     if (url != null) this.url = url;
     if (name != null) this.name = name;
     if (value != null) this.value = value;
@@ -338,7 +344,7 @@ class CookiesSetParams extends ChromeObject {
     if (expirationDate != null) this.expirationDate = expirationDate;
     if (storeId != null) this.storeId = storeId;
   }
-  CookiesSetParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CookiesSetParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The request-URI to associate with the setting of the cookie. This value can
@@ -407,7 +413,7 @@ class CookiesRemoveParams extends ChromeObject {
     if (name != null) this.name = name;
     if (storeId != null) this.storeId = storeId;
   }
-  CookiesRemoveParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CookiesRemoveParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The URL associated with the cookie. If host permissions for this URL are
@@ -431,5 +437,7 @@ class CookiesRemoveParams extends ChromeObject {
   set storeId(String value) => jsProxy['storeId'] = value;
 }
 
-Cookie _createCookie(JsObject jsProxy) => jsProxy == null ? null : new Cookie.fromProxy(jsProxy);
-CookieStore _createCookieStore(JsObject jsProxy) => jsProxy == null ? null : new CookieStore.fromProxy(jsProxy);
+Cookie _createCookie(JsObject jsProxy) =>
+    jsProxy == null ? null : new Cookie.fromProxy(jsProxy);
+CookieStore _createCookieStore(JsObject jsProxy) =>
+    jsProxy == null ? null : new CookieStore.fromProxy(jsProxy);

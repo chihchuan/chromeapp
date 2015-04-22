@@ -10,7 +10,7 @@ import '../asset/asset_id.dart';
 import '../log.dart';
 
 typedef void LogFunction(AssetId asset, LogLevel level, String message,
-                         SourceSpan span);
+    SourceSpan span);
 
 /// Object used to report warnings and errors encountered while running a
 /// transformer.

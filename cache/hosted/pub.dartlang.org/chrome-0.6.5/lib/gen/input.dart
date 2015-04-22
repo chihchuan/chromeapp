@@ -68,13 +68,15 @@ class ChromeInputIme extends ChromeApi {
   /**
    * This event is sent if this extension owns the active IME.
    */
-  Stream<OnCandidateClickedEvent> get onCandidateClicked => _onCandidateClicked.stream;
+  Stream<OnCandidateClickedEvent> get onCandidateClicked =>
+      _onCandidateClicked.stream;
   ChromeStreamController<OnCandidateClickedEvent> _onCandidateClicked;
 
   /**
    * Called when the user selects a menu item
    */
-  Stream<OnMenuItemActivatedEvent> get onMenuItemActivated => _onMenuItemActivated.stream;
+  Stream<OnMenuItemActivatedEvent> get onMenuItemActivated =>
+      _onMenuItemActivated.stream;
   ChromeStreamController<OnMenuItemActivatedEvent> _onMenuItemActivated;
 
   /**
@@ -82,8 +84,10 @@ class ChromeInputIme extends ChromeApi {
    * position is moved. The text length is limited to 100 characters for each
    * back and forth direction.
    */
-  Stream<OnSurroundingTextChangedEvent> get onSurroundingTextChanged => _onSurroundingTextChanged.stream;
-  ChromeStreamController<OnSurroundingTextChangedEvent> _onSurroundingTextChanged;
+  Stream<OnSurroundingTextChangedEvent> get onSurroundingTextChanged =>
+      _onSurroundingTextChanged.stream;
+  ChromeStreamController<OnSurroundingTextChangedEvent>
+      _onSurroundingTextChanged;
 
   /**
    * This event is sent when chrome terminates ongoing text input session.
@@ -93,16 +97,43 @@ class ChromeInputIme extends ChromeApi {
 
   ChromeInputIme._() {
     var getApi = () => _input_ime;
-    _onActivate = new ChromeStreamController<String>.oneArg(getApi, 'onActivate', selfConverter);
-    _onDeactivated = new ChromeStreamController<String>.oneArg(getApi, 'onDeactivated', selfConverter);
-    _onFocus = new ChromeStreamController<InputContext>.oneArg(getApi, 'onFocus', _createInputContext);
-    _onBlur = new ChromeStreamController<int>.oneArg(getApi, 'onBlur', selfConverter);
-    _onInputContextUpdate = new ChromeStreamController<InputContext>.oneArg(getApi, 'onInputContextUpdate', _createInputContext);
-    _onKeyEvent = new ChromeStreamController<OnKeyEventEvent>.twoArgs(getApi, 'onKeyEvent', _createOnKeyEventEvent);
-    _onCandidateClicked = new ChromeStreamController<OnCandidateClickedEvent>.threeArgs(getApi, 'onCandidateClicked', _createOnCandidateClickedEvent);
-    _onMenuItemActivated = new ChromeStreamController<OnMenuItemActivatedEvent>.twoArgs(getApi, 'onMenuItemActivated', _createOnMenuItemActivatedEvent);
-    _onSurroundingTextChanged = new ChromeStreamController<OnSurroundingTextChangedEvent>.twoArgs(getApi, 'onSurroundingTextChanged', _createOnSurroundingTextChangedEvent);
-    _onReset = new ChromeStreamController<String>.oneArg(getApi, 'onReset', selfConverter);
+    _onActivate =
+        new ChromeStreamController<String>.oneArg(getApi, 'onActivate', selfConverter);
+    _onDeactivated = new ChromeStreamController<String>.oneArg(
+        getApi,
+        'onDeactivated',
+        selfConverter);
+    _onFocus = new ChromeStreamController<InputContext>.oneArg(
+        getApi,
+        'onFocus',
+        _createInputContext);
+    _onBlur =
+        new ChromeStreamController<int>.oneArg(getApi, 'onBlur', selfConverter);
+    _onInputContextUpdate = new ChromeStreamController<InputContext>.oneArg(
+        getApi,
+        'onInputContextUpdate',
+        _createInputContext);
+    _onKeyEvent = new ChromeStreamController<OnKeyEventEvent>.twoArgs(
+        getApi,
+        'onKeyEvent',
+        _createOnKeyEventEvent);
+    _onCandidateClicked =
+        new ChromeStreamController<OnCandidateClickedEvent>.threeArgs(
+            getApi,
+            'onCandidateClicked',
+            _createOnCandidateClickedEvent);
+    _onMenuItemActivated =
+        new ChromeStreamController<OnMenuItemActivatedEvent>.twoArgs(
+            getApi,
+            'onMenuItemActivated',
+            _createOnMenuItemActivatedEvent);
+    _onSurroundingTextChanged =
+        new ChromeStreamController<OnSurroundingTextChangedEvent>.twoArgs(
+            getApi,
+            'onSurroundingTextChanged',
+            _createOnSurroundingTextChangedEvent);
+    _onReset =
+        new ChromeStreamController<String>.oneArg(getApi, 'onReset', selfConverter);
   }
 
   bool get available => _input_ime != null;
@@ -115,7 +146,9 @@ class ChromeInputIme extends ChromeApi {
     if (_input_ime == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<bool>.oneArg();
-    _input_ime.callMethod('setComposition', [jsify(parameters), completer.callback]);
+    _input_ime.callMethod(
+        'setComposition',
+        [jsify(parameters), completer.callback]);
     return completer.future;
   }
 
@@ -127,7 +160,9 @@ class ChromeInputIme extends ChromeApi {
     if (_input_ime == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<bool>.oneArg();
-    _input_ime.callMethod('clearComposition', [jsify(parameters), completer.callback]);
+    _input_ime.callMethod(
+        'clearComposition',
+        [jsify(parameters), completer.callback]);
     return completer.future;
   }
 
@@ -138,7 +173,9 @@ class ChromeInputIme extends ChromeApi {
     if (_input_ime == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<bool>.oneArg();
-    _input_ime.callMethod('commitText', [jsify(parameters), completer.callback]);
+    _input_ime.callMethod(
+        'commitText',
+        [jsify(parameters), completer.callback]);
     return completer.future;
   }
 
@@ -151,7 +188,9 @@ class ChromeInputIme extends ChromeApi {
     if (_input_ime == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _input_ime.callMethod('sendKeyEvents', [jsify(parameters), completer.callback]);
+    _input_ime.callMethod(
+        'sendKeyEvents',
+        [jsify(parameters), completer.callback]);
     return completer.future;
   }
 
@@ -169,11 +208,14 @@ class ChromeInputIme extends ChromeApi {
    * Sets the properties of the candidate window. This fails if the extension
    * doesn't own the active IME
    */
-  Future<bool> setCandidateWindowProperties(InputImeSetCandidateWindowPropertiesParams parameters) {
+  Future<bool>
+      setCandidateWindowProperties(InputImeSetCandidateWindowPropertiesParams parameters) {
     if (_input_ime == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<bool>.oneArg();
-    _input_ime.callMethod('setCandidateWindowProperties', [jsify(parameters), completer.callback]);
+    _input_ime.callMethod(
+        'setCandidateWindowProperties',
+        [jsify(parameters), completer.callback]);
     return completer.future;
   }
 
@@ -185,7 +227,9 @@ class ChromeInputIme extends ChromeApi {
     if (_input_ime == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<bool>.oneArg();
-    _input_ime.callMethod('setCandidates', [jsify(parameters), completer.callback]);
+    _input_ime.callMethod(
+        'setCandidates',
+        [jsify(parameters), completer.callback]);
     return completer.future;
   }
 
@@ -197,7 +241,9 @@ class ChromeInputIme extends ChromeApi {
     if (_input_ime == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<bool>.oneArg();
-    _input_ime.callMethod('setCursorPosition', [jsify(parameters), completer.callback]);
+    _input_ime.callMethod(
+        'setCursorPosition',
+        [jsify(parameters), completer.callback]);
     return completer.future;
   }
 
@@ -208,7 +254,9 @@ class ChromeInputIme extends ChromeApi {
     if (_input_ime == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _input_ime.callMethod('setMenuItems', [jsify(parameters), completer.callback]);
+    _input_ime.callMethod(
+        'setMenuItems',
+        [jsify(parameters), completer.callback]);
     return completer.future;
   }
 
@@ -219,7 +267,9 @@ class ChromeInputIme extends ChromeApi {
     if (_input_ime == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _input_ime.callMethod('updateMenuItems', [jsify(parameters), completer.callback]);
+    _input_ime.callMethod(
+        'updateMenuItems',
+        [jsify(parameters), completer.callback]);
     return completer.future;
   }
 
@@ -230,7 +280,9 @@ class ChromeInputIme extends ChromeApi {
     if (_input_ime == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _input_ime.callMethod('deleteSurroundingText', [jsify(parameters), completer.callback]);
+    _input_ime.callMethod(
+        'deleteSurroundingText',
+        [jsify(parameters), completer.callback]);
     return completer.future;
   }
 
@@ -331,16 +383,19 @@ class OnSurroundingTextChangedEvent {
 }
 
 class PropertiesInputIme extends ChromeObject {
-  PropertiesInputIme({bool visible, bool cursorVisible, bool vertical, int pageSize, String auxiliaryText, bool auxiliaryTextVisible, String windowPosition}) {
+  PropertiesInputIme({bool visible, bool cursorVisible, bool vertical,
+      int pageSize, String auxiliaryText, bool auxiliaryTextVisible,
+      String windowPosition}) {
     if (visible != null) this.visible = visible;
     if (cursorVisible != null) this.cursorVisible = cursorVisible;
     if (vertical != null) this.vertical = vertical;
     if (pageSize != null) this.pageSize = pageSize;
     if (auxiliaryText != null) this.auxiliaryText = auxiliaryText;
-    if (auxiliaryTextVisible != null) this.auxiliaryTextVisible = auxiliaryTextVisible;
+    if (auxiliaryTextVisible != null) this.auxiliaryTextVisible =
+        auxiliaryTextVisible;
     if (windowPosition != null) this.windowPosition = windowPosition;
   }
-  PropertiesInputIme.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  PropertiesInputIme.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * True to show the Candidate window, false to hide it.
@@ -377,7 +432,8 @@ class PropertiesInputIme extends ChromeObject {
    * True to display the auxiliary text, false to hide it.
    */
   bool get auxiliaryTextVisible => jsProxy['auxiliaryTextVisible'];
-  set auxiliaryTextVisible(bool value) => jsProxy['auxiliaryTextVisible'] = value;
+  set auxiliaryTextVisible(bool value) => jsProxy['auxiliaryTextVisible'] =
+      value;
 
   /**
    * Where to display the candidate window. If set to 'cursor', the window
@@ -394,7 +450,7 @@ class UsageInputIme extends ChromeObject {
     if (title != null) this.title = title;
     if (body != null) this.body = body;
   }
-  UsageInputIme.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  UsageInputIme.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The title string of details description.
@@ -413,7 +469,9 @@ class UsageInputIme extends ChromeObject {
  * See http://www.w3.org/TR/DOM-Level-3-Events/#events-KeyboardEvent
  */
 class KeyboardEvent extends ChromeObject {
-  KeyboardEvent({String type, String requestId, String extensionId, String key, String code, int keyCode, bool altKey, bool ctrlKey, bool shiftKey, bool capsLock}) {
+  KeyboardEvent({String type, String requestId, String extensionId, String key,
+      String code, int keyCode, bool altKey, bool ctrlKey, bool shiftKey,
+      bool capsLock}) {
     if (type != null) this.type = type;
     if (requestId != null) this.requestId = requestId;
     if (extensionId != null) this.extensionId = extensionId;
@@ -425,7 +483,7 @@ class KeyboardEvent extends ChromeObject {
     if (shiftKey != null) this.shiftKey = shiftKey;
     if (capsLock != null) this.capsLock = capsLock;
   }
-  KeyboardEvent.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  KeyboardEvent.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * One of keyup or keydown.
@@ -500,7 +558,7 @@ class InputContext extends ChromeObject {
     if (contextID != null) this.contextID = contextID;
     if (type != null) this.type = type;
   }
-  InputContext.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InputContext.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * This is used to specify targets of text field operations.  This ID becomes
@@ -522,7 +580,8 @@ class InputContext extends ChromeObject {
  * language menu.
  */
 class MenuItem extends ChromeObject {
-  MenuItem({String id, String label, String style, bool visible, bool checked, bool enabled}) {
+  MenuItem({String id, String label, String style, bool visible, bool checked,
+      bool enabled}) {
     if (id != null) this.id = id;
     if (label != null) this.label = label;
     if (style != null) this.style = style;
@@ -530,7 +589,7 @@ class MenuItem extends ChromeObject {
     if (checked != null) this.checked = checked;
     if (enabled != null) this.enabled = enabled;
   }
-  MenuItem.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  MenuItem.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * String that will be passed to callbacks referencing this MenuItem.
@@ -572,7 +631,8 @@ class MenuItem extends ChromeObject {
 }
 
 class InputImeSetCompositionParams extends ChromeObject {
-  InputImeSetCompositionParams({int contextID, String text, int selectionStart, int selectionEnd, int cursor, List<Map> segments}) {
+  InputImeSetCompositionParams({int contextID, String text, int selectionStart,
+      int selectionEnd, int cursor, List<Map> segments}) {
     if (contextID != null) this.contextID = contextID;
     if (text != null) this.text = text;
     if (selectionStart != null) this.selectionStart = selectionStart;
@@ -580,7 +640,8 @@ class InputImeSetCompositionParams extends ChromeObject {
     if (cursor != null) this.cursor = cursor;
     if (segments != null) this.segments = segments;
   }
-  InputImeSetCompositionParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InputImeSetCompositionParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * ID of the context where the composition text will be set
@@ -623,7 +684,8 @@ class InputImeClearCompositionParams extends ChromeObject {
   InputImeClearCompositionParams({int contextID}) {
     if (contextID != null) this.contextID = contextID;
   }
-  InputImeClearCompositionParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InputImeClearCompositionParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * ID of the context where the composition will be cleared
@@ -637,7 +699,8 @@ class InputImeCommitTextParams extends ChromeObject {
     if (contextID != null) this.contextID = contextID;
     if (text != null) this.text = text;
   }
-  InputImeCommitTextParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InputImeCommitTextParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * ID of the context where the text will be committed
@@ -657,7 +720,8 @@ class InputImeSendKeyEventsParams extends ChromeObject {
     if (contextID != null) this.contextID = contextID;
     if (keyData != null) this.keyData = keyData;
   }
-  InputImeSendKeyEventsParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InputImeSendKeyEventsParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * ID of the context where the key events will be sent, or zero to send key
@@ -669,16 +733,19 @@ class InputImeSendKeyEventsParams extends ChromeObject {
   /**
    * Data on the key event.
    */
-  List<KeyboardEvent> get keyData => listify(jsProxy['keyData'], _createKeyboardEvent);
+  List<KeyboardEvent> get keyData =>
+      listify(jsProxy['keyData'], _createKeyboardEvent);
   set keyData(List<KeyboardEvent> value) => jsProxy['keyData'] = jsify(value);
 }
 
 class InputImeSetCandidateWindowPropertiesParams extends ChromeObject {
-  InputImeSetCandidateWindowPropertiesParams({String engineID, PropertiesInputIme properties}) {
+  InputImeSetCandidateWindowPropertiesParams({String engineID,
+      PropertiesInputIme properties}) {
     if (engineID != null) this.engineID = engineID;
     if (properties != null) this.properties = properties;
   }
-  InputImeSetCandidateWindowPropertiesParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InputImeSetCandidateWindowPropertiesParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * ID of the engine to set properties on.
@@ -686,8 +753,10 @@ class InputImeSetCandidateWindowPropertiesParams extends ChromeObject {
   String get engineID => jsProxy['engineID'];
   set engineID(String value) => jsProxy['engineID'] = value;
 
-  PropertiesInputIme get properties => _createPropertiesInputIme(jsProxy['properties']);
-  set properties(PropertiesInputIme value) => jsProxy['properties'] = jsify(value);
+  PropertiesInputIme get properties =>
+      _createPropertiesInputIme(jsProxy['properties']);
+  set properties(PropertiesInputIme value) => jsProxy['properties'] =
+      jsify(value);
 }
 
 class InputImeSetCandidatesParams extends ChromeObject {
@@ -695,7 +764,8 @@ class InputImeSetCandidatesParams extends ChromeObject {
     if (contextID != null) this.contextID = contextID;
     if (candidates != null) this.candidates = candidates;
   }
-  InputImeSetCandidatesParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InputImeSetCandidatesParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * ID of the context that owns the candidate window.
@@ -715,7 +785,8 @@ class InputImeSetCursorPositionParams extends ChromeObject {
     if (contextID != null) this.contextID = contextID;
     if (candidateID != null) this.candidateID = candidateID;
   }
-  InputImeSetCursorPositionParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InputImeSetCursorPositionParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * ID of the context that owns the candidate window.
@@ -735,7 +806,8 @@ class InputImeSetMenuItemsParams extends ChromeObject {
     if (engineID != null) this.engineID = engineID;
     if (items != null) this.items = items;
   }
-  InputImeSetMenuItemsParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InputImeSetMenuItemsParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * ID of the engine to use
@@ -755,7 +827,8 @@ class InputImeUpdateMenuItemsParams extends ChromeObject {
     if (engineID != null) this.engineID = engineID;
     if (items != null) this.items = items;
   }
-  InputImeUpdateMenuItemsParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InputImeUpdateMenuItemsParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * ID of the engine to use
@@ -771,13 +844,15 @@ class InputImeUpdateMenuItemsParams extends ChromeObject {
 }
 
 class InputImeDeleteSurroundingTextParams extends ChromeObject {
-  InputImeDeleteSurroundingTextParams({String engineID, int contextID, int offset, int length}) {
+  InputImeDeleteSurroundingTextParams({String engineID, int contextID,
+      int offset, int length}) {
     if (engineID != null) this.engineID = engineID;
     if (contextID != null) this.contextID = contextID;
     if (offset != null) this.offset = offset;
     if (length != null) this.length = length;
   }
-  InputImeDeleteSurroundingTextParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InputImeDeleteSurroundingTextParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * ID of the engine receiving the event.
@@ -805,15 +880,23 @@ class InputImeDeleteSurroundingTextParams extends ChromeObject {
   set length(int value) => jsProxy['length'] = value;
 }
 
-InputContext _createInputContext(JsObject jsProxy) => jsProxy == null ? null : new InputContext.fromProxy(jsProxy);
+InputContext _createInputContext(JsObject jsProxy) =>
+    jsProxy == null ? null : new InputContext.fromProxy(jsProxy);
 OnKeyEventEvent _createOnKeyEventEvent(String engineID, JsObject keyData) =>
     new OnKeyEventEvent(engineID, _createKeyboardEvent(keyData));
-OnCandidateClickedEvent _createOnCandidateClickedEvent(String engineID, int candidateID, String button) =>
+OnCandidateClickedEvent _createOnCandidateClickedEvent(String engineID,
+    int candidateID, String button) =>
     new OnCandidateClickedEvent(engineID, candidateID, button);
-OnMenuItemActivatedEvent _createOnMenuItemActivatedEvent(String engineID, String name) =>
+OnMenuItemActivatedEvent _createOnMenuItemActivatedEvent(String engineID,
+    String name) =>
     new OnMenuItemActivatedEvent(engineID, name);
-OnSurroundingTextChangedEvent _createOnSurroundingTextChangedEvent(String engineID, JsObject surroundingInfo) =>
+OnSurroundingTextChangedEvent
+    _createOnSurroundingTextChangedEvent(String engineID, JsObject surroundingInfo)
+    =>
     new OnSurroundingTextChangedEvent(engineID, mapify(surroundingInfo));
-KeyboardEvent _createKeyboardEvent(JsObject jsProxy) => jsProxy == null ? null : new KeyboardEvent.fromProxy(jsProxy);
-PropertiesInputIme _createPropertiesInputIme(JsObject jsProxy) => jsProxy == null ? null : new PropertiesInputIme.fromProxy(jsProxy);
-MenuItem _createMenuItem(JsObject jsProxy) => jsProxy == null ? null : new MenuItem.fromProxy(jsProxy);
+KeyboardEvent _createKeyboardEvent(JsObject jsProxy) =>
+    jsProxy == null ? null : new KeyboardEvent.fromProxy(jsProxy);
+PropertiesInputIme _createPropertiesInputIme(JsObject jsProxy) =>
+    jsProxy == null ? null : new PropertiesInputIme.fromProxy(jsProxy);
+MenuItem _createMenuItem(JsObject jsProxy) =>
+    jsProxy == null ? null : new MenuItem.fromProxy(jsProxy);

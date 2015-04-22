@@ -76,7 +76,8 @@ main() {
 
   group("Asset.fromStream", () {
     test("returns an asset with the given ID", () {
-      var asset = new Asset.fromStream(id,
+      var asset = new Asset.fromStream(
+          id,
           new Stream.fromFuture(new Future.value([104, 101, 108, 108, 111])));
       expect(asset.id, equals(id));
     });
@@ -85,32 +86,34 @@ main() {
   group("read()", () {
     test("gets the UTF-8-encoded string for a string asset", () {
       var asset = new Asset.fromString(id, "çøñ†éℵ™");
-      expect(asset.read().toList(),
+      expect(
+          asset.read().toList(),
           completion(equals([UTF8.encode("çøñ†éℵ™")])));
     });
 
     test("gets the raw bytes for a byte asset", () {
       var asset = new Asset.fromBytes(id, binaryContents);
-      expect(asset.read().toList(),
-          completion(equals([binaryContents])));
+      expect(asset.read().toList(), completion(equals([binaryContents])));
     });
 
     test("gets the raw bytes for a binary file", () {
       var asset = new Asset.fromPath(id, binaryFilePath);
-      expect(asset.read().toList(),
-          completion(equals([binaryContents])));
+      expect(asset.read().toList(), completion(equals([binaryContents])));
     });
 
     test("gets the raw bytes for a text file", () {
       var asset = new Asset.fromPath(id, textFilePath);
-      expect(asset.read().toList(),
+      expect(
+          asset.read().toList(),
           completion(equals([UTF8.encode("çøñ†éℵ™")])));
     });
 
     test("gets the raw bytes for a stream", () {
-      var asset = new Asset.fromStream(id,
+      var asset = new Asset.fromStream(
+          id,
           new Stream.fromFuture(new Future.value(UTF8.encode("çøñ†éℵ™"))));
-      expect(asset.read().toList(),
+      expect(
+          asset.read().toList(),
           completion(equals([UTF8.encode("çøñ†éℵ™")])));
     });
   });
@@ -119,13 +122,13 @@ main() {
     group("byte asset", () {
       test("defaults to UTF-8 if encoding is omitted", () {
         var asset = new Asset.fromBytes(id, UTF8.encode("çøñ†éℵ™"));
-        expect(asset.readAsString(),
-            completion(equals("çøñ†éℵ™")));
+        expect(asset.readAsString(), completion(equals("çøñ†éℵ™")));
       });
 
       test("supports UTF-8", () {
         var asset = new Asset.fromBytes(id, UTF8.encode("çøñ†éℵ™"));
-        expect(asset.readAsString(encoding: UTF8),
+        expect(
+            asset.readAsString(encoding: UTF8),
             completion(equals("çøñ†éℵ™")));
       });
 
@@ -135,13 +138,13 @@ main() {
     group("string asset", () {
       test("gets the string", () {
         var asset = new Asset.fromString(id, "contents");
-        expect(asset.readAsString(),
-            completion(equals("contents")));
+        expect(asset.readAsString(), completion(equals("contents")));
       });
 
       test("ignores the encoding", () {
         var asset = new Asset.fromString(id, "contents");
-        expect(asset.readAsString(encoding: LATIN1),
+        expect(
+            asset.readAsString(encoding: LATIN1),
             completion(equals("contents")));
       });
     });
@@ -149,30 +152,32 @@ main() {
     group("file asset", () {
       test("defaults to UTF-8 if encoding is omitted", () {
         var asset = new Asset.fromPath(id, textFilePath);
-        expect(asset.readAsString(),
-            completion(equals("çøñ†éℵ™")));
+        expect(asset.readAsString(), completion(equals("çøñ†éℵ™")));
       });
     });
 
     group("stream asset", () {
       test("defaults to UTF-8 if encoding is omitted", () {
-        var asset = new Asset.fromStream(id,
+        var asset = new Asset.fromStream(
+            id,
             new Stream.fromFuture(new Future.value(UTF8.encode("çøñ†éℵ™"))));
-        expect(asset.readAsString(),
-            completion(equals("çøñ†éℵ™")));
+        expect(asset.readAsString(), completion(equals("çøñ†éℵ™")));
       });
 
       test("supports UTF-8", () {
-        var asset = new Asset.fromStream(id,
+        var asset = new Asset.fromStream(
+            id,
             new Stream.fromFuture(new Future.value(UTF8.encode("çøñ†éℵ™"))));
-        expect(asset.readAsString(encoding: UTF8),
+        expect(
+            asset.readAsString(encoding: UTF8),
             completion(equals("çøñ†éℵ™")));
       });
 
       test("supports ISO-8859-1", () {
         var future = new Future.value(LATIN1.encode("blåbærgrød"));
         var asset = new Asset.fromStream(id, new Stream.fromFuture(future));
-        expect(asset.readAsString(encoding: LATIN1),
+        expect(
+            asset.readAsString(encoding: LATIN1),
             completion(equals("blåbærgrød")));
       });
     });
@@ -181,32 +186,35 @@ main() {
   group("toString()", () {
     group("byte asset", () {
       test("shows the list of bytes in hex", () {
-        var asset = new Asset.fromBytes(id,
-            [0, 1, 2, 4, 8, 16, 32, 64, 128, 255]);
-        expect(asset.toString(), equals(
-            "Bytes [00 01 02 04 08 10 20 40 80 ff]"));
+        var asset =
+            new Asset.fromBytes(id, [0, 1, 2, 4, 8, 16, 32, 64, 128, 255]);
+        expect(
+            asset.toString(),
+            equals("Bytes [00 01 02 04 08 10 20 40 80 ff]"));
       });
 
       test("truncates the middle of there are more than ten bytes", () {
-        var asset = new Asset.fromBytes(id,
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
-        expect(asset.toString(), equals(
-            "Bytes [01 02 03 04 05 ... 0a 0b 0c 0d 0e]"));
+        var asset =
+            new Asset.fromBytes(id, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+        expect(
+            asset.toString(),
+            equals("Bytes [01 02 03 04 05 ... 0a 0b 0c 0d 0e]"));
       });
     });
 
     group("string asset", () {
       test("shows the contents", () {
         var asset = new Asset.fromString(id, "contents");
-        expect(asset.toString(), equals(
-            'String "contents"'));
+        expect(asset.toString(), equals('String "contents"'));
       });
 
       test("truncates the middle of there are more than 40 characters", () {
-        var asset = new Asset.fromString(id,
+        var asset = new Asset.fromString(
+            id,
             "this is a fairly long string asset content that gets shortened");
-        expect(asset.toString(), equals(
-            'String "this is a fairly lon ...  that gets shortened"'));
+        expect(
+            asset.toString(),
+            equals('String "this is a fairly lon ...  that gets shortened"'));
       });
     });
 
@@ -229,32 +237,34 @@ main() {
 
     test("gets the UTF-8-encoded string for a string asset", () {
       var asset = new Asset.fromString(id, "çøñ†éℵ™");
-      expect(getBytesFromIsolate(asset),
+      expect(
+          getBytesFromIsolate(asset),
           completion(equals(UTF8.encode("çøñ†éℵ™"))));
     });
 
     test("gets the raw bytes for a byte asset", () {
       var asset = new Asset.fromBytes(id, binaryContents);
-      expect(getBytesFromIsolate(asset),
-          completion(equals(binaryContents)));
+      expect(getBytesFromIsolate(asset), completion(equals(binaryContents)));
     });
 
     test("gets the raw bytes for a binary file", () {
       var asset = new Asset.fromPath(id, binaryFilePath);
-      expect(getBytesFromIsolate(asset),
-          completion(equals(binaryContents)));
+      expect(getBytesFromIsolate(asset), completion(equals(binaryContents)));
     });
 
     test("gets the raw bytes for a text file", () {
       var asset = new Asset.fromPath(id, textFilePath);
-      expect(getBytesFromIsolate(asset),
+      expect(
+          getBytesFromIsolate(asset),
           completion(equals(UTF8.encode("çøñ†éℵ™"))));
     });
 
     test("gets the raw bytes for a stream", () {
-      var asset = new Asset.fromStream(id,
+      var asset = new Asset.fromStream(
+          id,
           new Stream.fromFuture(new Future.value(UTF8.encode("çøñ†éℵ™"))));
-      expect(getBytesFromIsolate(asset),
+      expect(
+          getBytesFromIsolate(asset),
           completion(equals(UTF8.encode("çøñ†éℵ™"))));
     });
   });
@@ -262,7 +272,7 @@ main() {
 
 void _getAssetBytes(message) {
   var asset = deserializeAsset(message['asset']);
-  var builder = asset.read().fold(new BytesBuilder(),
-      (builder, chunk) => builder..add(chunk));
+  var builder =
+      asset.read().fold(new BytesBuilder(), (builder, chunk) => builder..add(chunk));
   builder.then((builder) => message['replyTo'].send(builder.takeBytes()));
 }

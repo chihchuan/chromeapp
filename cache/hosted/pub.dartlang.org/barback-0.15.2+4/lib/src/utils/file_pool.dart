@@ -35,8 +35,10 @@ class FilePool {
   /// try again.
   Stream<List<int>> openRead(String path) {
     return futureStream(_pool.request().then((resource) {
-      return Chain.track(new File(path).openRead()).transform(
-          new StreamTransformer.fromHandlers(handleDone: (sink) {
+      return Chain.track(
+          new File(
+              path).openRead()).transform(
+                  new StreamTransformer.fromHandlers(handleDone: (sink) {
         sink.close();
         resource.release();
       }));

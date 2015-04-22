@@ -48,7 +48,7 @@ class OpenTabOptions extends ChromeObject {
   OpenTabOptions({String url}) {
     if (url != null) this.url = url;
   }
-  OpenTabOptions.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  OpenTabOptions.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get url => jsProxy['url'];
   set url(String value) => jsProxy['url'] = value;

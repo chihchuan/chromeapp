@@ -142,8 +142,7 @@ class AggregateTransformController extends BaseTransformController {
   }
 
   /// Returns whether an input with the given [id] was added via [addInput].
-  bool addedId(AssetId id) =>
-      transform._emittedPrimaryInputs.containsId(id);
+  bool addedId(AssetId id) => transform._emittedPrimaryInputs.containsId(id);
 
   void done() {
     transform._inputController.close();

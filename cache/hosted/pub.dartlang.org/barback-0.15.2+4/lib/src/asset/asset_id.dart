@@ -50,8 +50,7 @@ class AssetId implements Comparable<AssetId> {
     }
 
     if (parts[1].isEmpty) {
-      throw new FormatException(
-          'Cannot have empty path in "$description".');
+      throw new FormatException('Cannot have empty path in "$description".');
     }
 
     return new AssetId(parts[0], parts[1]);
@@ -69,9 +68,7 @@ class AssetId implements Comparable<AssetId> {
 
   /// Returns `true` of [other] is an [AssetId] with the same package and path.
   operator ==(other) =>
-      other is AssetId &&
-      package == other.package &&
-      path == other.path;
+      other is AssetId && package == other.package && path == other.path;
 
   int get hashCode => package.hashCode ^ path.hashCode;
 

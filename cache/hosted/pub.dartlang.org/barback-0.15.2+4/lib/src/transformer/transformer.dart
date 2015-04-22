@@ -33,14 +33,15 @@ abstract class Transformer {
   Transformer() {
     if (allowedExtensions == null) return;
 
-    var invalidExtensions = allowedExtensions.split(" ")
-        .where((extension) => !extension.startsWith("."))
-        .map((extension) => '"$extension"');
+    var invalidExtensions = allowedExtensions.split(
+        " ").where(
+            (extension) => !extension.startsWith(".")).map((extension) => '"$extension"');
     if (invalidExtensions.isEmpty) return;
 
-    throw new FormatException('Each extension in $this.allowedExtensions '
-        'must begin with a ".", but ${toSentence(invalidExtensions)} '
-        '${pluralize("doesn't", invalidExtensions.length, plural: "don't")}.');
+    throw new FormatException(
+        'Each extension in $this.allowedExtensions '
+            'must begin with a ".", but ${toSentence(invalidExtensions)} '
+            '${pluralize("doesn't", invalidExtensions.length, plural: "don't")}.');
   }
 
   /// Returns `true` if [id] can be a primary input for this transformer.

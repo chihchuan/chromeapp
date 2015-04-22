@@ -36,8 +36,8 @@ class Context {
     if (style == null) {
       style = Style.platform;
     } else if (style is! InternalStyle) {
-      throw new ArgumentError("Only styles defined by the path package are "
-          "allowed.");
+      throw new ArgumentError(
+          "Only styles defined by the path package are " "allowed.");
     }
 
     return new Context._(style as InternalStyle, current);
@@ -198,15 +198,14 @@ class Context {
   String join(String part1, [String part2, String part3, String part4,
       String part5, String part6, String part7, String part8]) {
     var parts = <String>[
-      part1,
-      part2,
-      part3,
-      part4,
-      part5,
-      part6,
-      part7,
-      part8
-    ];
+        part1,
+        part2,
+        part3,
+        part4,
+        part5,
+        part6,
+        part7,
+        part8];
     _validateArgList("join", parts);
     return joinAll(parts.where((part) => part != null));
   }
@@ -393,10 +392,12 @@ class Context {
       throw new PathException('Unable to find a path to "$path" from "$from".');
     }
     pathParsed.parts.insertAll(
-        0, new List.filled(fromParsed.parts.length, '..'));
+        0,
+        new List.filled(fromParsed.parts.length, '..'));
     pathParsed.separators[0] = '';
     pathParsed.separators.insertAll(
-        1, new List.filled(fromParsed.parts.length, style.separator));
+        1,
+        new List.filled(fromParsed.parts.length, style.separator));
 
     // Corner case: the paths completely collapsed.
     if (pathParsed.parts.length == 0) return '.';
@@ -406,9 +407,9 @@ class Context {
     if (pathParsed.parts.length > 1 && pathParsed.parts.last == '.') {
       pathParsed.parts.removeLast();
       pathParsed.separators
-        ..removeLast()
-        ..removeLast()
-        ..add('');
+          ..removeLast()
+          ..removeLast()
+          ..add('');
     }
 
     // Make it relative.
@@ -564,10 +565,8 @@ _validateArgList(String method, List<String> args) {
     // Show the arguments.
     var message = new StringBuffer();
     message.write("$method(");
-    message.write(args
-        .take(numArgs)
-        .map((arg) => arg == null ? "null" : '"$arg"')
-        .join(", "));
+    message.write(
+        args.take(numArgs).map((arg) => arg == null ? "null" : '"$arg"').join(", "));
     message.write("): part ${i - 1} was null, but part $i was not.");
     throw new ArgumentError(message.toString());
   }

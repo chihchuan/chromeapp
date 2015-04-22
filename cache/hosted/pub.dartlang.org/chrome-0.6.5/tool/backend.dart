@@ -1,4 +1,3 @@
-
 library backend;
 
 import 'chrome_model.dart';
@@ -16,12 +15,14 @@ abstract class Backend {
 
   Backend(this.library, this.overrides);
 
-  factory Backend.createDefault(ChromeLibrary library, Overrides overrides, [DartGenerator generator]) {
+  factory Backend.createDefault(ChromeLibrary library, Overrides overrides,
+      [DartGenerator generator]) {
     return new DefaultBackend(library, overrides, generator);
   }
 
   void generateAccessor();
-  void generateContent(bool printClassDocs, Set createdFactories, Set createdClasses);
+  void generateContent(bool printClassDocs, Set createdFactories,
+      Set createdClasses);
 
   String generate({String license, String sourceFileName});
 }
@@ -41,7 +42,8 @@ class DefaultBackend extends Backend {
 
   final Set<String> _neededFactories = new Set<String>();
 
-  DefaultBackend(ChromeLibrary library, Overrides overrides, [this.generator]): super(library, overrides) {
+  DefaultBackend(ChromeLibrary library, Overrides overrides, [this.generator])
+      : super(library, overrides) {
     if (generator == null) {
       generator = new DartGenerator();
     }
@@ -50,13 +52,17 @@ class DefaultBackend extends Backend {
   void generateAccessor() {
     String shortAccessorName = libraryName;
     if (shortAccessorName.contains('_')) {
-      shortAccessorName = shortAccessorName.substring(shortAccessorName.indexOf('_') + 1);
+      shortAccessorName =
+          shortAccessorName.substring(shortAccessorName.indexOf('_') + 1);
     }
 
-    // final ChromeI18N i18n = ChromeI18N._i18n == null ? null : new ChromeI18N._();
+
+
+        // final ChromeI18N i18n = ChromeI18N._i18n == null ? null : new ChromeI18N._();
     generator.writeln();
     generator.writeDocs("Accessor for the `chrome.${library.name}` namespace.");
-    generator.writeln("final ${className} ${shortAccessorName} = new ${className}._();");
+    generator.writeln(
+        "final ${className} ${shortAccessorName} = new ${className}._();");
   }
 
   String generate({String license, String sourceFileName}) {
@@ -66,7 +72,8 @@ class DefaultBackend extends Backend {
     }
 
     if (sourceFileName != null) {
-      generator.writeln("/* This file has been generated from ${sourceFileName} - do not edit */");
+      generator.writeln(
+          "/* This file has been generated from ${sourceFileName} - do not edit */");
     } else {
       generator.writeln("/* This file is auto-generated */");
     }
@@ -93,7 +100,8 @@ class DefaultBackend extends Backend {
     return generator.toString();
   }
 
-  void generateContent(bool printClassDocs, Set createdFactories, Set createdClasses) {
+  void generateContent(bool printClassDocs, Set createdFactories,
+      Set createdClasses) {
     generator.writeln();
     if (printClassDocs) {
       generator.writeDocs(library.documentation);
@@ -153,33 +161,37 @@ class DefaultBackend extends Backend {
     String name = overrides.overrideClass(className);
 
     generator.writeln("class ${name} extends ChromeApi {");
-    generator.writeln("JsObject get ${contextReference} => chrome['${sections.join('\'][\'')}'];");
+    generator.writeln(
+        "JsObject get ${contextReference} => chrome['${sections.join('\'][\'')}'];");
     library.events.forEach(_printEventDecl);
     generator.writeln();
     if (library.events.length == 0) {
-       // There are no events, so don't print an empty code block
-       generator.writeln("${name}._();");
+      // There are no events, so don't print an empty code block
+      generator.writeln("${name}._();");
     } else {
-       generator.writeln("${name}._() {");
-       generator.writeln("var getApi = () => ${contextReference};");
-       library.events.forEach(_printEventAssign);
-       generator.writeln("}");
+      generator.writeln("${name}._() {");
+      generator.writeln("var getApi = () => ${contextReference};");
+      library.events.forEach(_printEventAssign);
+      generator.writeln("}");
     }
     generator.writeln();
     generator.writeln("bool get available => ${contextReference} != null;");
 
-    library.filteredProperties.forEach((p) => _printPropertyRef(p, contextReference));
+    library.filteredProperties.forEach(
+        (p) => _printPropertyRef(p, contextReference));
     library.methods.forEach(_printMethod);
 
     generator.writeln();
     generator.writeln('void _throwNotAvailable() {');
-    generator.writeln('throw new UnsupportedError("\'chrome.${library.name}\' is not available");');
+    generator.writeln(
+        'throw new UnsupportedError("\'chrome.${library.name}\' is not available");');
     generator.writeln("}");
 
     generator.writeln("}");
   }
 
-  void _printPropertyRef(ChromeProperty property, String refString, [bool printSetter = false]) {
+  void _printPropertyRef(ChromeProperty property, String refString,
+      [bool printSetter = false]) {
     String converter = getReturnConverter(property.type);
     String getterBody = "${refString}['${property.idlName}']";
 
@@ -190,9 +202,12 @@ class DefaultBackend extends Backend {
     generator.writeln("${converter.replaceFirst('%s', getterBody)};");
 
     if (printSetter) {
-      // set periodInMinutes(double value) => jsProxy['periodInMinutes'] = value;
-      generator.writeln("set ${property.name}(${property.type} value) => "
-          "${getterBody} = ${getSetterConverter(property.type, 'value')};");
+
+
+          // set periodInMinutes(double value) => jsProxy['periodInMinutes'] = value;
+      generator.writeln(
+          "set ${property.name}(${property.type} value) => "
+              "${getterBody} = ${getSetterConverter(property.type, 'value')};");
     }
   }
 
@@ -201,7 +216,8 @@ class DefaultBackend extends Backend {
    * represent the `this` object. It wil default to the chrome. namespace
    * reference (e.g., `_app_window`).
    */
-  void _printMethod(ChromeMethod method, {String thisOverride, bool checkApi: true}) {
+  void _printMethod(ChromeMethod method, {String thisOverride, bool checkApi:
+      true}) {
     if (thisOverride == null) {
       thisOverride = contextReference;
     }
@@ -209,18 +225,23 @@ class DefaultBackend extends Backend {
     generator.writeln();
     generator.writeDocs(method.getDescription());
     generator.write("${method.returns.toReturnString()} ${method.name}(");
-    generator.write(method.requiredParams.map((p) => "${p.toParamString(true)} ${p.name}").join(', '));
+    generator.write(
+        method.requiredParams.map(
+            (p) => "${p.toParamString(true)} ${p.name}").join(', '));
     if (method.optionalParams.isNotEmpty) {
       if (method.requiredParams.isNotEmpty) {
         generator.write(', ');
       }
       generator.write('[');
-      generator.write(method.optionalParams.map((p) => "${p.toParamString(true)} ${p.name}").join(', '));
+      generator.write(
+          method.optionalParams.map(
+              (p) => "${p.toParamString(true)} ${p.name}").join(', '));
       generator.write(']');
     }
     generator.writeln(") {");
     if (checkApi) {
-      generator.writeln('if (${contextReference} == null) _throwNotAvailable();');
+      generator.writeln(
+          'if (${contextReference} == null) _throwNotAvailable();');
       generator.writeln();
     }
     if (method.usesCallback) {
@@ -229,7 +250,8 @@ class DefaultBackend extends Backend {
       generator.write("var completer = new ChromeCompleter${returnType}.");
       if (future.parameters.length == 0) {
         generator.writeln("noArgs();");
-      } else if (future.parameters.length == 1 && future.parameters.first.isCombinedReturnValue) {
+      } else if (future.parameters.length == 1 &&
+          future.parameters.first.isCombinedReturnValue) {
         ChromeType param = future.parameters.first;
         generator.writeln("twoArgs(${param.refName}._create);");
       } else if (future.parameters.length == 1) {
@@ -241,7 +263,8 @@ class DefaultBackend extends Backend {
           generator.writeln("oneArg(${callbackConverter});");
         }
       } else {
-        throw new StateError('unsupported number of params(${future.parameters.length})');
+        throw new StateError(
+            'unsupported number of params(${future.parameters.length})');
       }
     }
 
@@ -278,42 +301,47 @@ class DefaultBackend extends Backend {
   }
 
   void _printEventDecl(ChromeEvent event) {
-     ChromeType type = event.calculateType(library);
-     String typeName = type == null ? null : type.toReturnString();
+    ChromeType type = event.calculateType(library);
+    String typeName = type == null ? null : type.toReturnString();
 
-     generator.writeln();
-     generator.writeDocs(event.documentation);
+    generator.writeln();
+    generator.writeDocs(event.documentation);
 
-     if (type != null) {
-       generator.writeln("Stream<${typeName}> get ${event.name} => _${event.name}.stream;");
-       generator.writeln("ChromeStreamController<${typeName}> _${event.name};");
-     } else {
-       generator.writeln("Stream get ${event.name} => _${event.name}.stream;");
-       generator.writeln("ChromeStreamController _${event.name};");
-     }
+    if (type != null) {
+      generator.writeln(
+          "Stream<${typeName}> get ${event.name} => _${event.name}.stream;");
+      generator.writeln("ChromeStreamController<${typeName}> _${event.name};");
+    } else {
+      generator.writeln("Stream get ${event.name} => _${event.name}.stream;");
+      generator.writeln("ChromeStreamController _${event.name};");
+    }
   }
 
   void _printEventAssign(ChromeEvent event, {String api: "getApi"}) {
-     ChromeType type = event.calculateType(library);
-     String typeName = type == null ? null : type.toReturnString();
+    ChromeType type = event.calculateType(library);
+    String typeName = type == null ? null : type.toReturnString();
 
-     if (type != null) {
-       generator.write("_${event.name} = ");
-       String converter = getCallbackConverter(type);
-       if (converter == null) converter = 'selfConverter';
+    if (type != null) {
+      generator.write("_${event.name} = ");
+      String converter = getCallbackConverter(type);
+      if (converter == null) converter = 'selfConverter';
 
-       String argCallArity = ['noArgs', 'oneArg', 'twoArgs', 'threeArgs'][type.arity];
-       generator.writeln("new ChromeStreamController<${typeName}>.${argCallArity}("
-           "${api}, '${event.name}', ${converter});");
-     } else {
-       generator.writeln("_${event.name} = new ChromeStreamController.noArgs("
-           "${api}, '${event.name}');");
-     }
+      String argCallArity =
+          ['noArgs', 'oneArg', 'twoArgs', 'threeArgs'][type.arity];
+      generator.writeln(
+          "new ChromeStreamController<${typeName}>.${argCallArity}("
+              "${api}, '${event.name}', ${converter});");
+    } else {
+      generator.writeln(
+          "_${event.name} = new ChromeStreamController.noArgs("
+              "${api}, '${event.name}');");
+    }
   }
 
   void _printEventType(ChromeType type) {
     // We do class renames in a lexical basis for the entire compilation unit.
-    String className = type.name; //overrides.className(library.name, type.name);
+    String className =
+        type.name; //overrides.className(library.name, type.name);
 
     var props = type.filteredProperties.toList();
 
@@ -325,7 +353,8 @@ class DefaultBackend extends Backend {
       if (!first) generator.writeln();
       first = false;
       generator.writeDocs(property.getDescription());
-      generator.writeln("final ${property.type.toReturnString()} ${property.name};");
+      generator.writeln(
+          "final ${property.type.toReturnString()} ${property.name};");
     });
     generator.writeln();
     String params = props.map((p) => 'this.${p.name}').join(', ');
@@ -346,13 +375,15 @@ class DefaultBackend extends Backend {
       var constName = fromCamelCase(entry.name).toUpperCase();
       constNames.add(constName);
 
-      generator.writeln("static const ${type.name} ${constName} "
-          "= const ${type.name}._('${entry.name}');");
+      generator.writeln(
+          "static const ${type.name} ${constName} "
+              "= const ${type.name}._('${entry.name}');");
     });
 
     generator.writeln();
     String str = constNames.join(', ');
-    generator.writeln("static const List<${type.name}> VALUES = const[${str}];");
+    generator.writeln(
+        "static const List<${type.name}> VALUES = const[${str}];");
 
     generator.writeln();
     generator.writeln("const ${type.name}._(String str): super(str);");
@@ -371,13 +402,15 @@ class DefaultBackend extends Backend {
     List<ChromeProperty> props =
         type.filteredProperties.toList(growable: false);
 
-    String superName = type.superClassDef != null ? type.superClassDef : 'ChromeObject';
+    String superName =
+        type.superClassDef != null ? type.superClassDef : 'ChromeObject';
 
     generator.writeln();
     generator.writeDocs(type.documentation);
     generator.writeln("class ${className} extends ${superName} {");
     if (props.isNotEmpty && !type.noSetters) {
-      var actualProps = props.where((p) => p.type.type != 'function' && p.type.refName != 'Event');
+      var actualProps =
+          props.where((p) => p.type.type != 'function' && p.type.refName != 'Event');
       generator.write("${className}({");
       generator.write(actualProps.map((p) => "${p.type} ${p.name}").join(', '));
       generator.writeln('}) {');
@@ -388,7 +421,8 @@ class DefaultBackend extends Backend {
     } else {
       generator.writeln("${className}();");
     }
-    generator.writeln("${className}.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);");
+    generator.writeln(
+        "${className}.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);");
 
     var propRefString;
     if (library.name != 'proxy') {
@@ -406,14 +440,14 @@ class DefaultBackend extends Backend {
       }
     });
 
-    type.methods.forEach((m) => _printMethod(
-        m, thisOverride: 'jsProxy', checkApi: false));
+    type.methods.forEach(
+        (m) => _printMethod(m, thisOverride: 'jsProxy', checkApi: false));
 
     generator.writeln("}");
   }
 
   void _printDeclaredTypeEventProperty(ChromeProperty p, String refString) {
-    String typeName = titleCase(p.name)+"Event";
+    String typeName = titleCase(p.name) + "Event";
     ChromeEvent event = library.events.firstWhere(
         (e) => p.name == e.name,
         orElse: () => new ChromeEvent()..name = p.name);
@@ -430,7 +464,8 @@ class DefaultBackend extends Backend {
     }
 
     generator.writeln("if (_${event.name} == null)");
-    generator.write("  ");_printEventAssign(event, api: "()=>${refString}");
+    generator.write("  ");
+    _printEventAssign(event, api: "()=>${refString}");
     generator.writeln("return _${event.name}.stream;");
     generator.writeln("}");
 
@@ -439,16 +474,18 @@ class DefaultBackend extends Backend {
   void _printDeclaredTypeFunction(ChromeProperty p, String refString) {
     generator.writeln();
     generator.writeln("void ${p.name}([var arg1]) =>");
-    generator.writeln("       ${refString}.callMethod('${p.name}', [jsify(arg1)]);");
+    generator.writeln(
+        "       ${refString}.callMethod('${p.name}', [jsify(arg1)]);");
   }
 
   void _printReturnType(ChromeReturnType type) {
     String className = type.name;
 
     String methodName =
-        className.substring(0, 1).toLowerCase() + className.substring(1);
+        className.substring(0, 1).toLowerCase() +
+        className.substring(1);
     if (methodName.endsWith('Result')) {
-      methodName =   methodName.substring(0, methodName.length - 6);
+      methodName = methodName.substring(0, methodName.length - 6);
     }
 
     generator.writeln();
@@ -478,12 +515,14 @@ class DefaultBackend extends Backend {
   void _writeFactory(String creator) {
     String creatorTemplate = null;
 
-    var type = library.eventTypes.firstWhere((e) => e.name == creator, orElse: () => null);
+    var type =
+        library.eventTypes.firstWhere((e) => e.name == creator, orElse: () => null);
 
     if (type != null) {
       Iterable<ChromeProperty> props = type.filteredProperties;
 
-      String createParams = props.map((p) => '${getJSType(p.type)} ${p.name}').join(', ');
+      String createParams =
+          props.map((p) => '${getJSType(p.type)} ${p.name}').join(', ');
       generator.writeln("${creator} _create$creator(${createParams}) =>");
       String cvtParams = props.map((ChromeProperty p) {
         String cvt = getCallbackConverter(p.type);
@@ -497,14 +536,18 @@ class DefaultBackend extends Backend {
       return;
     }
 
-    var enumType = library.enumTypes.firstWhere((e) => e.name == creator, orElse: () => null);
+    var enumType =
+        library.enumTypes.firstWhere((e) => e.name == creator, orElse: () => null);
 
     if (enumType != null) {
-      creatorTemplate = "%s _create%s(String value) => %s.VALUES.singleWhere((ChromeEnum e) => e.value == value);";
+      creatorTemplate =
+          "%s _create%s(String value) => %s.VALUES.singleWhere((ChromeEnum e) => e.value == value);";
     } else if (creator == 'ArrayBuffer') {
-      creatorTemplate = "%s _create%s(/*JsObject*/ jsProxy) => jsProxy == null ? null : new %t.fromProxy(jsProxy);";
+      creatorTemplate =
+          "%s _create%s(/*JsObject*/ jsProxy) => jsProxy == null ? null : new %t.fromProxy(jsProxy);";
     } else {
-      creatorTemplate = "%s _create%s(JsObject jsProxy) => jsProxy == null ? null : new %t.fromProxy(jsProxy);";
+      creatorTemplate =
+          "%s _create%s(JsObject jsProxy) => jsProxy == null ? null : new %t.fromProxy(jsProxy);";
     }
 
     String altCreator =
@@ -529,7 +572,8 @@ class DefaultBackend extends Backend {
     if (param.isString || param.isInt || param.isBool) {
       return null;
     } else if (param.isList) {
-      var firstParamCallbackConverter = getCallbackConverter(param.parameters.first);
+      var firstParamCallbackConverter =
+          getCallbackConverter(param.parameters.first);
       if (firstParamCallbackConverter == null) {
         // if the elements are identity converters
         return "listify";
@@ -551,7 +595,8 @@ class DefaultBackend extends Backend {
     if (param.isString || param.isInt || param.isBool) {
       return '%s';
     } else if (param.isList) {
-      var firstParamCallbackConverter = getCallbackConverter(param.parameters.first);
+      var firstParamCallbackConverter =
+          getCallbackConverter(param.parameters.first);
       if (firstParamCallbackConverter == null) {
         // if the elements are identity converters
         return "listify(%s)";

@@ -29,7 +29,8 @@ main() {
 
       // Call [toList] asynchronously to be sure that the events have been
       // buffered beforehand and aren't just being received unbuffered.
-      expect(newFuture(() => pool.stream.toList()),
+      expect(
+          newFuture(() => pool.stream.toList()),
           completion(equals(["first", "second"])));
 
       pumpEventQueue().then((_) => pool.close());
@@ -50,18 +51,21 @@ main() {
       controller1.add("fifth");
 
       expect(newFuture(() {
-        return pool.stream.transform(new StreamTransformer.fromHandlers(
-            handleData: (data, sink) => sink.add(["data", data]),
-            handleError: (error, stackTrace, sink) {
+        return pool.stream.transform(
+            new StreamTransformer.fromHandlers(
+                handleData: (data, sink) => sink.add(["data", data]),
+                handleError: (error, stackTrace, sink) {
           sink.add(["error", error]);
         })).toList();
-      }), completion(equals([
-        ["data", "first"],
-        ["data", "second"],
-        ["error", "third"],
-        ["error", "fourth"],
-        ["data", "fifth"]
-      ])));
+      }),
+          completion(
+              equals(
+                  [
+                      ["data", "first"],
+                      ["data", "second"],
+                      ["error", "third"],
+                      ["error", "fourth"],
+                      ["data", "fifth"]])));
 
       pumpEventQueue().then((_) => pool.close());
     });
@@ -75,7 +79,8 @@ main() {
 
       // Call [toList] asynchronously to be sure that the events have been
       // buffered beforehand and aren't just being received unbuffered.
-      expect(newFuture(() => pool.stream.toList()),
+      expect(
+          newFuture(() => pool.stream.toList()),
           completion(equals(["first", "second"])));
 
       pumpEventQueue().then((_) => pool.close());
@@ -113,10 +118,12 @@ main() {
       controller2.addError("second");
 
       expect(newFuture(() {
-        return pool.stream.transform(new StreamTransformer.fromHandlers(
-            handleData: (data, sink) => sink.add(data),
-            handleError: (error, stackTrace, sink) { sink.add(error); }))
-            .toList();
+        return pool.stream.transform(
+            new StreamTransformer.fromHandlers(
+                handleData: (data, sink) => sink.add(data),
+                handleError: (error, stackTrace, sink) {
+          sink.add(error);
+        })).toList();
       }), completion(isEmpty));
 
       pumpEventQueue().then((_) => pool.close());
@@ -129,7 +136,8 @@ main() {
       controller.add("first");
       controller.add("second");
 
-      expect(pumpEventQueue().then((_) => pool.stream.toList()),
+      expect(
+          pumpEventQueue().then((_) => pool.stream.toList()),
           completion(isEmpty));
 
       pumpEventQueue().then((_) => pool.close());
@@ -163,7 +171,7 @@ main() {
         pool.add(broadcastController.stream);
 
         broadcastSyncController =
-          new StreamController<String>.broadcast(sync: true);
+            new StreamController<String>.broadcast(sync: true);
         pool.add(broadcastSyncController.stream);
       });
 
@@ -194,7 +202,8 @@ main() {
         broadcastController.add("second");
         expect(events, isEmpty);
 
-        expect(pumpEventQueue().then((_) => events),
+        expect(
+            pumpEventQueue().then((_) => events),
             completion(equals(["first", "second"])));
       });
 

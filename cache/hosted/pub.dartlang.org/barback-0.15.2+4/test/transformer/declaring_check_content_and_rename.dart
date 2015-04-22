@@ -10,13 +10,15 @@ import 'package:barback/barback.dart';
 
 import 'check_content_and_rename.dart';
 
-class DeclaringCheckContentAndRenameTransformer
-    extends CheckContentAndRenameTransformer
-    implements DeclaringTransformer {
+class DeclaringCheckContentAndRenameTransformer extends
+    CheckContentAndRenameTransformer implements DeclaringTransformer {
   DeclaringCheckContentAndRenameTransformer({String oldExtension,
-        String oldContent, String newExtension, String newContent})
-      : super(oldExtension: oldExtension, oldContent: oldContent,
-              newExtension: newExtension, newContent: newContent);
+      String oldContent, String newExtension, String newContent})
+      : super(
+          oldExtension: oldExtension,
+          oldContent: oldContent,
+          newExtension: newExtension,
+          newContent: newContent);
 
   void declareOutputs(DeclaringTransform transform) {
     transform.declareOutput(

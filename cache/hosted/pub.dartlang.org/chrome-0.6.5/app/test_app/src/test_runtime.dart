@@ -24,15 +24,15 @@ void main() {
     });
 
     test('getBackgroundPage()', () {
-      chrome.runtime.getBackgroundPage()
-        .then(expectAsync((w.Window backgroundPage) {
-          logMessage("backgroundPage = ${backgroundPage.id}");
-          logMessage("backgroundPage = ${backgroundPage.type}");
-          logMessage("backgroundPage = ${backgroundPage.state}");
-          // TODO: have better test coverage for background page.
-          // This used to pass in the old test suite.
-          expect(true, isTrue);
-        }));
+      chrome.runtime.getBackgroundPage().then(
+          expectAsync((w.Window backgroundPage) {
+        logMessage("backgroundPage = ${backgroundPage.id}");
+        logMessage("backgroundPage = ${backgroundPage.type}");
+        logMessage("backgroundPage = ${backgroundPage.state}");
+        // TODO: have better test coverage for background page.
+        // This used to pass in the old test suite.
+        expect(true, isTrue);
+      }));
     });
 
     test('getManifest()', () {
@@ -46,7 +46,9 @@ void main() {
       expect(manifest.containsKey("app"), isTrue);
       expect(manifest["app"].containsKey("background"), isTrue);
       expect(manifest["app"]["background"].containsKey("scripts"), isTrue);
-      expect(manifest["app"]["background"]["scripts"][0], equals("background.js"));
+      expect(
+          manifest["app"]["background"]["scripts"][0],
+          equals("background.js"));
     });
 
     test('getURL(String path)', () {
@@ -63,8 +65,8 @@ void main() {
 ////      });
 
     test('requestUpdateCheck()', () {
-      chrome.runtime.requestUpdateCheck()
-        .then(expectAsync((chrome.RequestUpdateCheckResult update) {
+      chrome.runtime.requestUpdateCheck().then(
+          expectAsync((chrome.RequestUpdateCheckResult update) {
         logMessage("update = ${update}");
 
         expect(update, new isInstanceOf<chrome.RequestUpdateCheckResult>());
@@ -74,8 +76,8 @@ void main() {
     });
 
     test('getPackageDirectoryEntry()', () {
-      chrome.runtime.getPackageDirectoryEntry()
-        .then(expectAsync((chrome.DirectoryEntry dir) {
+      chrome.runtime.getPackageDirectoryEntry().then(
+          expectAsync((chrome.DirectoryEntry dir) {
         expect(dir, isNotNull);
         expect(dir.name.length, greaterThanOrEqualTo(1));
         logMessage("packages dir = ${dir}");
@@ -83,25 +85,25 @@ void main() {
     });
 
     test('onStartup', () {
-      chrome.runtime.onStartup.listen((_) { }).cancel();
+      chrome.runtime.onStartup.listen((_) {}).cancel();
     });
 
     test('onInstalled', () {
-      chrome.runtime.onInstalled
-        .listen((Map<dynamic, dynamic> evt) { }).cancel();
+      chrome.runtime.onInstalled.listen(
+          (Map<dynamic, dynamic> evt) {}).cancel();
     });
 
     test('onSuspend', () {
-      chrome.runtime.onSuspend.listen((_) { }).cancel();
+      chrome.runtime.onSuspend.listen((_) {}).cancel();
     });
 
     test('onSuspendCanceled', () {
-      chrome.runtime.onSuspendCanceled.listen((_) { }).cancel();
+      chrome.runtime.onSuspendCanceled.listen((_) {}).cancel();
     });
 
     test('onUpdateAvailable', () {
-      chrome.runtime.onUpdateAvailable
-        .listen((Map<String, dynamic> version) { }).cancel();
+      chrome.runtime.onUpdateAvailable.listen(
+          (Map<String, dynamic> version) {}).cancel();
     });
 
 // TODO: sendMessage fails, invalid arguments.
@@ -113,11 +115,10 @@ void main() {
 //    });
 
     test('Test that a call to getPlatformInfo succeeds', () {
-      chrome.runtime.getPlatformInfo()
-        .then(expectAsync((Map<dynamic, dynamic> info) {
-          logMessage("info = ${info}");
-        String htmlPlatformInfo =
-            html.window.navigator.platform.toLowerCase();
+      chrome.runtime.getPlatformInfo().then(
+          expectAsync((Map<dynamic, dynamic> info) {
+        logMessage("info = ${info}");
+        String htmlPlatformInfo = html.window.navigator.platform.toLowerCase();
         expect(htmlPlatformInfo, contains(info["os"]));
       }));
     });

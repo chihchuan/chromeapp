@@ -7,8 +7,9 @@ import 'package:chrome/build/build.dart' as build;
 void main(List<String> arguments) => declare(buildApp).execute(arguments);
 
 @Command(help: 'Copies and builds a chrome application or extension')
-@ArgExample('app/test_ext harness.dart',
-  help: 'Copies the packages folder to "app/test_ext" and builds "harness.dart"')
+@ArgExample(
+    'app/test_ext harness.dart',
+    help: 'Copies the packages folder to "app/test_ext" and builds "harness.dart"')
 buildApp(String directory, String main) {
 
   // verify execution location
@@ -24,9 +25,7 @@ buildApp(String directory, String main) {
   String mainEntryPath = join(directory, main);
 
   // build with dart2js
-  runProcess(
-      'dart2js',
-      [mainEntryPath, '--out=${mainEntryPath}.js']);
+  runProcess('dart2js', [mainEntryPath, '--out=${mainEntryPath}.js']);
 
   // clean up some clutter
   runProcess('rm', ['${mainEntryPath}.js.deps', '${mainEntryPath}.js.map']);

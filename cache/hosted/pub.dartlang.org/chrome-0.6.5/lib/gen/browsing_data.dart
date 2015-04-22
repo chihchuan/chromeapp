@@ -43,7 +43,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('remove', [jsify(options), jsify(dataToRemove), completer.callback]);
+    _browsingData.callMethod(
+        'remove',
+        [jsify(options), jsify(dataToRemove), completer.callback]);
     return completer.future;
   }
 
@@ -54,7 +56,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('removeAppcache', [jsify(options), completer.callback]);
+    _browsingData.callMethod(
+        'removeAppcache',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -65,7 +69,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('removeCache', [jsify(options), completer.callback]);
+    _browsingData.callMethod(
+        'removeCache',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -77,7 +83,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('removeCookies', [jsify(options), completer.callback]);
+    _browsingData.callMethod(
+        'removeCookies',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -89,7 +97,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('removeDownloads', [jsify(options), completer.callback]);
+    _browsingData.callMethod(
+        'removeDownloads',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -100,7 +110,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('removeFileSystems', [jsify(options), completer.callback]);
+    _browsingData.callMethod(
+        'removeFileSystems',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -111,7 +123,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('removeFormData', [jsify(options), completer.callback]);
+    _browsingData.callMethod(
+        'removeFormData',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -122,7 +136,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('removeHistory', [jsify(options), completer.callback]);
+    _browsingData.callMethod(
+        'removeHistory',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -133,7 +149,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('removeIndexedDB', [jsify(options), completer.callback]);
+    _browsingData.callMethod(
+        'removeIndexedDB',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -144,7 +162,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('removeLocalStorage', [jsify(options), completer.callback]);
+    _browsingData.callMethod(
+        'removeLocalStorage',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -155,7 +175,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('removePluginData', [jsify(options), completer.callback]);
+    _browsingData.callMethod(
+        'removePluginData',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -166,7 +188,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('removePasswords', [jsify(options), completer.callback]);
+    _browsingData.callMethod(
+        'removePasswords',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -177,7 +201,9 @@ class ChromeBrowsingData extends ChromeApi {
     if (_browsingData == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _browsingData.callMethod('removeWebSQL', [jsify(options), completer.callback]);
+    _browsingData.callMethod(
+        'removeWebSQL',
+        [jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -187,12 +213,14 @@ class ChromeBrowsingData extends ChromeApi {
 }
 
 class OriginTypesBrowsingData extends ChromeObject {
-  OriginTypesBrowsingData({bool unprotectedWeb, bool protectedWeb, bool extension}) {
+  OriginTypesBrowsingData({bool unprotectedWeb, bool protectedWeb,
+      bool extension}) {
     if (unprotectedWeb != null) this.unprotectedWeb = unprotectedWeb;
     if (protectedWeb != null) this.protectedWeb = protectedWeb;
     if (extension != null) this.extension = extension;
   }
-  OriginTypesBrowsingData.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  OriginTypesBrowsingData.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Normal websites.
@@ -222,7 +250,7 @@ class RemovalOptions extends ChromeObject {
     if (since != null) this.since = since;
     if (originTypes != null) this.originTypes = originTypes;
   }
-  RemovalOptions.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  RemovalOptions.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Remove data accumulated on or after this date, represented in milliseconds
@@ -239,15 +267,20 @@ class RemovalOptions extends ChromeObject {
    * origins. Please ensure that you _really_ want to remove application data
    * before adding 'protectedWeb' or 'extensions'.
    */
-  OriginTypesBrowsingData get originTypes => _createOriginTypesBrowsingData(jsProxy['originTypes']);
-  set originTypes(OriginTypesBrowsingData value) => jsProxy['originTypes'] = jsify(value);
+  OriginTypesBrowsingData get originTypes =>
+      _createOriginTypesBrowsingData(jsProxy['originTypes']);
+  set originTypes(OriginTypesBrowsingData value) => jsProxy['originTypes'] =
+      jsify(value);
 }
 
 /**
  * A set of data types. Missing data types are interpreted as `false`.
  */
 class DataTypeSet extends ChromeObject {
-  DataTypeSet({bool appcache, bool cache, bool cookies, bool downloads, bool fileSystems, bool formData, bool history, bool indexedDB, bool localStorage, bool serverBoundCertificates, bool pluginData, bool passwords, bool webSQL}) {
+  DataTypeSet({bool appcache, bool cache, bool cookies, bool downloads,
+      bool fileSystems, bool formData, bool history, bool indexedDB,
+      bool localStorage, bool serverBoundCertificates, bool pluginData,
+      bool passwords, bool webSQL}) {
     if (appcache != null) this.appcache = appcache;
     if (cache != null) this.cache = cache;
     if (cookies != null) this.cookies = cookies;
@@ -257,12 +290,13 @@ class DataTypeSet extends ChromeObject {
     if (history != null) this.history = history;
     if (indexedDB != null) this.indexedDB = indexedDB;
     if (localStorage != null) this.localStorage = localStorage;
-    if (serverBoundCertificates != null) this.serverBoundCertificates = serverBoundCertificates;
+    if (serverBoundCertificates != null) this.serverBoundCertificates =
+        serverBoundCertificates;
     if (pluginData != null) this.pluginData = pluginData;
     if (passwords != null) this.passwords = passwords;
     if (webSQL != null) this.webSQL = webSQL;
   }
-  DataTypeSet.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  DataTypeSet.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Websites' appcaches.
@@ -323,7 +357,8 @@ class DataTypeSet extends ChromeObject {
    * Server-bound certificates.
    */
   bool get serverBoundCertificates => jsProxy['serverBoundCertificates'];
-  set serverBoundCertificates(bool value) => jsProxy['serverBoundCertificates'] = value;
+  set serverBoundCertificates(bool value) => jsProxy['serverBoundCertificates'] =
+      value;
 
   /**
    * Plugins' data.
@@ -344,4 +379,5 @@ class DataTypeSet extends ChromeObject {
   set webSQL(bool value) => jsProxy['webSQL'] = value;
 }
 
-OriginTypesBrowsingData _createOriginTypesBrowsingData(JsObject jsProxy) => jsProxy == null ? null : new OriginTypesBrowsingData.fromProxy(jsProxy);
+OriginTypesBrowsingData _createOriginTypesBrowsingData(JsObject jsProxy) =>
+    jsProxy == null ? null : new OriginTypesBrowsingData.fromProxy(jsProxy);

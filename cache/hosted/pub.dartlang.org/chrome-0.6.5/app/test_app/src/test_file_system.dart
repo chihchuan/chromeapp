@@ -10,8 +10,8 @@ void main() {
     });
 
     test('directory.getFile', () {
-      return chrome.runtime.getPackageDirectoryEntry()
-          .then(expectAsync((chrome.DirectoryEntry dir) {
+      return chrome.runtime.getPackageDirectoryEntry().then(
+          expectAsync((chrome.DirectoryEntry dir) {
         logMessage("dir = ${dir}");
         expect(dir, isNotNull);
         expect(dir.toUrl(), isNotNull);

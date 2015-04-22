@@ -33,7 +33,9 @@ class ChromeFileSystem extends ChromeApi {
     if (_fileSystem == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<String>.oneArg();
-    _fileSystem.callMethod('getDisplayPath', [jsify(entry), completer.callback]);
+    _fileSystem.callMethod(
+        'getDisplayPath',
+        [jsify(entry), completer.callback]);
     return completer.future;
   }
 
@@ -47,7 +49,9 @@ class ChromeFileSystem extends ChromeApi {
     if (_fileSystem == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<Entry>.oneArg(_createEntry);
-    _fileSystem.callMethod('getWritableEntry', [jsify(entry), completer.callback]);
+    _fileSystem.callMethod(
+        'getWritableEntry',
+        [jsify(entry), completer.callback]);
     return completer.future;
   }
 
@@ -58,7 +62,9 @@ class ChromeFileSystem extends ChromeApi {
     if (_fileSystem == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<bool>.oneArg();
-    _fileSystem.callMethod('isWritableEntry', [jsify(entry), completer.callback]);
+    _fileSystem.callMethod(
+        'isWritableEntry',
+        [jsify(entry), completer.callback]);
     return completer.future;
   }
 
@@ -72,7 +78,8 @@ class ChromeFileSystem extends ChromeApi {
   Future<ChooseEntryResult> chooseEntry([ChooseEntryOptions options]) {
     if (_fileSystem == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<ChooseEntryResult>.twoArgs(ChooseEntryResult._create);
+    var completer =
+        new ChromeCompleter<ChooseEntryResult>.twoArgs(ChooseEntryResult._create);
     _fileSystem.callMethod('chooseEntry', [jsify(options), completer.callback]);
     return completer.future;
   }
@@ -122,22 +129,29 @@ class ChromeFileSystem extends ChromeApi {
 
 class ChooseEntryType extends ChromeEnum {
   static const ChooseEntryType OPEN_FILE = const ChooseEntryType._('openFile');
-  static const ChooseEntryType OPEN_WRITABLE_FILE = const ChooseEntryType._('openWritableFile');
+  static const ChooseEntryType OPEN_WRITABLE_FILE =
+      const ChooseEntryType._('openWritableFile');
   static const ChooseEntryType SAVE_FILE = const ChooseEntryType._('saveFile');
-  static const ChooseEntryType OPEN_DIRECTORY = const ChooseEntryType._('openDirectory');
+  static const ChooseEntryType OPEN_DIRECTORY =
+      const ChooseEntryType._('openDirectory');
 
-  static const List<ChooseEntryType> VALUES = const[OPEN_FILE, OPEN_WRITABLE_FILE, SAVE_FILE, OPEN_DIRECTORY];
+  static const List<ChooseEntryType> VALUES = const [
+      OPEN_FILE,
+      OPEN_WRITABLE_FILE,
+      SAVE_FILE,
+      OPEN_DIRECTORY];
 
-  const ChooseEntryType._(String str): super(str);
+  const ChooseEntryType._(String str) : super(str);
 }
 
 class AcceptOption extends ChromeObject {
-  AcceptOption({String description, List<String> mimeTypes, List<String> extensions}) {
+  AcceptOption({String description, List<String> mimeTypes,
+      List<String> extensions}) {
     if (description != null) this.description = description;
     if (mimeTypes != null) this.mimeTypes = mimeTypes;
     if (extensions != null) this.extensions = extensions;
   }
-  AcceptOption.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  AcceptOption.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get description => jsProxy['description'];
   set description(String value) => jsProxy['description'] = value;
@@ -150,14 +164,15 @@ class AcceptOption extends ChromeObject {
 }
 
 class ChooseEntryOptions extends ChromeObject {
-  ChooseEntryOptions({ChooseEntryType type, String suggestedName, List<AcceptOption> accepts, bool acceptsAllTypes, bool acceptsMultiple}) {
+  ChooseEntryOptions({ChooseEntryType type, String suggestedName,
+      List<AcceptOption> accepts, bool acceptsAllTypes, bool acceptsMultiple}) {
     if (type != null) this.type = type;
     if (suggestedName != null) this.suggestedName = suggestedName;
     if (accepts != null) this.accepts = accepts;
     if (acceptsAllTypes != null) this.acceptsAllTypes = acceptsAllTypes;
     if (acceptsMultiple != null) this.acceptsMultiple = acceptsMultiple;
   }
-  ChooseEntryOptions.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ChooseEntryOptions.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   ChooseEntryType get type => _createChooseEntryType(jsProxy['type']);
   set type(ChooseEntryType value) => jsProxy['type'] = jsify(value);
@@ -165,7 +180,8 @@ class ChooseEntryOptions extends ChromeObject {
   String get suggestedName => jsProxy['suggestedName'];
   set suggestedName(String value) => jsProxy['suggestedName'] = value;
 
-  List<AcceptOption> get accepts => listify(jsProxy['accepts'], _createAcceptOption);
+  List<AcceptOption> get accepts =>
+      listify(jsProxy['accepts'], _createAcceptOption);
   set accepts(List<AcceptOption> value) => jsProxy['accepts'] = jsify(value);
 
   bool get acceptsAllTypes => jsProxy['acceptsAllTypes'];
@@ -180,7 +196,9 @@ class ChooseEntryOptions extends ChromeObject {
  */
 class ChooseEntryResult {
   static ChooseEntryResult _create(entry, fileEntries) {
-    return new ChooseEntryResult._(_createEntry(entry), listify(fileEntries, _createFileEntry));
+    return new ChooseEntryResult._(
+        _createEntry(entry),
+        listify(fileEntries, _createFileEntry));
   }
 
   Entry entry;
@@ -189,7 +207,11 @@ class ChooseEntryResult {
   ChooseEntryResult._(this.entry, this.fileEntries);
 }
 
-Entry _createEntry(JsObject jsProxy) => jsProxy == null ? null : new CrEntry.fromProxy(jsProxy);
-ChooseEntryType _createChooseEntryType(String value) => ChooseEntryType.VALUES.singleWhere((ChromeEnum e) => e.value == value);
-AcceptOption _createAcceptOption(JsObject jsProxy) => jsProxy == null ? null : new AcceptOption.fromProxy(jsProxy);
-FileEntry _createFileEntry(JsObject jsProxy) => jsProxy == null ? null : new ChromeFileEntry.fromProxy(jsProxy);
+Entry _createEntry(JsObject jsProxy) =>
+    jsProxy == null ? null : new CrEntry.fromProxy(jsProxy);
+ChooseEntryType _createChooseEntryType(String value) =>
+    ChooseEntryType.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+AcceptOption _createAcceptOption(JsObject jsProxy) =>
+    jsProxy == null ? null : new AcceptOption.fromProxy(jsProxy);
+FileEntry _createFileEntry(JsObject jsProxy) =>
+    jsProxy == null ? null : new ChromeFileEntry.fromProxy(jsProxy);

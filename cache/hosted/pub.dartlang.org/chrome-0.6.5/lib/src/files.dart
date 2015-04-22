@@ -1,25 +1,16 @@
-
 library chrome.src.files;
 
 import 'dart:async';
 import 'dart:js';
 //import 'dart:html' show EventStreamProvider;
 
-import 'dart:html' show
-    Blob,
-    DirectoryEntry, DirectoryReader,
-    Entry, EventTarget,
-    File, FileEntry, FileError, FileReader, FileSystem, FileWriter,
-    Metadata,
-    ProgressEvent;
+import 'dart:html' show Blob, DirectoryEntry, DirectoryReader, Entry,
+    EventTarget, File, FileEntry, FileError, FileReader, FileSystem, FileWriter,
+    Metadata, ProgressEvent;
 
-export 'dart:html' show
-    Blob,
-    DirectoryEntry, DirectoryReader,
-    Entry, EventTarget,
-    File, FileEntry, FileError, FileReader, FileSystem, FileWriter,
-    Metadata,
-    ProgressEvent;
+export 'dart:html' show Blob, DirectoryEntry, DirectoryReader, Entry,
+    EventTarget, File, FileEntry, FileError, FileReader, FileSystem, FileWriter,
+    Metadata, ProgressEvent;
 
 import 'common.dart';
 
@@ -38,13 +29,13 @@ class CrFileSystem extends ChromeObject implements FileSystem {
     return _fileSystems[jsProxy];
   }
 
-  CrFileSystem._(JsObject jsProxy): super.fromProxy(jsProxy);
+  CrFileSystem._(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get name => jsProxy['name'];
 
   DirectoryEntry get root => new CrDirectoryEntry.fromProxy(jsProxy['root']);
 
-  bool operator==(Object other) =>
+  bool operator ==(Object other) =>
       other is CrFileSystem && other.jsProxy == jsProxy;
 
   int get hashCode => jsProxy.hashCode;
@@ -75,25 +66,40 @@ abstract class CrEntry extends ChromeObject implements Entry {
     }
   }
 
-  CrEntry._fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CrEntry._fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   bool get isDirectory => jsProxy['isDirectory'];
   bool get isFile => jsProxy['isFile'];
   String get fullPath => jsProxy['fullPath'];
   String get name => jsProxy['name'];
-  FileSystem get filesystem => new CrFileSystem.fromProxy(jsProxy['filesystem']);
+  FileSystem get filesystem =>
+      new CrFileSystem.fromProxy(jsProxy['filesystem']);
 
   String toUrl() => this.jsProxy.callMethod('toURL');
 
   Future<Entry> copyTo(DirectoryEntry parent, {String name}) {
-    var completer = new _ChromeCompleterWithError<Entry>.oneArg((obj) => new CrEntry.fromProxy(obj));
-    jsProxy.callMethod('copyTo', [(parent as ChromeObject).jsProxy, name, completer.callback, completer.errorCallback]);
+    var completer = new _ChromeCompleterWithError<Entry>.oneArg(
+        (obj) => new CrEntry.fromProxy(obj));
+    jsProxy.callMethod(
+        'copyTo',
+        [
+            (parent as ChromeObject).jsProxy,
+            name,
+            completer.callback,
+            completer.errorCallback]);
     return completer.future;
   }
 
   Future<Entry> moveTo(DirectoryEntry parent, {String name}) {
-    var completer = new _ChromeCompleterWithError<Entry>.oneArg((obj) => new CrEntry.fromProxy(obj));
-    jsProxy.callMethod('moveTo', [(parent as ChromeObject).jsProxy, name, completer.callback, completer.errorCallback]);
+    var completer = new _ChromeCompleterWithError<Entry>.oneArg(
+        (obj) => new CrEntry.fromProxy(obj));
+    jsProxy.callMethod(
+        'moveTo',
+        [
+            (parent as ChromeObject).jsProxy,
+            name,
+            completer.callback,
+            completer.errorCallback]);
     return completer.future;
   }
 
@@ -106,13 +112,18 @@ abstract class CrEntry extends ChromeObject implements Entry {
   Future<Metadata> getMetadata() {
     var completer = new _ChromeCompleterWithError<Metadata>.oneArg(
         (obj) => (obj is Metadata ? obj : new CrMetadata.fromProxy(obj)));
-    jsProxy.callMethod('getMetadata', [completer.callback, completer.errorCallback]);
+    jsProxy.callMethod(
+        'getMetadata',
+        [completer.callback, completer.errorCallback]);
     return completer.future;
   }
 
   Future<Entry> getParent() {
-    var completer = new _ChromeCompleterWithError<Entry>.oneArg((obj) => new CrDirectoryEntry.fromProxy(obj));
-    jsProxy.callMethod('getParent', [completer.callback, completer.errorCallback]);
+    var completer = new _ChromeCompleterWithError<Entry>.oneArg(
+        (obj) => new CrDirectoryEntry.fromProxy(obj));
+    jsProxy.callMethod(
+        'getParent',
+        [completer.callback, completer.errorCallback]);
     return completer.future;
   }
 
@@ -123,30 +134,52 @@ class CrDirectoryEntry extends CrEntry implements DirectoryEntry {
   CrDirectoryEntry.fromProxy(JsObject jsProxy) : super._fromProxy(jsProxy);
 
   Future<Entry> createFile(String path, {bool exclusive: false}) {
-    var options = new JsObject.jsify({'create': true, 'exclusive': exclusive});
-    var completer = new _ChromeCompleterWithError<Entry>.oneArg((obj) => new CrEntry.fromProxy(obj));
-    jsProxy.callMethod('getFile', [path, options, completer.callback, completer.errorCallback]);
+    var options = new JsObject.jsify({
+      'create': true,
+      'exclusive': exclusive
+    });
+    var completer = new _ChromeCompleterWithError<Entry>.oneArg(
+        (obj) => new CrEntry.fromProxy(obj));
+    jsProxy.callMethod(
+        'getFile',
+        [path, options, completer.callback, completer.errorCallback]);
     return completer.future;
   }
 
   Future<Entry> createDirectory(String path, {bool exclusive: false}) {
-    var options = new JsObject.jsify({'create': true, 'exclusive': exclusive});
-    var completer = new _ChromeCompleterWithError<Entry>.oneArg((obj) => new CrEntry.fromProxy(obj));
-    jsProxy.callMethod('getDirectory', [path, options, completer.callback, completer.errorCallback]);
+    var options = new JsObject.jsify({
+      'create': true,
+      'exclusive': exclusive
+    });
+    var completer = new _ChromeCompleterWithError<Entry>.oneArg(
+        (obj) => new CrEntry.fromProxy(obj));
+    jsProxy.callMethod(
+        'getDirectory',
+        [path, options, completer.callback, completer.errorCallback]);
     return completer.future;
   }
 
   Future<Entry> getFile(String path) {
-    var options = new JsObject.jsify({'create': false});
-    var completer = new _ChromeCompleterWithError<Entry>.oneArg((obj) => new CrEntry.fromProxy(obj));
-    jsProxy.callMethod('getFile', [path, options, completer.callback, completer.errorCallback]);
+    var options = new JsObject.jsify({
+      'create': false
+    });
+    var completer = new _ChromeCompleterWithError<Entry>.oneArg(
+        (obj) => new CrEntry.fromProxy(obj));
+    jsProxy.callMethod(
+        'getFile',
+        [path, options, completer.callback, completer.errorCallback]);
     return completer.future;
   }
 
   Future<Entry> getDirectory(String path) {
-    var options = new JsObject.jsify({'create': false});
-    var completer = new _ChromeCompleterWithError<Entry>.oneArg((obj) => new CrEntry.fromProxy(obj));
-    jsProxy.callMethod('getDirectory', [path, options, completer.callback, completer.errorCallback]);
+    var options = new JsObject.jsify({
+      'create': false
+    });
+    var completer = new _ChromeCompleterWithError<Entry>.oneArg(
+        (obj) => new CrEntry.fromProxy(obj));
+    jsProxy.callMethod(
+        'getDirectory',
+        [path, options, completer.callback, completer.errorCallback]);
     return completer.future;
   }
 
@@ -156,11 +189,13 @@ class CrDirectoryEntry extends CrEntry implements DirectoryEntry {
 
   Future removeRecursively() {
     var completer = new _ChromeCompleterWithError.noArgs();
-    jsProxy.callMethod('removeRecursively', [completer.callback, completer.errorCallback]);
+    jsProxy.callMethod(
+        'removeRecursively',
+        [completer.callback, completer.errorCallback]);
     return completer.future;
   }
 
-  bool operator==(Object other) =>
+  bool operator ==(Object other) =>
       other is CrDirectoryEntry && other.jsProxy == jsProxy;
 
   int get hashCode => jsProxy.hashCode;
@@ -213,7 +248,7 @@ abstract class CrFileEntry extends CrEntry implements FileEntry {
     return completer.future;
   }
 
-  bool operator==(Object other) =>
+  bool operator ==(Object other) =>
       other is CrDirectoryEntry && other.jsProxy == jsProxy;
 
   int get hashCode => jsProxy.hashCode;
@@ -275,8 +310,8 @@ class ChromeFileEntry extends CrFileEntry {
 
       Completer<FileEntry> completer = new Completer();
 
-      JsObject blob = new JsObject(
-          context['Blob'], [new JsObject.jsify([text])]);
+      JsObject blob =
+          new JsObject(context['Blob'], [new JsObject.jsify([text])]);
 
       writer['onwrite'] = (var event) {
         writer['onwrite'] = null;
@@ -286,8 +321,9 @@ class ChromeFileEntry extends CrFileEntry {
       writer['onerror'] = (var event) {
         completer.completeError(_translateError(event));
       };
-      writer.callMethod(
-          'write', [blob, new JsObject.jsify({'type': 'text/plain'})]);
+      writer.callMethod('write', [blob, new JsObject.jsify({
+          'type': 'text/plain'
+        })]);
 
       return completer.future;
     });
@@ -303,7 +339,9 @@ class ChromeFileEntry extends CrFileEntry {
       Completer<FileEntry> completer = new Completer();
 
       // TODO: work around a bug on jsify, where toString() is called on
-      // data.jsProxy, inserting '1, 2, 3, 4, ...' into the blob instead of a list
+
+
+          // data.jsProxy, inserting '1, 2, 3, 4, ...' into the blob instead of a list
       // of ints
       JsObject args = new JsObject.jsify([null]);
       args[0] = data.jsProxy;
@@ -324,8 +362,11 @@ class ChromeFileEntry extends CrFileEntry {
   }
 
   Future<ChromeObject> _createWriter() {
-    var completer = new _ChromeCompleterWithError<ChromeObject>.oneArg((obj) => new ChromeObject.fromProxy(obj));
-    jsProxy.callMethod('createWriter', [completer.callback, completer.errorCallback]);
+    var completer = new _ChromeCompleterWithError<ChromeObject>.oneArg(
+        (obj) => new ChromeObject.fromProxy(obj));
+    jsProxy.callMethod(
+        'createWriter',
+        [completer.callback, completer.errorCallback]);
     return completer.future;
   }
 }
@@ -443,7 +484,7 @@ class CrFileError extends ChromeObject implements FileError {
       return name;
     }
   }
-  
+
   static bool _isFileError(error) {
     if (error is JsObject) {
       // TODO: static JsFunction errorType = context['FileError'];

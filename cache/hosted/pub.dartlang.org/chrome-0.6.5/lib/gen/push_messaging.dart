@@ -21,7 +21,10 @@ class ChromePushMessaging extends ChromeApi {
 
   ChromePushMessaging._() {
     var getApi = () => _pushMessaging;
-    _onMessage = new ChromeStreamController<Message>.oneArg(getApi, 'onMessage', _createMessage);
+    _onMessage = new ChromeStreamController<Message>.oneArg(
+        getApi,
+        'onMessage',
+        _createMessage);
   }
 
   bool get available => _pushMessaging != null;
@@ -36,8 +39,11 @@ class ChromePushMessaging extends ChromeApi {
   Future<ChannelIdResult> getChannelId([bool interactive]) {
     if (_pushMessaging == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<ChannelIdResult>.oneArg(_createChannelIdResult);
-    _pushMessaging.callMethod('getChannelId', [interactive, completer.callback]);
+    var completer =
+        new ChromeCompleter<ChannelIdResult>.oneArg(_createChannelIdResult);
+    _pushMessaging.callMethod(
+        'getChannelId',
+        [interactive, completer.callback]);
     return completer.future;
   }
 
@@ -51,7 +57,7 @@ class Message extends ChromeObject {
     if (subchannelId != null) this.subchannelId = subchannelId;
     if (payload != null) this.payload = payload;
   }
-  Message.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Message.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get subchannelId => jsProxy['subchannelId'];
   set subchannelId(int value) => jsProxy['subchannelId'] = value;
@@ -64,11 +70,13 @@ class ChannelIdResult extends ChromeObject {
   ChannelIdResult({String channelId}) {
     if (channelId != null) this.channelId = channelId;
   }
-  ChannelIdResult.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ChannelIdResult.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get channelId => jsProxy['channelId'];
   set channelId(String value) => jsProxy['channelId'] = value;
 }
 
-Message _createMessage(JsObject jsProxy) => jsProxy == null ? null : new Message.fromProxy(jsProxy);
-ChannelIdResult _createChannelIdResult(JsObject jsProxy) => jsProxy == null ? null : new ChannelIdResult.fromProxy(jsProxy);
+Message _createMessage(JsObject jsProxy) =>
+    jsProxy == null ? null : new Message.fromProxy(jsProxy);
+ChannelIdResult _createChannelIdResult(JsObject jsProxy) =>
+    jsProxy == null ? null : new ChannelIdResult.fromProxy(jsProxy);

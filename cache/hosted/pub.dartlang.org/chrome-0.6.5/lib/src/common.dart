@@ -1,4 +1,3 @@
-
 library chrome.src.common;
 
 import 'dart:convert';
@@ -128,36 +127,43 @@ class ChromeStreamController<T> {
 
   ChromeStreamController.noArgs(this._apiProvider, this._eventName) {
     _controller = new StreamController<T>.broadcast(
-        onListen: _ensureHandlerAdded, onCancel: _removeHandler);
+        onListen: _ensureHandlerAdded,
+        onCancel: _removeHandler);
     _listener = () {
       _controller.add(null);
     };
   }
 
-  ChromeStreamController.oneArg(this._apiProvider, this._eventName, Function transformer, [returnVal])  {
+  ChromeStreamController.oneArg(this._apiProvider, this._eventName,
+      Function transformer, [returnVal]) {
     _controller = new StreamController<T>.broadcast(
-        onListen: _ensureHandlerAdded, onCancel: _removeHandler);
+        onListen: _ensureHandlerAdded,
+        onCancel: _removeHandler);
     _listener = ([arg1]) {
       _controller.add(transformer(arg1));
       return returnVal;
     };
   }
 
-  ChromeStreamController.twoArgs(this._apiProvider, this._eventName, Function transformer, [returnVal]) {
+  ChromeStreamController.twoArgs(this._apiProvider, this._eventName,
+      Function transformer, [returnVal]) {
     _controller = new StreamController<T>.broadcast(
-        onListen: _ensureHandlerAdded, onCancel: _removeHandler);
+        onListen: _ensureHandlerAdded,
+        onCancel: _removeHandler);
     _listener = ([arg1, arg2]) {
       _controller.add(transformer(arg1, arg2));
       return returnVal;
     };
   }
 
-  ChromeStreamController.threeArgs(this._apiProvider, this._eventName, Function transformer, [returnVal]) {
+  ChromeStreamController.threeArgs(this._apiProvider, this._eventName,
+      Function transformer, [returnVal]) {
     _controller = new StreamController<T>.broadcast(
-        onListen: _ensureHandlerAdded, onCancel: _removeHandler);
+        onListen: _ensureHandlerAdded,
+        onCancel: _removeHandler);
     _listener = ([arg1, arg2, arg3]) {
-        _controller.add(transformer(arg1, arg2, arg3));
-        return returnVal;
+      _controller.add(transformer(arg1, arg2, arg3));
+      return returnVal;
     };
   }
 
@@ -172,7 +178,8 @@ class ChromeStreamController<T> {
       // TODO: Workaround an issue where the event objects are not properly
       // proxied in M35 and after.
       var jsEvent = _api[_eventName];
-      JsObject event = (jsEvent is JsObject ? jsEvent : new JsObject.fromBrowserObject(jsEvent));
+      JsObject event =
+          (jsEvent is JsObject ? jsEvent : new JsObject.fromBrowserObject(jsEvent));
       event.callMethod('addListener', [_listener]);
       _handlerAdded = true;
     }
@@ -183,7 +190,8 @@ class ChromeStreamController<T> {
       // TODO: Workaround an issue where the event objects are not properly
       // proxied in M35 and after.
       var jsEvent = _api[_eventName];
-      JsObject event = (jsEvent is JsObject ? jsEvent : new JsObject.fromBrowserObject(jsEvent));
+      JsObject event =
+          (jsEvent is JsObject ? jsEvent : new JsObject.fromBrowserObject(jsEvent));
       event.callMethod('removeListener', [_listener]);
       _handlerAdded = false;
     }

@@ -10,11 +10,13 @@ import 'package:barback/barback.dart';
 
 import 'declaring_check_content_and_rename.dart';
 
-class LazyCheckContentAndRenameTransformer
-    extends DeclaringCheckContentAndRenameTransformer
-    implements LazyTransformer {
-  LazyCheckContentAndRenameTransformer({String oldExtension,
-        String oldContent, String newExtension, String newContent})
-      : super(oldExtension: oldExtension, oldContent: oldContent,
-              newExtension: newExtension, newContent: newContent);
+class LazyCheckContentAndRenameTransformer extends
+    DeclaringCheckContentAndRenameTransformer implements LazyTransformer {
+  LazyCheckContentAndRenameTransformer({String oldExtension, String oldContent,
+      String newExtension, String newContent})
+      : super(
+          oldExtension: oldExtension,
+          oldContent: oldContent,
+          newExtension: newExtension,
+          newContent: newContent);
 }

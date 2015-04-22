@@ -22,7 +22,8 @@ class ChromeAudio extends ChromeApi {
 
   ChromeAudio._() {
     var getApi = () => _audio;
-    _onDeviceChanged = new ChromeStreamController.noArgs(getApi, 'onDeviceChanged');
+    _onDeviceChanged =
+        new ChromeStreamController.noArgs(getApi, 'onDeviceChanged');
   }
 
   bool get available => _audio != null;
@@ -37,7 +38,8 @@ class ChromeAudio extends ChromeApi {
   Future<GetInfoResult> getInfo() {
     if (_audio == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<GetInfoResult>.twoArgs(GetInfoResult._create);
+    var completer =
+        new ChromeCompleter<GetInfoResult>.twoArgs(GetInfoResult._create);
     _audio.callMethod('getInfo', [completer.callback]);
     return completer.future;
   }
@@ -60,7 +62,9 @@ class ChromeAudio extends ChromeApi {
     if (_audio == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _audio.callMethod('setProperties', [id, jsify(properties), completer.callback]);
+    _audio.callMethod(
+        'setProperties',
+        [id, jsify(properties), completer.callback]);
     return completer.future;
   }
 
@@ -70,14 +74,15 @@ class ChromeAudio extends ChromeApi {
 }
 
 class OutputDeviceInfo extends ChromeObject {
-  OutputDeviceInfo({String id, String name, bool isActive, bool isMuted, num volume}) {
+  OutputDeviceInfo({String id, String name, bool isActive, bool isMuted,
+      num volume}) {
     if (id != null) this.id = id;
     if (name != null) this.name = name;
     if (isActive != null) this.isActive = isActive;
     if (isMuted != null) this.isMuted = isMuted;
     if (volume != null) this.volume = volume;
   }
-  OutputDeviceInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  OutputDeviceInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get id => jsProxy['id'];
   set id(String value) => jsProxy['id'] = value;
@@ -96,14 +101,15 @@ class OutputDeviceInfo extends ChromeObject {
 }
 
 class InputDeviceInfo extends ChromeObject {
-  InputDeviceInfo({String id, String name, bool isActive, bool isMuted, num gain}) {
+  InputDeviceInfo({String id, String name, bool isActive, bool isMuted,
+      num gain}) {
     if (id != null) this.id = id;
     if (name != null) this.name = name;
     if (isActive != null) this.isActive = isActive;
     if (isMuted != null) this.isMuted = isMuted;
     if (gain != null) this.gain = gain;
   }
-  InputDeviceInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InputDeviceInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get id => jsProxy['id'];
   set id(String value) => jsProxy['id'] = value;
@@ -127,7 +133,7 @@ class DeviceProperties extends ChromeObject {
     if (volume != null) this.volume = volume;
     if (gain != null) this.gain = gain;
   }
-  DeviceProperties.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  DeviceProperties.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   bool get isMuted => jsProxy['isMuted'];
   set isMuted(bool value) => jsProxy['isMuted'] = value;
@@ -144,7 +150,9 @@ class DeviceProperties extends ChromeObject {
  */
 class GetInfoResult {
   static GetInfoResult _create(outputInfo, inputInfo) {
-    return new GetInfoResult._(listify(outputInfo, _createOutputDeviceInfo), listify(inputInfo, _createInputDeviceInfo));
+    return new GetInfoResult._(
+        listify(outputInfo, _createOutputDeviceInfo),
+        listify(inputInfo, _createInputDeviceInfo));
   }
 
   List<OutputDeviceInfo> outputInfo;
@@ -153,5 +161,7 @@ class GetInfoResult {
   GetInfoResult._(this.outputInfo, this.inputInfo);
 }
 
-OutputDeviceInfo _createOutputDeviceInfo(JsObject jsProxy) => jsProxy == null ? null : new OutputDeviceInfo.fromProxy(jsProxy);
-InputDeviceInfo _createInputDeviceInfo(JsObject jsProxy) => jsProxy == null ? null : new InputDeviceInfo.fromProxy(jsProxy);
+OutputDeviceInfo _createOutputDeviceInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new OutputDeviceInfo.fromProxy(jsProxy);
+InputDeviceInfo _createInputDeviceInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new InputDeviceInfo.fromProxy(jsProxy);

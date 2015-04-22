@@ -20,7 +20,10 @@ class ChromeIdentity extends ChromeApi {
 
   ChromeIdentity._() {
     var getApi = () => _identity;
-    _onSignInChanged = new ChromeStreamController<OnSignInChangedEvent>.twoArgs(getApi, 'onSignInChanged', _createOnSignInChangedEvent);
+    _onSignInChanged = new ChromeStreamController<OnSignInChangedEvent>.twoArgs(
+        getApi,
+        'onSignInChanged',
+        _createOnSignInChangedEvent);
   }
 
   bool get available => _identity != null;
@@ -34,7 +37,8 @@ class ChromeIdentity extends ChromeApi {
   Future<List<AccountInfo>> getAccounts() {
     if (_identity == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<AccountInfo>>.oneArg((e) => listify(e, _createAccountInfo));
+    var completer = new ChromeCompleter<List<AccountInfo>>.oneArg(
+        (e) => listify(e, _createAccountInfo));
     _identity.callMethod('getAccounts', [completer.callback]);
     return completer.future;
   }
@@ -78,7 +82,8 @@ class ChromeIdentity extends ChromeApi {
   Future<ProfileUserInfo> getProfileUserInfo() {
     if (_identity == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<ProfileUserInfo>.oneArg(_createProfileUserInfo);
+    var completer =
+        new ChromeCompleter<ProfileUserInfo>.oneArg(_createProfileUserInfo);
     _identity.callMethod('getProfileUserInfo', [completer.callback]);
     return completer.future;
   }
@@ -97,7 +102,9 @@ class ChromeIdentity extends ChromeApi {
     if (_identity == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _identity.callMethod('removeCachedAuthToken', [jsify(details), completer.callback]);
+    _identity.callMethod(
+        'removeCachedAuthToken',
+        [jsify(details), completer.callback]);
     return completer.future;
   }
 
@@ -123,7 +130,9 @@ class ChromeIdentity extends ChromeApi {
     if (_identity == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<String>.oneArg();
-    _identity.callMethod('launchWebAuthFlow', [jsify(details), completer.callback]);
+    _identity.callMethod(
+        'launchWebAuthFlow',
+        [jsify(details), completer.callback]);
     return completer.future;
   }
 
@@ -158,7 +167,7 @@ class AccountInfo extends ChromeObject {
   AccountInfo({String id}) {
     if (id != null) this.id = id;
   }
-  AccountInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  AccountInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get id => jsProxy['id'];
   set id(String value) => jsProxy['id'] = value;
@@ -169,7 +178,7 @@ class ProfileUserInfo extends ChromeObject {
     if (email != null) this.email = email;
     if (id != null) this.id = id;
   }
-  ProfileUserInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ProfileUserInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get email => jsProxy['email'];
   set email(String value) => jsProxy['email'] = value;
@@ -184,7 +193,7 @@ class TokenDetails extends ChromeObject {
     if (account != null) this.account = account;
     if (scopes != null) this.scopes = scopes;
   }
-  TokenDetails.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  TokenDetails.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   bool get interactive => jsProxy['interactive'];
   set interactive(bool value) => jsProxy['interactive'] = value;
@@ -200,7 +209,7 @@ class InvalidTokenDetails extends ChromeObject {
   InvalidTokenDetails({String token}) {
     if (token != null) this.token = token;
   }
-  InvalidTokenDetails.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InvalidTokenDetails.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get token => jsProxy['token'];
   set token(String value) => jsProxy['token'] = value;
@@ -211,7 +220,7 @@ class WebAuthFlowDetails extends ChromeObject {
     if (url != null) this.url = url;
     if (interactive != null) this.interactive = interactive;
   }
-  WebAuthFlowDetails.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  WebAuthFlowDetails.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get url => jsProxy['url'];
   set url(String value) => jsProxy['url'] = value;
@@ -220,7 +229,10 @@ class WebAuthFlowDetails extends ChromeObject {
   set interactive(bool value) => jsProxy['interactive'] = value;
 }
 
-OnSignInChangedEvent _createOnSignInChangedEvent(JsObject account, bool signedIn) =>
+OnSignInChangedEvent _createOnSignInChangedEvent(JsObject account,
+    bool signedIn) =>
     new OnSignInChangedEvent(_createAccountInfo(account), signedIn);
-AccountInfo _createAccountInfo(JsObject jsProxy) => jsProxy == null ? null : new AccountInfo.fromProxy(jsProxy);
-ProfileUserInfo _createProfileUserInfo(JsObject jsProxy) => jsProxy == null ? null : new ProfileUserInfo.fromProxy(jsProxy);
+AccountInfo _createAccountInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new AccountInfo.fromProxy(jsProxy);
+ProfileUserInfo _createProfileUserInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new ProfileUserInfo.fromProxy(jsProxy);

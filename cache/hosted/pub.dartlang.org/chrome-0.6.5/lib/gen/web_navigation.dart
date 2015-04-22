@@ -56,14 +56,16 @@ class ChromeWebNavigation extends ChromeApi {
    * Fired when a new window, or a new tab in an existing window, is created to
    * host a navigation.
    */
-  Stream<Map> get onCreatedNavigationTarget => _onCreatedNavigationTarget.stream;
+  Stream<Map> get onCreatedNavigationTarget =>
+      _onCreatedNavigationTarget.stream;
   ChromeStreamController<Map> _onCreatedNavigationTarget;
 
   /**
    * Fired when the reference fragment of a frame was updated. All future events
    * for that frame will use the updated URL.
    */
-  Stream<Map> get onReferenceFragmentUpdated => _onReferenceFragmentUpdated.stream;
+  Stream<Map> get onReferenceFragmentUpdated =>
+      _onReferenceFragmentUpdated.stream;
   ChromeStreamController<Map> _onReferenceFragmentUpdated;
 
   /**
@@ -82,15 +84,30 @@ class ChromeWebNavigation extends ChromeApi {
 
   ChromeWebNavigation._() {
     var getApi = () => _webNavigation;
-    _onBeforeNavigate = new ChromeStreamController<Map>.oneArg(getApi, 'onBeforeNavigate', mapify);
-    _onCommitted = new ChromeStreamController<Map>.oneArg(getApi, 'onCommitted', mapify);
-    _onDOMContentLoaded = new ChromeStreamController<Map>.oneArg(getApi, 'onDOMContentLoaded', mapify);
-    _onCompleted = new ChromeStreamController<Map>.oneArg(getApi, 'onCompleted', mapify);
-    _onErrorOccurred = new ChromeStreamController<Map>.oneArg(getApi, 'onErrorOccurred', mapify);
-    _onCreatedNavigationTarget = new ChromeStreamController<Map>.oneArg(getApi, 'onCreatedNavigationTarget', mapify);
-    _onReferenceFragmentUpdated = new ChromeStreamController<Map>.oneArg(getApi, 'onReferenceFragmentUpdated', mapify);
-    _onTabReplaced = new ChromeStreamController<Map>.oneArg(getApi, 'onTabReplaced', mapify);
-    _onHistoryStateUpdated = new ChromeStreamController<Map>.oneArg(getApi, 'onHistoryStateUpdated', mapify);
+    _onBeforeNavigate =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onBeforeNavigate', mapify);
+    _onCommitted =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onCommitted', mapify);
+    _onDOMContentLoaded =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onDOMContentLoaded', mapify);
+    _onCompleted =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onCompleted', mapify);
+    _onErrorOccurred =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onErrorOccurred', mapify);
+    _onCreatedNavigationTarget = new ChromeStreamController<Map>.oneArg(
+        getApi,
+        'onCreatedNavigationTarget',
+        mapify);
+    _onReferenceFragmentUpdated = new ChromeStreamController<Map>.oneArg(
+        getApi,
+        'onReferenceFragmentUpdated',
+        mapify);
+    _onTabReplaced =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onTabReplaced', mapify);
+    _onHistoryStateUpdated = new ChromeStreamController<Map>.oneArg(
+        getApi,
+        'onHistoryStateUpdated',
+        mapify);
   }
 
   bool get available => _webNavigation != null;
@@ -125,8 +142,11 @@ class ChromeWebNavigation extends ChromeApi {
   Future<List<Map>> getAllFrames(WebNavigationGetAllFramesParams details) {
     if (_webNavigation == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<Map>>.oneArg((e) => listify(e, mapify));
-    _webNavigation.callMethod('getAllFrames', [jsify(details), completer.callback]);
+    var completer =
+        new ChromeCompleter<List<Map>>.oneArg((e) => listify(e, mapify));
+    _webNavigation.callMethod(
+        'getAllFrames',
+        [jsify(details), completer.callback]);
     return completer.future;
   }
 
@@ -141,7 +161,8 @@ class WebNavigationGetFrameParams extends ChromeObject {
     if (processId != null) this.processId = processId;
     if (frameId != null) this.frameId = frameId;
   }
-  WebNavigationGetFrameParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  WebNavigationGetFrameParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * The ID of the tab in which the frame is.
@@ -166,7 +187,8 @@ class WebNavigationGetAllFramesParams extends ChromeObject {
   WebNavigationGetAllFramesParams({int tabId}) {
     if (tabId != null) this.tabId = tabId;
   }
-  WebNavigationGetAllFramesParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  WebNavigationGetAllFramesParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * The ID of the tab.

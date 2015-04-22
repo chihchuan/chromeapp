@@ -32,8 +32,8 @@ class SourceSpanException implements Exception {
 }
 
 /// A [SourceSpanException] that's also a [FormatException].
-class SourceSpanFormatException extends SourceSpanException
-    implements FormatException {
+class SourceSpanFormatException extends SourceSpanException implements
+    FormatException {
   final source;
 
   int get offset => span == null ? null : span.start.offset;

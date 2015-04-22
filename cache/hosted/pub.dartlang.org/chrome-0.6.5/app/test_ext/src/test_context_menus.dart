@@ -31,14 +31,15 @@ void main() {
           new chrome.ContextMenusCreateParams(title: 'create -- with listener');
 
       // TODO(DrMarcII): figure out a mechanism for selecting menu
-      int newId = chrome.contextMenus.create(createProperties, (_) { });
+      int newId = chrome.contextMenus.create(createProperties, (_) {});
       logMessage("newId => $newId");
       expect(newId, greaterThan(0));
     });
 
     test('create -- with many options specified', () {
       chrome.ContextMenusCreateParams createProperties =
-          new chrome.ContextMenusCreateParams(type: "checkbox",
+          new chrome.ContextMenusCreateParams(
+              type: "checkbox",
               id: 'testId',
               title: 'create -- with many options specified',
               checked: true,
@@ -46,9 +47,7 @@ void main() {
               parentId: id,
               documentUrlPatterns: ['http://www.google.com/'],
               targetUrlPatterns: ['http://www.google.com/'],
-              enabled: false
-
-          );
+              enabled: false);
 
       int newId = chrome.contextMenus.create(createProperties);
       logMessage("newId => $newId");
@@ -60,10 +59,11 @@ void main() {
       chrome.ContextMenusUpdateParams updateProperties =
           new chrome.ContextMenusUpdateParams(title: 'update -- title');
 
-      chrome.contextMenus.update(id, updateProperties)
-        .then(expectAsync((value) {
-          expect(value, isNull);
-        }));
+      chrome.contextMenus.update(
+          id,
+          updateProperties).then(expectAsync((value) {
+        expect(value, isNull);
+      }));
     });
 
     test('update -- listener', () {
@@ -71,19 +71,20 @@ void main() {
           new chrome.ContextMenusUpdateParams();
 
       // TODO(DrMarcII): figure out a mechanism for selecting menu
-      chrome.contextMenus.update(id, updateProperties)
-        .then(expectAsync((_) {
-          expect(_, isNull);
-        }));
+      chrome.contextMenus.update(id, updateProperties).then(expectAsync((_) {
+        expect(_, isNull);
+      }));
     });
 
     test('update -- with many options specified', () {
       chrome.ContextMenusCreateParams createProperties =
-          new chrome.ContextMenusCreateParams(id: 'testId',
+          new chrome.ContextMenusCreateParams(
+              id: 'testId',
               title: 'update -- with many options specified');
 
       chrome.ContextMenusUpdateParams updateProperties =
-          new chrome.ContextMenusUpdateParams(type: "checkbox",
+          new chrome.ContextMenusUpdateParams(
+              type: "checkbox",
               checked: true,
               contexts: ["frame", "selection"],
               parentId: id,
@@ -94,7 +95,9 @@ void main() {
       var newId = chrome.contextMenus.create(createProperties);
       expect(newId, equals("testId"));
 
-      chrome.contextMenus.update(newId, updateProperties).then(expectAsync((value) {
+      chrome.contextMenus.update(
+          newId,
+          updateProperties).then(expectAsync((value) {
         expect(value, isNull);
       }));
     });
@@ -103,21 +106,23 @@ void main() {
       chrome.ContextMenusUpdateParams updateProperties =
           new chrome.ContextMenusUpdateParams();
 
-      chrome.contextMenus.update('not a real id', updateProperties)
-        .catchError(expectAsync((_) { }));
+      chrome.contextMenus.update(
+          'not a real id',
+          updateProperties).catchError(expectAsync((_) {}));
     });
 
     test('remove -- successful', () {
-      chrome.contextMenus.remove(id).then(expectAsync((_) { }));
+      chrome.contextMenus.remove(id).then(expectAsync((_) {}));
     });
 
     test('remove -- failure', () {
-      chrome.contextMenus.remove('not a real id').catchError(expectAsync((_) { }));
+      chrome.contextMenus.remove(
+          'not a real id').catchError(expectAsync((_) {}));
     });
 
     test('onClicked', () {
       // TODO(DrMarcII): figure out a mechanism for selecting menu
-      chrome.contextMenus.onClicked.listen((_) { }).cancel();
+      chrome.contextMenus.onClicked.listen((_) {}).cancel();
     });
   });
 }

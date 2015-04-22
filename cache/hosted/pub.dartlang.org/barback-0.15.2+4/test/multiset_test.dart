@@ -61,19 +61,31 @@ main() {
     expect(multiSet.remove(1), isTrue);
   });
 
-  test("remove returns true if the element was in the set even if more copies "
-      "remain", () {
+  test(
+      "remove returns true if the element was in the set even if more copies "
+          "remain",
+      () {
     var multiSet = new Multiset.from([1, 1, 1]);
     expect(multiSet.remove(1), isTrue);
   });
 
   test("iterator orders distinct elements in insertion order", () {
-    var multiSet = new Multiset()..add(1)..add(2)..add(3)..add(4)..add(5);
+    var multiSet = new Multiset()
+        ..add(1)
+        ..add(2)
+        ..add(3)
+        ..add(4)
+        ..add(5);
     expect(multiSet.toList(), equals([1, 2, 3, 4, 5]));
   });
 
   test("iterator groups multiple copies of an element together", () {
-    var multiSet = new Multiset()..add(1)..add(2)..add(1)..add(2)..add(1);
+    var multiSet = new Multiset()
+        ..add(1)
+        ..add(2)
+        ..add(1)
+        ..add(2)
+        ..add(1);
     expect(multiSet.toList(), equals([1, 1, 1, 2, 2]));
   });
 }

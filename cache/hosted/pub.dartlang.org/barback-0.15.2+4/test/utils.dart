@@ -83,17 +83,18 @@ void initConfig() {
 ///
 /// [transformers] is a map from package names to the transformers for each
 /// package.
-void initGraph([assets,
-      Map<String, Iterable<Iterable<Transformer>>> transformers]) =>
+void initGraph([assets, Map<String,
+    Iterable<Iterable<Transformer>>> transformers]) =>
     initStaticGraph(assets, transformers: transformers);
 
-void initStaticGraph(assets, {Iterable<String> staticPackages,
-    Map<String, Iterable<Iterable<Transformer>>> transformers}) {
+void initStaticGraph(assets, {Iterable<String> staticPackages, Map<String,
+    Iterable<Iterable<Transformer>>> transformers}) {
   if (assets == null) assets = [];
   if (staticPackages == null) staticPackages = [];
   if (transformers == null) transformers = {};
 
-  _provider = new MockProvider(assets,
+  _provider = new MockProvider(
+      assets,
       staticPackages: staticPackages,
       additionalPackages: transformers.keys);
   _barback = new Barback(_provider);
@@ -115,7 +116,8 @@ void initStaticGraph(assets, {Iterable<String> staticPackages,
 /// parsed as one.
 void updateSources(Iterable assets) {
   assets = _parseAssets(assets);
-  schedule(() => _barback.updateSources(assets),
+  schedule(
+      () => _barback.updateSources(assets),
       "updating ${assets.join(', ')}");
 }
 
@@ -133,7 +135,8 @@ void updateSourcesSync(Iterable assets) =>
 /// parsed as one.
 void removeSources(Iterable assets) {
   assets = _parseAssets(assets);
-  schedule(() => _barback.removeSources(assets),
+  schedule(
+      () => _barback.removeSources(assets),
       "removing ${assets.join(', ')}");
 }
 
@@ -147,7 +150,8 @@ void removeSourcesSync(Iterable assets) =>
 
 /// Sets the transformers for [package] to [transformers].
 void updateTransformers(String package, Iterable<Iterable> transformers) {
-  schedule(() => _barback.updateTransformers(package, transformers),
+  schedule(
+      () => _barback.updateTransformers(package, transformers),
       "updating transformers for $package");
 }
 
@@ -240,14 +244,13 @@ void buildShouldLog(LogLevel level, matcher) {
 }
 
 Future<BuildResult> _getNextBuildResult(String description) {
-  var result = currentSchedule.wrapFuture(
-      _barback.results.elementAt(_nextBuildResult++));
+  var result =
+      currentSchedule.wrapFuture(_barback.results.elementAt(_nextBuildResult++));
   return schedule(() => result, description);
 }
 
 Future<LogEntry> _getNextLog(String description) {
-  var result = currentSchedule.wrapFuture(
-      _barback.log.elementAt(_nextLog++));
+  var result = currentSchedule.wrapFuture(_barback.log.elementAt(_nextLog++));
   return schedule(() => result, description);
 }
 
@@ -359,15 +362,16 @@ void expectAssetDoesNotComplete(String name) {
 Matcher isAggregateException(Iterable<Matcher> errors) {
   // Match the aggregate error itself.
   var matchers = [
-    new isInstanceOf<AggregateException>(),
-    transform((error) => error.errors, hasLength(errors.length),
-        'errors.length == ${errors.length}')
-  ];
+      new isInstanceOf<AggregateException>(),
+      transform(
+          (error) => error.errors,
+          hasLength(errors.length),
+          'errors.length == ${errors.length}')];
 
   // Make sure its contained errors match the matchers.
   for (var error in errors) {
-    matchers.add(transform((error) => error.errors, contains(error),
-        error.toString()));
+    matchers.add(
+        transform((error) => error.errors, contains(error), error.toString()));
   }
 
   return allOf(matchers);
@@ -437,7 +441,7 @@ Matcher isMockLoadException(String name) {
 /// [description] should be a noun phrase that describes the relation of the
 /// output of [transformation] to its input.
 Matcher transform(transformation(value), matcher, String description) =>
-  new _TransformMatcher(transformation, wrapMatcher(matcher), description);
+    new _TransformMatcher(transformation, wrapMatcher(matcher), description);
 
 class _TransformMatcher extends Matcher {
   final Function _transformation;
@@ -447,10 +451,10 @@ class _TransformMatcher extends Matcher {
   _TransformMatcher(this._transformation, this._matcher, this._description);
 
   bool matches(item, Map matchState) =>
-    _matcher.matches(_transformation(item), matchState);
+      _matcher.matches(_transformation(item), matchState);
 
   Description describe(Description description) =>
-    description.add(_description).add(' ').addDescriptionOf(_matcher);
+      description.add(_description).add(' ').addDescriptionOf(_matcher);
 }
 
 /// Asserts that [future] shouldn't complete until after [delay] completes.
@@ -465,8 +469,9 @@ Future _futureShouldNotCompleteUntil(Future future, Future delay,
   var cancelable = new CancelableFuture(future);
   cancelable.then((result) {
     currentSchedule.signalError(
-        new Exception("Expected $description not to complete here, but it "
-            "completed with result: $result"),
+        new Exception(
+            "Expected $description not to complete here, but it "
+                "completed with result: $result"),
         trace);
   }).catchError((error) {
     currentSchedule.signalError(error);
@@ -511,9 +516,10 @@ class MockProvider implements StaticPackageProvider {
   }
 
   MockProvider(assets, {Iterable<String> staticPackages,
-          Iterable<String> additionalPackages})
-      : staticPackages = staticPackages == null ? new Set() :
-            staticPackages.toSet(),
+      Iterable<String> additionalPackages})
+      : staticPackages = staticPackages == null ?
+          new Set() :
+          staticPackages.toSet(),
         _assets = _normalizeAssets(assets, additionalPackages);
 
   static Map<String, AssetSet> _normalizeAssets(assets,
@@ -532,7 +538,8 @@ class MockProvider implements StaticPackageProvider {
       });
     }
 
-    var assetMap = mapMapValues(groupBy(assetList, (asset) => asset.id.package),
+    var assetMap = mapMapValues(
+        groupBy(assetList, (asset) => asset.id.package),
         (package, assets) => new AssetSet.from(assets));
 
     // Make sure that packages that have transformers but no assets are
@@ -546,7 +553,9 @@ class MockProvider implements StaticPackageProvider {
     // If there are no assets or transformers, add a dummy package. This better
     // simulates the real world, where there'll always be at least the
     // entrypoint package.
-    return assetMap.isEmpty ? {"app": new AssetSet()} : assetMap;
+    return assetMap.isEmpty ? {
+      "app": new AssetSet()
+    } : assetMap;
   }
 
   void _modifyAsset(String name, String contents) {

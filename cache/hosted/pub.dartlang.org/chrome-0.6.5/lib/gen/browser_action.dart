@@ -28,7 +28,8 @@ class ChromeBrowserAction extends ChromeApi {
 
   ChromeBrowserAction._() {
     var getApi = () => _browserAction;
-    _onClicked = new ChromeStreamController<Tab>.oneArg(getApi, 'onClicked', _createTab);
+    _onClicked =
+        new ChromeStreamController<Tab>.oneArg(getApi, 'onClicked', _createTab);
   }
 
   bool get available => _browserAction != null;
@@ -106,14 +107,17 @@ class ChromeBrowserAction extends ChromeApi {
     if (_browserAction == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<String>.oneArg();
-    _browserAction.callMethod('getBadgeText', [jsify(details), completer.callback]);
+    _browserAction.callMethod(
+        'getBadgeText',
+        [jsify(details), completer.callback]);
     return completer.future;
   }
 
   /**
    * Sets the background color for the badge.
    */
-  void setBadgeBackgroundColor(BrowserActionSetBadgeBackgroundColorParams details) {
+  void
+      setBadgeBackgroundColor(BrowserActionSetBadgeBackgroundColorParams details) {
     if (_browserAction == null) _throwNotAvailable();
 
     _browserAction.callMethod('setBadgeBackgroundColor', [jsify(details)]);
@@ -122,11 +126,14 @@ class ChromeBrowserAction extends ChromeApi {
   /**
    * Gets the background color of the browser action.
    */
-  Future<ColorArray> getBadgeBackgroundColor(BrowserActionGetBadgeBackgroundColorParams details) {
+  Future<ColorArray>
+      getBadgeBackgroundColor(BrowserActionGetBadgeBackgroundColorParams details) {
     if (_browserAction == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<ColorArray>.oneArg(_createColorArray);
-    _browserAction.callMethod('getBadgeBackgroundColor', [jsify(details), completer.callback]);
+    _browserAction.callMethod(
+        'getBadgeBackgroundColor',
+        [jsify(details), completer.callback]);
     return completer.future;
   }
 
@@ -176,7 +183,7 @@ class ChromeBrowserAction extends ChromeApi {
 
 class ColorArray extends ChromeObject {
   ColorArray();
-  ColorArray.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ColorArray.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 }
 
 /**
@@ -185,7 +192,7 @@ class ColorArray extends ChromeObject {
  */
 class ImageDataType extends ChromeObject {
   ImageDataType();
-  ImageDataType.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ImageDataType.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 }
 
 class BrowserActionSetTitleParams extends ChromeObject {
@@ -193,7 +200,8 @@ class BrowserActionSetTitleParams extends ChromeObject {
     if (title != null) this.title = title;
     if (tabId != null) this.tabId = tabId;
   }
-  BrowserActionSetTitleParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BrowserActionSetTitleParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * The string the browser action should display when moused over.
@@ -213,7 +221,8 @@ class BrowserActionGetTitleParams extends ChromeObject {
   BrowserActionGetTitleParams({int tabId}) {
     if (tabId != null) this.tabId = tabId;
   }
-  BrowserActionGetTitleParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BrowserActionGetTitleParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Specify the tab to get the title from. If no tab is specified, the
@@ -229,7 +238,8 @@ class BrowserActionSetIconParams extends ChromeObject {
     if (path != null) this.path = path;
     if (tabId != null) this.tabId = tabId;
   }
-  BrowserActionSetIconParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BrowserActionSetIconParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Either an ImageData object or a dictionary {size -> ImageData} representing
@@ -270,7 +280,8 @@ class BrowserActionSetPopupParams extends ChromeObject {
     if (tabId != null) this.tabId = tabId;
     if (popup != null) this.popup = popup;
   }
-  BrowserActionSetPopupParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BrowserActionSetPopupParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Limits the change to when a particular tab is selected. Automatically
@@ -291,7 +302,8 @@ class BrowserActionGetPopupParams extends ChromeObject {
   BrowserActionGetPopupParams({int tabId}) {
     if (tabId != null) this.tabId = tabId;
   }
-  BrowserActionGetPopupParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BrowserActionGetPopupParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Specify the tab to get the popup from. If no tab is specified, the
@@ -306,7 +318,8 @@ class BrowserActionSetBadgeTextParams extends ChromeObject {
     if (text != null) this.text = text;
     if (tabId != null) this.tabId = tabId;
   }
-  BrowserActionSetBadgeTextParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BrowserActionSetBadgeTextParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Any number of characters can be passed, but only about four can fit in the
@@ -327,7 +340,8 @@ class BrowserActionGetBadgeTextParams extends ChromeObject {
   BrowserActionGetBadgeTextParams({int tabId}) {
     if (tabId != null) this.tabId = tabId;
   }
-  BrowserActionGetBadgeTextParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BrowserActionGetBadgeTextParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Specify the tab to get the badge text from. If no tab is specified, the
@@ -342,7 +356,8 @@ class BrowserActionSetBadgeBackgroundColorParams extends ChromeObject {
     if (color != null) this.color = color;
     if (tabId != null) this.tabId = tabId;
   }
-  BrowserActionSetBadgeBackgroundColorParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BrowserActionSetBadgeBackgroundColorParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * An array of four integers in the range [0,255] that make up the RGBA color
@@ -364,7 +379,8 @@ class BrowserActionGetBadgeBackgroundColorParams extends ChromeObject {
   BrowserActionGetBadgeBackgroundColorParams({int tabId}) {
     if (tabId != null) this.tabId = tabId;
   }
-  BrowserActionGetBadgeBackgroundColorParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BrowserActionGetBadgeBackgroundColorParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Specify the tab to get the badge background color from. If no tab is
@@ -374,5 +390,7 @@ class BrowserActionGetBadgeBackgroundColorParams extends ChromeObject {
   set tabId(int value) => jsProxy['tabId'] = value;
 }
 
-Tab _createTab(JsObject jsProxy) => jsProxy == null ? null : new Tab.fromProxy(jsProxy);
-ColorArray _createColorArray(JsObject jsProxy) => jsProxy == null ? null : new ColorArray.fromProxy(jsProxy);
+Tab _createTab(JsObject jsProxy) =>
+    jsProxy == null ? null : new Tab.fromProxy(jsProxy);
+ColorArray _createColorArray(JsObject jsProxy) =>
+    jsProxy == null ? null : new ColorArray.fromProxy(jsProxy);

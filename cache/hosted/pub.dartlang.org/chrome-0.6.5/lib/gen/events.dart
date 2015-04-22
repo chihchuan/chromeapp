@@ -29,14 +29,15 @@ class ChromeEvents extends ChromeApi {
  * Description of a declarative rule for handling events.
  */
 class Rule extends ChromeObject {
-  Rule({String id, List<String> tags, List<dynamic> conditions, List<dynamic> actions, int priority}) {
+  Rule({String id, List<String> tags, List<dynamic> conditions,
+      List<dynamic> actions, int priority}) {
     if (id != null) this.id = id;
     if (tags != null) this.tags = tags;
     if (conditions != null) this.conditions = conditions;
     if (actions != null) this.actions = actions;
     if (priority != null) this.priority = priority;
   }
-  Rule.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Rule.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Optional identifier that allows referencing this rule.
@@ -75,7 +76,7 @@ class Rule extends ChromeObject {
  */
 class ChromeEvent extends ChromeObject {
   ChromeEvent();
-  ChromeEvent.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ChromeEvent.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Registers an event listener _callback_ to an event.
@@ -117,9 +118,13 @@ class ChromeEvent extends ChromeObject {
    * Returns:
    * Rules that were registered, the optional parameters are filled with values.
    */
-  Future<List<Rule>> addRules(String eventName, int webViewInstanceId, List<Rule> rules) {
-    var completer = new ChromeCompleter<List<Rule>>.oneArg((e) => listify(e, _createRule));
-    jsProxy.callMethod('addRules', [eventName, webViewInstanceId, jsify(rules), completer.callback]);
+  Future<List<Rule>> addRules(String eventName, int webViewInstanceId,
+      List<Rule> rules) {
+    var completer =
+        new ChromeCompleter<List<Rule>>.oneArg((e) => listify(e, _createRule));
+    jsProxy.callMethod(
+        'addRules',
+        [eventName, webViewInstanceId, jsify(rules), completer.callback]);
     return completer.future;
   }
 
@@ -137,9 +142,13 @@ class ChromeEvent extends ChromeObject {
    * Returns:
    * Rules that were registered, the optional parameters are filled with values.
    */
-  Future<List<Rule>> getRules(String eventName, int webViewInstanceId, [List<String> ruleIdentifiers]) {
-    var completer = new ChromeCompleter<List<Rule>>.oneArg((e) => listify(e, _createRule));
-    jsProxy.callMethod('getRules', [eventName, webViewInstanceId, jsify(ruleIdentifiers), completer.callback]);
+  Future<List<Rule>> getRules(String eventName, int webViewInstanceId,
+      [List<String> ruleIdentifiers]) {
+    var completer =
+        new ChromeCompleter<List<Rule>>.oneArg((e) => listify(e, _createRule));
+    jsProxy.callMethod(
+        'getRules',
+        [eventName, webViewInstanceId, jsify(ruleIdentifiers), completer.callback]);
     return completer.future;
   }
 
@@ -154,9 +163,12 @@ class ChromeEvent extends ChromeObject {
    * [ruleIdentifiers] If an array is passed, only rules with identifiers
    * contained in this array are unregistered.
    */
-  Future removeRules(String eventName, int webViewInstanceId, [List<String> ruleIdentifiers]) {
+  Future removeRules(String eventName, int webViewInstanceId,
+      [List<String> ruleIdentifiers]) {
     var completer = new ChromeCompleter.noArgs();
-    jsProxy.callMethod('removeRules', [eventName, webViewInstanceId, jsify(ruleIdentifiers), completer.callback]);
+    jsProxy.callMethod(
+        'removeRules',
+        [eventName, webViewInstanceId, jsify(ruleIdentifiers), completer.callback]);
     return completer.future;
   }
 }
@@ -166,7 +178,12 @@ class ChromeEvent extends ChromeObject {
  * criteria are case sensitive.
  */
 class UrlFilter extends ChromeObject {
-  UrlFilter({String hostContains, String hostEquals, String hostPrefix, String hostSuffix, String pathContains, String pathEquals, String pathPrefix, String pathSuffix, String queryContains, String queryEquals, String queryPrefix, String querySuffix, String urlContains, String urlEquals, String urlMatches, String originAndPathMatches, String urlPrefix, String urlSuffix, List<String> schemes, List<dynamic> ports}) {
+  UrlFilter({String hostContains, String hostEquals, String hostPrefix,
+      String hostSuffix, String pathContains, String pathEquals, String pathPrefix,
+      String pathSuffix, String queryContains, String queryEquals, String queryPrefix,
+      String querySuffix, String urlContains, String urlEquals, String urlMatches,
+      String originAndPathMatches, String urlPrefix, String urlSuffix,
+      List<String> schemes, List<dynamic> ports}) {
     if (hostContains != null) this.hostContains = hostContains;
     if (hostEquals != null) this.hostEquals = hostEquals;
     if (hostPrefix != null) this.hostPrefix = hostPrefix;
@@ -182,13 +199,14 @@ class UrlFilter extends ChromeObject {
     if (urlContains != null) this.urlContains = urlContains;
     if (urlEquals != null) this.urlEquals = urlEquals;
     if (urlMatches != null) this.urlMatches = urlMatches;
-    if (originAndPathMatches != null) this.originAndPathMatches = originAndPathMatches;
+    if (originAndPathMatches != null) this.originAndPathMatches =
+        originAndPathMatches;
     if (urlPrefix != null) this.urlPrefix = urlPrefix;
     if (urlSuffix != null) this.urlSuffix = urlSuffix;
     if (schemes != null) this.schemes = schemes;
     if (ports != null) this.ports = ports;
   }
-  UrlFilter.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  UrlFilter.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Matches if the host name of the URL contains a specified string. To test
@@ -301,7 +319,8 @@ class UrlFilter extends ChromeObject {
    * syntax](http://code.google.com/p/re2/wiki/Syntax).
    */
   String get originAndPathMatches => jsProxy['originAndPathMatches'];
-  set originAndPathMatches(String value) => jsProxy['originAndPathMatches'] = value;
+  set originAndPathMatches(String value) => jsProxy['originAndPathMatches'] =
+      value;
 
   /**
    * Matches if the URL (without fragment identifier) starts with a specified
@@ -335,4 +354,5 @@ class UrlFilter extends ChromeObject {
   set ports(List<dynamic> value) => jsProxy['ports'] = jsify(value);
 }
 
-Rule _createRule(JsObject jsProxy) => jsProxy == null ? null : new Rule.fromProxy(jsProxy);
+Rule _createRule(JsObject jsProxy) =>
+    jsProxy == null ? null : new Rule.fromProxy(jsProxy);

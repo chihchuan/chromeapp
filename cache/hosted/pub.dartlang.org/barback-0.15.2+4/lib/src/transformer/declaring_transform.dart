@@ -20,14 +20,14 @@ import 'transform_logger.dart';
 /// takes the more user-friendly [DeclaringTransform] object. This method wraps
 /// the more general [DeclaringAggregateTransform] to return a
 /// [DeclaringTransform] instead.
-Future<DeclaringTransform> newDeclaringTransform(
-    DeclaringAggregateTransform aggregate) {
+Future<DeclaringTransform>
+    newDeclaringTransform(DeclaringAggregateTransform aggregate) {
   // A wrapped [Transformer] will assign each primary input a unique transform
   // key, so we can safely get the first asset emitted. We don't want to wait
   // for the stream to close, since that requires barback to prove that no more
   // new assets will be generated.
-  return aggregate.primaryIds.first.then((primaryId) => 
-      new DeclaringTransform._(aggregate, primaryId));
+  return aggregate.primaryIds.first.then(
+      (primaryId) => new DeclaringTransform._(aggregate, primaryId));
 }
 
 /// A transform for [DeclaringTransformer]s that allows them to declare the ids

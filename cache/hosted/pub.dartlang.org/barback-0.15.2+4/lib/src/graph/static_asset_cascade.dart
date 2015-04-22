@@ -42,8 +42,9 @@ class StaticAssetCascade implements AssetCascade {
 
   Future<AssetSet> get availableOutputs {
     var provider = graph.provider as StaticPackageProvider;
-    return provider.getAllAssetIds(package).asyncMap(provider.getAsset).toList()
-        .then((assets) => new AssetSet.from(assets));
+    return provider.getAllAssetIds(
+        package).asyncMap(
+            provider.getAsset).toList().then((assets) => new AssetSet.from(assets));
   }
 
   Future<AssetNode> getAssetNode(AssetId id) {
@@ -62,16 +63,16 @@ class StaticAssetCascade implements AssetCascade {
   }
 
   void updateSources(Iterable<AssetId> sources) =>
-      throw new UnsupportedError("Static package $package can't be explicitly "
-          "provided sources.");
+      throw new UnsupportedError(
+          "Static package $package can't be explicitly " "provided sources.");
 
   void removeSources(Iterable<AssetId> sources) =>
-      throw new UnsupportedError("Static package $package can't be explicitly "
-          "provided sources.");
+      throw new UnsupportedError(
+          "Static package $package can't be explicitly " "provided sources.");
 
   void updateTransformers(Iterable<Iterable> transformersIterable) =>
-      throw new UnsupportedError("Static package $package can't have "
-          "transformers.");
+      throw new UnsupportedError(
+          "Static package $package can't have " "transformers.");
 
   void forceAllTransforms() {}
 

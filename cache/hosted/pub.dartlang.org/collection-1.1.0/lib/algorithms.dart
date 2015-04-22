@@ -38,8 +38,7 @@ int _comparableBinarySearch(List<Comparable> list, Comparable key) {
  *
  * Returns -1 if [key] is not in the list by default.
  */
-int binarySearch(List sortedList, var key,
-                 { int compare(var a, var b) }) {
+int binarySearch(List sortedList, var key, {int compare(var a, var b)}) {
   if (compare == null) {
     return _comparableBinarySearch(sortedList, key);
   }
@@ -89,7 +88,8 @@ void reverse(List list, [int start = 0, int end = null]) {
 
 // Internal helper function that assumes valid arguments.
 void _reverse(List list, int start, int end) {
-  for (int i = start, j = end - 1; i < j; i++, j--) {
+  for (int i = start,
+      j = end - 1; i < j; i++, j--) {
     var tmp = list[i];
     list[i] = list[j];
     list[j] = tmp;
@@ -109,10 +109,8 @@ void _reverse(List list, int start, int end) {
  * This insertion sort is stable: Equal elements end up in the same order
  * as they started in.
  */
-void insertionSort(List list,
-                   { int compare(a, b),
-                     int start: 0,
-                     int end: null }) {
+void insertionSort(List list, {int compare(a, b), int start: 0, int end: null})
+    {
   // If the same method could have both positional and named optional
   // parameters, this should be (list, [start, end], {compare}).
   if (end == null) end = list.length;
@@ -128,7 +126,7 @@ void insertionSort(List list,
  * `start + 1`.
  */
 void _insertionSort(List list, int compare(a, b), int start, int end,
-                    int sortedUntil) {
+    int sortedUntil) {
   for (int pos = sortedUntil; pos < end; pos++) {
     int min = start;
     int max = pos;
@@ -186,10 +184,16 @@ void mergeSort(List list, {int start: 0, int end: null, int compare(a, b)}) {
   _mergeSort(list, compare, middle, end, scratchSpace, 0);
   int firstTarget = end - firstLength;
   _mergeSort(list, compare, start, middle, list, firstTarget);
-  _merge(compare,
-         list, firstTarget, end,
-         scratchSpace, 0, secondLength,
-         list, start);
+  _merge(
+      compare,
+      list,
+      firstTarget,
+      end,
+      scratchSpace,
+      0,
+      secondLength,
+      list,
+      start);
 }
 
 /**
@@ -199,7 +203,7 @@ void mergeSort(List list, {int start: 0, int end: null, int compare(a, b)}) {
  * It will work in-place as well.
  */
 void _movingInsertionSort(List list, int compare(a, b), int start, int end,
-                          List target, int targetOffset) {
+    List target, int targetOffset) {
   int length = end - start;
   if (length == 0) return;
   target[targetOffset] = list[start];
@@ -215,8 +219,7 @@ void _movingInsertionSort(List list, int compare(a, b), int start, int end,
         min = mid + 1;
       }
     }
-    target.setRange(min + 1, targetOffset + i + 1,
-                    target, min);
+    target.setRange(min + 1, targetOffset + i + 1, target, min);
     target[min] = element;
   }
 }
@@ -230,8 +233,8 @@ void _movingInsertionSort(List list, int compare(a, b), int start, int end,
  * Allows target to be the same list as [list], as long as it's not
  * overlapping the `start..end` range.
  */
-void _mergeSort(List list, int compare(a, b), int start, int end,
-                List target, int targetOffset) {
+void _mergeSort(List list, int compare(a, b), int start, int end, List target,
+    int targetOffset) {
   int length = end - start;
   if (length < _MERGE_SORT_LIMIT) {
     _movingInsertionSort(list, compare, start, end, target, targetOffset);
@@ -243,16 +246,20 @@ void _mergeSort(List list, int compare(a, b), int start, int end,
   // Here secondLength >= firstLength (differs by at most one).
   int targetMiddle = targetOffset + firstLength;
   // Sort the second half into the end of the target area.
-  _mergeSort(list, compare, middle, end,
-             target, targetMiddle);
+  _mergeSort(list, compare, middle, end, target, targetMiddle);
   // Sort the first half into the end of the source area.
-  _mergeSort(list, compare, start, middle,
-             list, middle);
+  _mergeSort(list, compare, start, middle, list, middle);
   // Merge the two parts into the target area.
-  _merge(compare,
-         list, middle, middle + firstLength,
-         target, targetMiddle, targetMiddle + secondLength,
-         target, targetOffset);
+  _merge(
+      compare,
+      list,
+      middle,
+      middle + firstLength,
+      target,
+      targetMiddle,
+      targetMiddle + secondLength,
+      target,
+      targetOffset);
 }
 
 /**
@@ -265,10 +272,9 @@ void _mergeSort(List list, int compare(a, b), int start, int end,
  * This allows the merge to be stable if the first list contains elements
  * that started out earlier than the ones in [secondList]
  */
-void _merge(int compare(a, b),
-            List firstList, int firstStart, int firstEnd,
-            List secondList, int secondStart, int secondEnd,
-            List target, int targetOffset) {
+void _merge(int compare(a, b), List firstList, int firstStart, int firstEnd,
+    List secondList, int secondStart, int secondEnd, List target, int targetOffset)
+    {
   // No empty lists reaches here.
   assert(firstStart < firstEnd);
   assert(secondStart < secondEnd);
@@ -279,7 +285,7 @@ void _merge(int compare(a, b),
   while (true) {
     if (compare(firstElement, secondElement) <= 0) {
       target[targetOffset++] = firstElement;
-      if (cursor1 == firstEnd) break;  // Flushing second list after loop.
+      if (cursor1 == firstEnd) break; // Flushing second list after loop.
       firstElement = firstList[cursor1++];
     } else {
       target[targetOffset++] = secondElement;
@@ -289,13 +295,19 @@ void _merge(int compare(a, b),
       }
       // Second list empties first. Flushing first list here.
       target[targetOffset++] = firstElement;
-      target.setRange(targetOffset, targetOffset + (firstEnd - cursor1),
-          firstList, cursor1);
+      target.setRange(
+          targetOffset,
+          targetOffset + (firstEnd - cursor1),
+          firstList,
+          cursor1);
       return;
     }
   }
   // First list empties first. Reached by break above.
   target[targetOffset++] = secondElement;
-  target.setRange(targetOffset, targetOffset + (secondEnd - cursor2),
-      secondList, cursor2);
+  target.setRange(
+      targetOffset,
+      targetOffset + (secondEnd - cursor2),
+      secondList,
+      cursor2);
 }

@@ -72,8 +72,9 @@ class Pool {
   ///
   /// The return value of [callback] is piped to the returned Future.
   Future withResource(callback()) {
-    return request().then((resource) =>
-        Chain.track(new Future.sync(callback)).whenComplete(resource.release));
+    return request().then(
+        (resource) =>
+            Chain.track(new Future.sync(callback)).whenComplete(resource.release));
   }
 
   /// If there are any pending requests, this will fire the oldest one.
@@ -107,8 +108,8 @@ class Pool {
   void _onTimeout() {
     for (var completer in _requestedResources) {
       completer.completeError(
-          new TimeoutException("Pool deadlock: all resources have been "
-              "allocated for too long.",
+          new TimeoutException(
+              "Pool deadlock: all resources have been " "allocated for too long.",
               _timeout),
           new Chain.current());
     }

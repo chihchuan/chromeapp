@@ -15,17 +15,17 @@ import 'utils.dart';
 void main() {
   group('capture() with onError catches exceptions', () {
     test('thrown synchronously', () {
-      return captureFuture(() => throw 'error')
-          .then((chain) {
+      return captureFuture(() => throw 'error').then((chain) {
         expect(chain.traces, hasLength(1));
-        expect(chain.traces.single.frames.first,
+        expect(
+            chain.traces.single.frames.first,
             frameMember(startsWith('main')));
       });
     });
 
     test('thrown in a microtask', () {
-      return captureFuture(() => inMicrotask(() => throw 'error'))
-          .then((chain) {
+      return captureFuture(
+          () => inMicrotask(() => throw 'error')).then((chain) {
         // Since there was only one asynchronous operation, there should be only
         // two traces in the chain.
         expect(chain.traces, hasLength(2));
@@ -36,27 +36,30 @@ void main() {
 
         // The second trace should describe the stack when the error callback
         // was scheduled.
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inMicrotask'))));
       });
     });
 
     test('thrown in a one-shot timer', () {
-      return captureFuture(() => inOneShotTimer(() => throw 'error'))
-          .then((chain) {
+      return captureFuture(
+          () => inOneShotTimer(() => throw 'error')).then((chain) {
         expect(chain.traces, hasLength(2));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inOneShotTimer'))));
       });
     });
 
     test('thrown in a periodic timer', () {
-      return captureFuture(() => inPeriodicTimer(() => throw 'error'))
-          .then((chain) {
+      return captureFuture(
+          () => inPeriodicTimer(() => throw 'error')).then((chain) {
         expect(chain.traces, hasLength(2));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inPeriodicTimer'))));
       });
     });
@@ -69,18 +72,21 @@ void main() {
       }).then((chain) {
         expect(chain.traces, hasLength(4));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inMicrotask'))));
-        expect(chain.traces[2].frames,
+        expect(
+            chain.traces[2].frames,
             contains(frameMember(startsWith('inOneShotTimer'))));
-        expect(chain.traces[3].frames,
+        expect(
+            chain.traces[3].frames,
             contains(frameMember(startsWith('inPeriodicTimer'))));
       });
     });
 
     test('thrown in a long future chain', () {
-      return captureFuture(() => inFutureChain(() => throw 'error'))
-          .then((chain) {
+      return captureFuture(
+          () => inFutureChain(() => throw 'error')).then((chain) {
         // Despite many asynchronous operations, there's only one level of
         // nested calls, so there should be only two traces in the chain. This
         // is important; programmers expect stack trace memory consumption to be
@@ -88,14 +94,15 @@ void main() {
         expect(chain.traces, hasLength(2));
 
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inFutureChain'))));
       });
     });
 
     test('thrown in new Future()', () {
-      return captureFuture(() => inNewFuture(() => throw 'error'))
-          .then((chain) {
+      return captureFuture(
+          () => inNewFuture(() => throw 'error')).then((chain) {
         expect(chain.traces, hasLength(3));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
 
@@ -103,10 +110,12 @@ void main() {
         // [StackZoneSpecification.errorCallback]. Because that runs
         // asynchronously within [new Future], it doesn't actually refer to the
         // source file at all.
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             everyElement(frameLibrary(isNot(contains('chain_test')))));
 
-        expect(chain.traces[2].frames,
+        expect(
+            chain.traces[2].frames,
             contains(frameMember(startsWith('inNewFuture'))));
       });
     });
@@ -117,9 +126,11 @@ void main() {
       }).then((chain) {
         expect(chain.traces, hasLength(3));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inSyncFuture'))));
-        expect(chain.traces[2].frames,
+        expect(
+            chain.traces[2].frames,
             contains(frameMember(startsWith('inMicrotask'))));
       });
     });
@@ -135,12 +146,14 @@ void main() {
         try {
           if (first) {
             expect(error, equals('first error'));
-            expect(chain.traces[1].frames,
+            expect(
+                chain.traces[1].frames,
                 contains(frameMember(startsWith('inMicrotask'))));
             first = false;
           } else {
             expect(error, equals('second error'));
-            expect(chain.traces[1].frames,
+            expect(
+                chain.traces[1].frames,
                 contains(frameMember(startsWith('inPeriodicTimer'))));
             completer.complete();
           }
@@ -165,12 +178,14 @@ void main() {
 
         // The second trace is the trace that was captured when
         // [Completer.addError] was called.
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('completerErrorFuture'))));
 
         // The third trace is the automatically-captured trace from when the
         // microtask was scheduled.
-        expect(chain.traces[2].frames,
+        expect(
+            chain.traces[2].frames,
             contains(frameMember(startsWith('inMicrotask'))));
       });
     });
@@ -183,12 +198,14 @@ void main() {
 
         // The first trace is the one captured when [Completer.addError] was
         // called.
-        expect(chain.traces[0].frames,
+        expect(
+            chain.traces[0].frames,
             contains(frameMember(startsWith('completerErrorFuture'))));
 
         // The second trace is the automatically-captured trace from when the
         // microtask was scheduled.
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inMicrotask'))));
       });
     });
@@ -200,9 +217,11 @@ void main() {
       }).then((chain) {
         expect(chain.traces, hasLength(3));
         expect(chain.traces.first.toString(), equals(trace.toString()));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('controllerErrorStream'))));
-        expect(chain.traces[2].frames,
+        expect(
+            chain.traces[2].frames,
             contains(frameMember(startsWith('inMicrotask'))));
       });
     });
@@ -212,9 +231,11 @@ void main() {
         inMicrotask(() => controllerErrorStream().listen(null));
       }).then((chain) {
         expect(chain.traces, hasLength(2));
-        expect(chain.traces[0].frames,
+        expect(
+            chain.traces[0].frames,
             contains(frameMember(startsWith('controllerErrorStream'))));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inMicrotask'))));
       });
     });
@@ -227,7 +248,8 @@ void main() {
           inMicrotask(() => throw 'error');
         }, onError: (error, chain) {
           expect(error, equals('error'));
-          expect(chain.traces[1].frames,
+          expect(
+              chain.traces[1].frames,
               contains(frameMember(startsWith('inMicrotask'))));
           throw error;
         });
@@ -235,7 +257,8 @@ void main() {
         try {
           expect(error, equals('error'));
           expect(chain, new isInstanceOf<Chain>());
-          expect(chain.traces[1].frames,
+          expect(
+              chain.traces[1].frames,
               contains(frameMember(startsWith('inMicrotask'))));
           completer.complete();
         } catch (error, stackTrace) {
@@ -256,7 +279,8 @@ void main() {
       try {
         expect(error, equals('error'));
         expect(chain, new isInstanceOf<Chain>());
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inMicrotask'))));
         completer.complete();
       } catch (error, stackTrace) {
@@ -277,7 +301,8 @@ void main() {
       return completer.future.then((chain) {
         expect(chain.traces, hasLength(2));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inMicrotask'))));
       });
     });
@@ -291,7 +316,8 @@ void main() {
       return completer.future.then((chain) {
         expect(chain.traces, hasLength(2));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inOneShotTimer'))));
       });
     });
@@ -305,7 +331,8 @@ void main() {
       return completer.future.then((chain) {
         expect(chain.traces, hasLength(2));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inPeriodicTimer'))));
       });
     });
@@ -323,11 +350,14 @@ void main() {
       return completer.future.then((chain) {
         expect(chain.traces, hasLength(4));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inMicrotask'))));
-        expect(chain.traces[2].frames,
+        expect(
+            chain.traces[2].frames,
             contains(frameMember(startsWith('inOneShotTimer'))));
-        expect(chain.traces[3].frames,
+        expect(
+            chain.traces[3].frames,
             contains(frameMember(startsWith('inPeriodicTimer'))));
       });
     });
@@ -341,14 +371,16 @@ void main() {
       return completer.future.then((chain) {
         expect(chain.traces, hasLength(2));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('inFutureChain'))));
       });
     });
   });
 
-  test('current() outside of capture() returns a chain wrapping the current '
-      'trace', () {
+  test(
+      'current() outside of capture() returns a chain wrapping the current ' 'trace',
+      () {
     var completer = new Completer();
     inMicrotask(() => completer.complete(new Chain.current()));
 
@@ -371,9 +403,11 @@ void main() {
         // an additional level of async nesting and so an additional trace.
         expect(chain.traces, hasLength(3));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('chainForTrace'))));
-        expect(chain.traces[2].frames,
+        expect(
+            chain.traces[2].frames,
             contains(frameMember(startsWith('inMicrotask'))));
       });
     });
@@ -384,9 +418,11 @@ void main() {
       }).then((chain) {
         expect(chain.traces, hasLength(3));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('chainForTrace'))));
-        expect(chain.traces[2].frames,
+        expect(
+            chain.traces[2].frames,
             contains(frameMember(startsWith('inOneShotTimer'))));
       });
     });
@@ -397,15 +433,18 @@ void main() {
       }).then((chain) {
         expect(chain.traces, hasLength(3));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('chainForTrace'))));
-        expect(chain.traces[2].frames,
+        expect(
+            chain.traces[2].frames,
             contains(frameMember(startsWith('inPeriodicTimer'))));
       });
     });
 
-    test('called for a stack trace from a nested series of asynchronous '
-        'operations', () {
+    test(
+        'called for a stack trace from a nested series of asynchronous ' 'operations',
+        () {
       return Chain.capture(() {
         return chainForTrace((callback) {
           inPeriodicTimer(() => inOneShotTimer(() => inMicrotask(callback)));
@@ -413,13 +452,17 @@ void main() {
       }).then((chain) {
         expect(chain.traces, hasLength(5));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('chainForTrace'))));
-        expect(chain.traces[2].frames,
+        expect(
+            chain.traces[2].frames,
             contains(frameMember(startsWith('inMicrotask'))));
-        expect(chain.traces[3].frames,
+        expect(
+            chain.traces[3].frames,
             contains(frameMember(startsWith('inOneShotTimer'))));
-        expect(chain.traces[4].frames,
+        expect(
+            chain.traces[4].frames,
             contains(frameMember(startsWith('inPeriodicTimer'))));
       });
     });
@@ -430,15 +473,18 @@ void main() {
       }).then((chain) {
         expect(chain.traces, hasLength(3));
         expect(chain.traces[0].frames.first, frameMember(startsWith('main')));
-        expect(chain.traces[1].frames,
+        expect(
+            chain.traces[1].frames,
             contains(frameMember(startsWith('chainForTrace'))));
-        expect(chain.traces[2].frames,
+        expect(
+            chain.traces[2].frames,
             contains(frameMember(startsWith('inFutureChain'))));
       });
     });
 
-    test('called for an unregistered stack trace returns a chain wrapping that '
-        'trace', () {
+    test(
+        'called for an unregistered stack trace returns a chain wrapping that ' 'trace',
+        () {
       var trace;
       var chain = Chain.capture(() {
         try {
@@ -450,13 +496,15 @@ void main() {
       });
 
       expect(chain.traces, hasLength(1));
-      expect(chain.traces.first.toString(),
+      expect(
+          chain.traces.first.toString(),
           equals(new Trace.from(trace).toString()));
     });
   });
 
-  test('forTrace() outside of capture() returns a chain wrapping the given '
-      'trace', () {
+  test(
+      'forTrace() outside of capture() returns a chain wrapping the given ' 'trace',
+      () {
     var trace;
     var chain = Chain.capture(() {
       try {
@@ -468,87 +516,89 @@ void main() {
     });
 
     expect(chain.traces, hasLength(1));
-    expect(chain.traces.first.toString(),
+    expect(
+        chain.traces.first.toString(),
         equals(new Trace.from(trace).toString()));
   });
 
   test('Chain.parse() parses a real Chain', () {
     return captureFuture(() => inMicrotask(() => throw 'error')).then((chain) {
-      expect(new Chain.parse(chain.toString()).toString(),
+      expect(
+          new Chain.parse(chain.toString()).toString(),
           equals(chain.toString()));
     });
   });
 
   test("toString() ensures that all traces are aligned", () {
-    var chain = new Chain([
-      new Trace.parse('short 10:11  Foo.bar\n'),
-      new Trace.parse('loooooooooooong 10:11  Zop.zoop')
-    ]);
+    var chain = new Chain(
+        [
+            new Trace.parse('short 10:11  Foo.bar\n'),
+            new Trace.parse('loooooooooooong 10:11  Zop.zoop')]);
 
-    expect(chain.toString(), equals(
-        'short 10:11            Foo.bar\n'
-        '===== asynchronous gap ===========================\n'
-        'loooooooooooong 10:11  Zop.zoop\n'));
+    expect(
+        chain.toString(),
+        equals(
+            'short 10:11            Foo.bar\n'
+                '===== asynchronous gap ===========================\n'
+                'loooooooooooong 10:11  Zop.zoop\n'));
   });
 
   var userSlashCode = p.join('user', 'code.dart');
   group('Chain.terse', () {
     test('makes each trace terse', () {
-      var chain = new Chain([
-        new Trace.parse(
-            'dart:core 10:11       Foo.bar\n'
-            'dart:core 10:11       Bar.baz\n'
-            'user/code.dart 10:11  Bang.qux\n'
-            'dart:core 10:11       Zip.zap\n'
-            'dart:core 10:11       Zop.zoop'),
-        new Trace.parse(
-            'user/code.dart 10:11                        Bang.qux\n'
-            'dart:core 10:11                             Foo.bar\n'
-            'package:stack_trace/stack_trace.dart 10:11  Bar.baz\n'
-            'dart:core 10:11                             Zip.zap\n'
-            'user/code.dart 10:11                        Zop.zoop')
-      ]);
+      var chain = new Chain(
+          [
+              new Trace.parse(
+                  'dart:core 10:11       Foo.bar\n' 'dart:core 10:11       Bar.baz\n'
+                      'user/code.dart 10:11  Bang.qux\n' 'dart:core 10:11       Zip.zap\n'
+                      'dart:core 10:11       Zop.zoop'),
+              new Trace.parse(
+                  'user/code.dart 10:11                        Bang.qux\n'
+                      'dart:core 10:11                             Foo.bar\n'
+                      'package:stack_trace/stack_trace.dart 10:11  Bar.baz\n'
+                      'dart:core 10:11                             Zip.zap\n'
+                      'user/code.dart 10:11                        Zop.zoop')]);
 
-      expect(chain.terse.toString(), equals(
-          'dart:core             Bar.baz\n'
-          '$userSlashCode 10:11  Bang.qux\n'
-          '===== asynchronous gap ===========================\n'
-          '$userSlashCode 10:11  Bang.qux\n'
-          'dart:core             Zip.zap\n'
-          '$userSlashCode 10:11  Zop.zoop\n'));
+      expect(
+          chain.terse.toString(),
+          equals(
+              'dart:core             Bar.baz\n' '$userSlashCode 10:11  Bang.qux\n'
+                  '===== asynchronous gap ===========================\n'
+                  '$userSlashCode 10:11  Bang.qux\n' 'dart:core             Zip.zap\n'
+                  '$userSlashCode 10:11  Zop.zoop\n'));
     });
 
     test('eliminates internal-only traces', () {
-      var chain = new Chain([
-        new Trace.parse(
-            'user/code.dart 10:11  Foo.bar\n'
-            'dart:core 10:11       Bar.baz'),
-        new Trace.parse(
-            'dart:core 10:11                             Foo.bar\n'
-            'package:stack_trace/stack_trace.dart 10:11  Bar.baz\n'
-            'dart:core 10:11                             Zip.zap'),
-        new Trace.parse(
-            'user/code.dart 10:11  Foo.bar\n'
-            'dart:core 10:11       Bar.baz')
-      ]);
+      var chain = new Chain(
+          [
+              new Trace.parse(
+                  'user/code.dart 10:11  Foo.bar\n' 'dart:core 10:11       Bar.baz'),
+              new Trace.parse(
+                  'dart:core 10:11                             Foo.bar\n'
+                      'package:stack_trace/stack_trace.dart 10:11  Bar.baz\n'
+                      'dart:core 10:11                             Zip.zap'),
+              new Trace.parse(
+                  'user/code.dart 10:11  Foo.bar\n' 'dart:core 10:11       Bar.baz')]);
 
-      expect(chain.terse.toString(), equals(
-          '$userSlashCode 10:11  Foo.bar\n'
-          '===== asynchronous gap ===========================\n'
-          '$userSlashCode 10:11  Foo.bar\n'));
+      expect(
+          chain.terse.toString(),
+          equals(
+              '$userSlashCode 10:11  Foo.bar\n'
+                  '===== asynchronous gap ===========================\n'
+                  '$userSlashCode 10:11  Foo.bar\n'));
     });
 
     test("doesn't return an empty chain", () {
-      var chain = new Chain([
-        new Trace.parse(
-            'dart:core 10:11                             Foo.bar\n'
-            'package:stack_trace/stack_trace.dart 10:11  Bar.baz\n'
-            'dart:core 10:11                             Zip.zap'),
-        new Trace.parse(
-            'dart:core 10:11                             A.b\n'
-            'package:stack_trace/stack_trace.dart 10:11  C.d\n'
-            'dart:core 10:11                             E.f')
-      ]);
+      var chain = new Chain(
+          [
+              new Trace.parse(
+                  'dart:core 10:11                             Foo.bar\n'
+                      'package:stack_trace/stack_trace.dart 10:11  Bar.baz\n'
+                      'dart:core 10:11                             Zip.zap'),
+              new Trace.parse(
+                  'dart:core 10:11                             A.b\n'
+                      'package:stack_trace/stack_trace.dart 10:11  C.d\n'
+                      'dart:core 10:11                             E.f')]);
 
       expect(chain.terse.toString(), equals('dart:core  E.f\n'));
     });
@@ -556,86 +606,66 @@ void main() {
 
   group('Chain.foldFrames', () {
     test('folds each trace', () {
-      var chain = new Chain([
-        new Trace.parse(
-            'a.dart 10:11  Foo.bar\n'
-            'a.dart 10:11  Bar.baz\n'
-            'b.dart 10:11  Bang.qux\n'
-            'a.dart 10:11  Zip.zap\n'
-            'a.dart 10:11  Zop.zoop'),
-        new Trace.parse(
-            'a.dart 10:11  Foo.bar\n'
-            'a.dart 10:11  Bar.baz\n'
-            'a.dart 10:11  Bang.qux\n'
-            'a.dart 10:11  Zip.zap\n'
-            'b.dart 10:11  Zop.zoop')
-      ]);
+      var chain = new Chain(
+          [
+              new Trace.parse(
+                  'a.dart 10:11  Foo.bar\n' 'a.dart 10:11  Bar.baz\n' 'b.dart 10:11  Bang.qux\n'
+                      'a.dart 10:11  Zip.zap\n' 'a.dart 10:11  Zop.zoop'),
+              new Trace.parse(
+                  'a.dart 10:11  Foo.bar\n' 'a.dart 10:11  Bar.baz\n' 'a.dart 10:11  Bang.qux\n'
+                      'a.dart 10:11  Zip.zap\n' 'b.dart 10:11  Zop.zoop')]);
 
       var folded = chain.foldFrames((frame) => frame.library == 'a.dart');
-      expect(folded.toString(), equals(
-          'a.dart 10:11  Bar.baz\n'
-          'b.dart 10:11  Bang.qux\n'
-          'a.dart 10:11  Zop.zoop\n'
-          '===== asynchronous gap ===========================\n'
-          'a.dart 10:11  Zip.zap\n'
-          'b.dart 10:11  Zop.zoop\n'));
+      expect(
+          folded.toString(),
+          equals(
+              'a.dart 10:11  Bar.baz\n' 'b.dart 10:11  Bang.qux\n' 'a.dart 10:11  Zop.zoop\n'
+                  '===== asynchronous gap ===========================\n' 'a.dart 10:11  Zip.zap\n'
+                  'b.dart 10:11  Zop.zoop\n'));
     });
 
     test('with terse: true, folds core frames as well', () {
-      var chain = new Chain([
-        new Trace.parse(
-            'a.dart 10:11                        Foo.bar\n'
-            'dart:async-patch/future.dart 10:11  Zip.zap\n'
-            'b.dart 10:11                        Bang.qux\n'
-            'dart:core 10:11                     Bar.baz\n'
-            'a.dart 10:11                        Zop.zoop'),
-        new Trace.parse(
-            'a.dart 10:11  Foo.bar\n'
-            'a.dart 10:11  Bar.baz\n'
-            'a.dart 10:11  Bang.qux\n'
-            'a.dart 10:11  Zip.zap\n'
-            'b.dart 10:11  Zop.zoop')
-      ]);
+      var chain = new Chain(
+          [
+              new Trace.parse(
+                  'a.dart 10:11                        Foo.bar\n'
+                      'dart:async-patch/future.dart 10:11  Zip.zap\n'
+                      'b.dart 10:11                        Bang.qux\n'
+                      'dart:core 10:11                     Bar.baz\n'
+                      'a.dart 10:11                        Zop.zoop'),
+              new Trace.parse(
+                  'a.dart 10:11  Foo.bar\n' 'a.dart 10:11  Bar.baz\n' 'a.dart 10:11  Bang.qux\n'
+                      'a.dart 10:11  Zip.zap\n' 'b.dart 10:11  Zop.zoop')]);
 
-      var folded = chain.foldFrames((frame) => frame.library == 'a.dart',
-          terse: true);
-      expect(folded.toString(), equals(
-          'dart:async    Zip.zap\n'
-          'b.dart 10:11  Bang.qux\n'
-          'a.dart        Zop.zoop\n'
-          '===== asynchronous gap ===========================\n'
-          'a.dart        Zip.zap\n'
-          'b.dart 10:11  Zop.zoop\n'));
+      var folded =
+          chain.foldFrames((frame) => frame.library == 'a.dart', terse: true);
+      expect(
+          folded.toString(),
+          equals(
+              'dart:async    Zip.zap\n' 'b.dart 10:11  Bang.qux\n' 'a.dart        Zop.zoop\n'
+                  '===== asynchronous gap ===========================\n' 'a.dart        Zip.zap\n'
+                  'b.dart 10:11  Zop.zoop\n'));
     });
 
     test('eliminates completely-folded traces', () {
-      var chain = new Chain([
-        new Trace.parse(
-            'a.dart 10:11  Foo.bar\n'
-            'b.dart 10:11  Bang.qux'),
-        new Trace.parse(
-            'a.dart 10:11  Foo.bar\n'
-            'a.dart 10:11  Bang.qux'),
-        new Trace.parse(
-            'a.dart 10:11  Zip.zap\n'
-            'b.dart 10:11  Zop.zoop')
-      ]);
+      var chain = new Chain(
+          [
+              new Trace.parse('a.dart 10:11  Foo.bar\n' 'b.dart 10:11  Bang.qux'),
+              new Trace.parse('a.dart 10:11  Foo.bar\n' 'a.dart 10:11  Bang.qux'),
+              new Trace.parse('a.dart 10:11  Zip.zap\n' 'b.dart 10:11  Zop.zoop')]);
 
       var folded = chain.foldFrames((frame) => frame.library == 'a.dart');
-      expect(folded.toString(), equals(
-          'a.dart 10:11  Foo.bar\n'
-          'b.dart 10:11  Bang.qux\n'
-          '===== asynchronous gap ===========================\n'
-          'a.dart 10:11  Zip.zap\n'
-          'b.dart 10:11  Zop.zoop\n'));
+      expect(
+          folded.toString(),
+          equals(
+              'a.dart 10:11  Foo.bar\n' 'b.dart 10:11  Bang.qux\n'
+                  '===== asynchronous gap ===========================\n' 'a.dart 10:11  Zip.zap\n'
+                  'b.dart 10:11  Zop.zoop\n'));
     });
 
     test("doesn't return an empty trace", () {
-      var chain = new Chain([
-        new Trace.parse(
-            'a.dart 10:11  Foo.bar\n'
-            'a.dart 10:11  Bang.qux')
-      ]);
+      var chain = new Chain(
+          [new Trace.parse('a.dart 10:11  Foo.bar\n' 'a.dart 10:11  Bang.qux')]);
 
       var folded = chain.foldFrames((frame) => frame.library == 'a.dart');
       expect(folded.toString(), equals('a.dart 10:11  Bang.qux\n'));
@@ -643,31 +673,30 @@ void main() {
   });
 
   test('Chain.toTrace eliminates asynchronous gaps', () {
-    var trace = new Chain([
-      new Trace.parse(
-          'user/code.dart 10:11  Foo.bar\n'
-          'dart:core 10:11       Bar.baz'),
-      new Trace.parse(
-          'user/code.dart 10:11  Foo.bar\n'
-          'dart:core 10:11       Bar.baz')
-    ]).toTrace();
+    var trace = new Chain(
+        [
+            new Trace.parse(
+                'user/code.dart 10:11  Foo.bar\n' 'dart:core 10:11       Bar.baz'),
+            new Trace.parse(
+                'user/code.dart 10:11  Foo.bar\n' 'dart:core 10:11       Bar.baz')]).toTrace();
 
-    expect(trace.toString(), equals(
-        '$userSlashCode 10:11  Foo.bar\n'
-        'dart:core 10:11       Bar.baz\n'
-        '$userSlashCode 10:11  Foo.bar\n'
-        'dart:core 10:11       Bar.baz\n'));
+    expect(
+        trace.toString(),
+        equals(
+            '$userSlashCode 10:11  Foo.bar\n' 'dart:core 10:11       Bar.baz\n'
+                '$userSlashCode 10:11  Foo.bar\n' 'dart:core 10:11       Bar.baz\n'));
   });
 
   group('Chain.track(Future)', () {
     test('forwards the future value within Chain.capture()', () {
       Chain.capture(() {
-        expect(Chain.track(new Future.value('value')),
+        expect(
+            Chain.track(new Future.value('value')),
             completion(equals('value')));
 
         var trace = new Trace.current();
-        expect(Chain.track(new Future.error('error', trace))
-            .catchError((e, stackTrace) {
+        expect(
+            Chain.track(new Future.error('error', trace)).catchError((e, stackTrace) {
           expect(e, equals('error'));
           expect(stackTrace.toString(), equals(trace.toString()));
         }), completes);
@@ -675,12 +704,13 @@ void main() {
     });
 
     test('forwards the future value outside of Chain.capture()', () {
-      expect(Chain.track(new Future.value('value')),
+      expect(
+          Chain.track(new Future.value('value')),
           completion(equals('value')));
 
       var trace = new Trace.current();
-      expect(Chain.track(new Future.error('error', trace))
-          .catchError((e, stackTrace) {
+      expect(
+          Chain.track(new Future.error('error', trace)).catchError((e, stackTrace) {
         expect(e, equals('error'));
         expect(stackTrace.toString(), equals(trace.toString()));
       }), completes);
@@ -691,14 +721,18 @@ void main() {
     test('forwards stream values within Chain.capture()', () {
       Chain.capture(() {
         var controller = new StreamController()
-            ..add(1)..add(2)..add(3)..close();
-        expect(Chain.track(controller.stream).toList(),
+            ..add(1)
+            ..add(2)
+            ..add(3)
+            ..close();
+        expect(
+            Chain.track(controller.stream).toList(),
             completion(equals([1, 2, 3])));
 
         var trace = new Trace.current();
         controller = new StreamController()..addError('error', trace);
-        expect(Chain.track(controller.stream).toList()
-            .catchError((e, stackTrace) {
+        expect(
+            Chain.track(controller.stream).toList().catchError((e, stackTrace) {
           expect(e, equals('error'));
           expect(stackTrace.toString(), equals(trace.toString()));
         }), completes);
@@ -708,14 +742,18 @@ void main() {
     test('forwards stream values outside of Chain.capture()', () {
       Chain.capture(() {
         var controller = new StreamController()
-            ..add(1)..add(2)..add(3)..close();
-        expect(Chain.track(controller.stream).toList(),
+            ..add(1)
+            ..add(2)
+            ..add(3)
+            ..close();
+        expect(
+            Chain.track(controller.stream).toList(),
             completion(equals([1, 2, 3])));
 
         var trace = new Trace.current();
         controller = new StreamController()..addError('error', trace);
-        expect(Chain.track(controller.stream).toList()
-            .catchError((e, stackTrace) {
+        expect(
+            Chain.track(controller.stream).toList().catchError((e, stackTrace) {
           expect(e, equals('error'));
           expect(stackTrace.toString(), equals(trace.toString()));
         }), completes);
@@ -743,13 +781,19 @@ void inPeriodicTimer(callback()) {
 
 /// Runs [callback] within a long asynchronous Future chain.
 void inFutureChain(callback()) {
-  new Future(() {})
-      .then((_) => new Future(() {}))
-      .then((_) => new Future(() {}))
-      .then((_) => new Future(() {}))
-      .then((_) => new Future(() {}))
-      .then((_) => callback())
-      .then((_) => new Future(() {}));
+  new Future(
+      () {}).then(
+          (_) =>
+              new Future(
+                  () {})).then(
+                      (_) =>
+                          new Future(
+                              () {})).then(
+                                  (_) =>
+                                      new Future(
+                                          () {})).then(
+                                              (_) =>
+                                                  new Future(() {})).then((_) => callback()).then((_) => new Future(() {}));
 }
 
 void inNewFuture(callback()) {
@@ -787,11 +831,11 @@ Future<Chain> chainForTrace(asyncFn(callback()), callback()) {
     // [new Future.sync] because those methods don't pass the exception through
     // the zone specification before propagating it, so there's no chance to
     // attach a chain to its stack trace. See issue 15105.
-    new Future.value().then((_) => callback())
-        .catchError(completer.completeError);
+    new Future.value().then(
+        (_) => callback()).catchError(completer.completeError);
   });
-  return completer.future
-      .catchError((_, stackTrace) => new Chain.forTrace(stackTrace));
+  return completer.future.catchError(
+      (_, stackTrace) => new Chain.forTrace(stackTrace));
 }
 
 /// Runs [callback] in a [Chain.capture] zone and returns a Future that

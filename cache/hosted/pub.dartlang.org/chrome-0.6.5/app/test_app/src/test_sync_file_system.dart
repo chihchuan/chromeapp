@@ -32,7 +32,9 @@ void main() {
         logMessage("catchError error = ${error.toString()}");
         // this is ok - the user may not be signed in
         expect(error, isNotNull);
-        expect(error.toString(), stringContainsInOrder(['authentication failed']));
+        expect(
+            error.toString(),
+            stringContainsInOrder(['authentication failed']));
         f(null);
       });
     });

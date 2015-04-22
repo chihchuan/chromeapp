@@ -1,4 +1,3 @@
-
 library gen_apis;
 
 import 'dart:io';
@@ -35,11 +34,11 @@ class GenApis {
   final File apisFile;
   final File overridesFile;
 
-  GenApis() :
-    outDirPath = pathos.join(pathos.current, 'lib'),
-    apisFile = new File('meta/apis.json'),
-    overridesFile = new File('meta/overrides.json'),
-    idlDir = new Directory('idl') {
+  GenApis()
+      : outDirPath = pathos.join(pathos.current, 'lib'),
+        apisFile = new File('meta/apis.json'),
+        overridesFile = new File('meta/overrides.json'),
+        idlDir = new Directory('idl') {
 
     if (!idlDir.existsSync()) {
       throw new Exception('${idlDir.path} not found');
@@ -52,7 +51,10 @@ class GenApis {
     var apisInfo = JSON.decode(apisFile.readAsStringSync());
 
     _generateApi('app', apisInfo['packaged_app'], includeAppSrc: true);
-    _generateApi('ext', apisInfo['extension'], alreadyWritten: apisInfo['packaged_app']);
+    _generateApi(
+        'ext',
+        apisInfo['extension'],
+        alreadyWritten: apisInfo['packaged_app']);
 
     // Generate orphaned libraries.
     _logger.info("writing loose libraries...");
@@ -64,8 +66,7 @@ class GenApis {
   }
 
   void _generateApi(String name, List<String> libraryNames,
-                    {List<String> alreadyWritten, bool includeAppSrc: false,
-                     String licence}) {
+      {List<String> alreadyWritten, bool includeAppSrc: false, String licence}) {
     File libFile = new File(pathos.join(outDirPath, "chrome_${name}.dart"));
 
     DartGenerator generator = new DartGenerator();
@@ -91,11 +92,13 @@ class GenApis {
 
     List<String> exportFiles = [];
     exportFiles.addAll(combinedLibraries.keys);
-    exportFiles.addAll(libraryNames.where((name) => !_isCombined(combinedLibraries, name)));
+    exportFiles.addAll(
+        libraryNames.where((name) => !_isCombined(combinedLibraries, name)));
     exportFiles.sort();
 
     for (String name in exportFiles) {
-      generator.writeln("export 'gen/${_convertJSLibNameToFileName(name)}.dart';");
+      generator.writeln(
+          "export 'gen/${_convertJSLibNameToFileName(name)}.dart';");
     }
 
     generator.writeln();
@@ -125,7 +128,8 @@ class GenApis {
     }
   }
 
-  void _generateCombinedFile(Overrides overrides, String shortName, List<String> libNames) {
+  void _generateCombinedFile(Overrides overrides, String shortName,
+      List<String> libNames) {
     Directory genDir = new Directory(pathos.join(outDirPath, 'gen'));
     if (!genDir.existsSync()) {
       genDir.createSync();
@@ -133,7 +137,8 @@ class GenApis {
 
     String fileName = _convertJSLibNameToFileName(shortName);
     File outFile = new File(pathos.join(outDirPath, 'gen', "${fileName}.dart"));
-    File patchFile = new File(pathos.join(outDirPath, 'gen', "${fileName}_patch.dart"));
+    File patchFile =
+        new File(pathos.join(outDirPath, 'gen', "${fileName}_patch.dart"));
 
     DartGenerator generator = new DartGenerator();
 
@@ -143,15 +148,20 @@ class GenApis {
 
       File definitionFile = _locateDefinitionFile(locateName);
       if (definitionFile == null) {
-        throw new UnsupportedError("Unable to locate idl or json file for '${locateName}'.");
+        throw new UnsupportedError(
+            "Unable to locate idl or json file for '${locateName}'.");
       }
 
       if (definitionFile.path.endsWith('.json')) {
         return new GenApiFile(
-            definitionFile, overrides: overrides, generator: generator);
+            definitionFile,
+            overrides: overrides,
+            generator: generator);
       } else {
         return new GenApiFile(
-            definitionFile, overrides: overrides, generator: generator);
+            definitionFile,
+            overrides: overrides,
+            generator: generator);
       }
     });
 
@@ -182,7 +192,8 @@ class GenApis {
     // create the combined reference
     String className = 'Chrome${titleCase(shortName)}';
 
-    generator.writeln("final ${className} ${shortName} = new ${className}._();");
+    generator.writeln(
+        "final ${className} ${shortName} = new ${className}._();");
     generator.writeln();
 
     generator.writeln("class ${className} {");
@@ -191,7 +202,8 @@ class GenApis {
     generator.writeln("}");
     var createdFactories = new Set<String>();
     var createdClasses = new Set<String>();
-    apis.forEach((api) => api.generateContent(true, createdFactories, createdClasses));
+    apis.forEach(
+        (api) => api.generateContent(true, createdFactories, createdClasses));
 
     outFile.writeAsStringSync(generator.toString());
   }
@@ -201,7 +213,8 @@ class GenApis {
 
     File definitionFile = _locateDefinitionFile(fileName);
     if (definitionFile == null) {
-      throw new UnsupportedError("Unable to locate idl or json file for '${fileName}'.");
+      throw new UnsupportedError(
+          "Unable to locate idl or json file for '${fileName}'.");
     }
 
     File outFile = new File(pathos.join(outDirPath, 'gen', "${fileName}.dart"));
@@ -225,7 +238,8 @@ class GenApis {
     combinedLibraries[combinedName].add(libName);
   }
 
-  bool _isCombined(Map<String, List<String>> combinedLibraries, String libName) {
+  bool _isCombined(Map<String, List<String>> combinedLibraries,
+      String libName) {
     return libName.contains('.');
   }
 

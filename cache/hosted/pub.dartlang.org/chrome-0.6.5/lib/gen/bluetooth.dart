@@ -16,7 +16,8 @@ final ChromeBluetooth bluetooth = new ChromeBluetooth._();
 class ChromeBluetooth extends ChromeApi {
   JsObject get _bluetooth => chrome['bluetooth'];
 
-  Stream<AdapterState> get onAdapterStateChanged => _onAdapterStateChanged.stream;
+  Stream<AdapterState> get onAdapterStateChanged =>
+      _onAdapterStateChanged.stream;
   ChromeStreamController<AdapterState> _onAdapterStateChanged;
 
   Stream<BluetoothDevice> get onDeviceAdded => _onDeviceAdded.stream;
@@ -30,10 +31,22 @@ class ChromeBluetooth extends ChromeApi {
 
   ChromeBluetooth._() {
     var getApi = () => _bluetooth;
-    _onAdapterStateChanged = new ChromeStreamController<AdapterState>.oneArg(getApi, 'onAdapterStateChanged', _createAdapterState);
-    _onDeviceAdded = new ChromeStreamController<BluetoothDevice>.oneArg(getApi, 'onDeviceAdded', _createDevice);
-    _onDeviceChanged = new ChromeStreamController<BluetoothDevice>.oneArg(getApi, 'onDeviceChanged', _createDevice);
-    _onDeviceRemoved = new ChromeStreamController<BluetoothDevice>.oneArg(getApi, 'onDeviceRemoved', _createDevice);
+    _onAdapterStateChanged = new ChromeStreamController<AdapterState>.oneArg(
+        getApi,
+        'onAdapterStateChanged',
+        _createAdapterState);
+    _onDeviceAdded = new ChromeStreamController<BluetoothDevice>.oneArg(
+        getApi,
+        'onDeviceAdded',
+        _createDevice);
+    _onDeviceChanged = new ChromeStreamController<BluetoothDevice>.oneArg(
+        getApi,
+        'onDeviceChanged',
+        _createDevice);
+    _onDeviceRemoved = new ChromeStreamController<BluetoothDevice>.oneArg(
+        getApi,
+        'onDeviceRemoved',
+        _createDevice);
   }
 
   bool get available => _bluetooth != null;
@@ -50,7 +63,8 @@ class ChromeBluetooth extends ChromeApi {
   Future<AdapterState> getAdapterState() {
     if (_bluetooth == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<AdapterState>.oneArg(_createAdapterState);
+    var completer =
+        new ChromeCompleter<AdapterState>.oneArg(_createAdapterState);
     _bluetooth.callMethod('getAdapterState', [completer.callback]);
     return completer.future;
   }
@@ -84,7 +98,8 @@ class ChromeBluetooth extends ChromeApi {
   Future<List<BluetoothDevice>> getDevices() {
     if (_bluetooth == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<BluetoothDevice>>.oneArg((e) => listify(e, _createDevice));
+    var completer = new ChromeCompleter<List<BluetoothDevice>>.oneArg(
+        (e) => listify(e, _createDevice));
     _bluetooth.callMethod('getDevices', [completer.callback]);
     return completer.future;
   }
@@ -132,9 +147,9 @@ class VendorIdSource extends ChromeEnum {
   static const VendorIdSource BLUETOOTH = const VendorIdSource._('bluetooth');
   static const VendorIdSource USB = const VendorIdSource._('usb');
 
-  static const List<VendorIdSource> VALUES = const[BLUETOOTH, USB];
+  static const List<VendorIdSource> VALUES = const [BLUETOOTH, USB];
 
-  const VendorIdSource._(String str): super(str);
+  const VendorIdSource._(String str) : super(str);
 }
 
 /**
@@ -153,25 +168,40 @@ class DeviceType extends ChromeEnum {
   static const DeviceType KEYBOARD = const DeviceType._('keyboard');
   static const DeviceType MOUSE = const DeviceType._('mouse');
   static const DeviceType TABLET = const DeviceType._('tablet');
-  static const DeviceType KEYBOARD_MOUSE_COMBO = const DeviceType._('keyboardMouseCombo');
+  static const DeviceType KEYBOARD_MOUSE_COMBO =
+      const DeviceType._('keyboardMouseCombo');
 
-  static const List<DeviceType> VALUES = const[COMPUTER, PHONE, MODEM, AUDIO, CAR_AUDIO, VIDEO, PERIPHERAL, JOYSTICK, GAMEPAD, KEYBOARD, MOUSE, TABLET, KEYBOARD_MOUSE_COMBO];
+  static const List<DeviceType> VALUES = const [
+      COMPUTER,
+      PHONE,
+      MODEM,
+      AUDIO,
+      CAR_AUDIO,
+      VIDEO,
+      PERIPHERAL,
+      JOYSTICK,
+      GAMEPAD,
+      KEYBOARD,
+      MOUSE,
+      TABLET,
+      KEYBOARD_MOUSE_COMBO];
 
-  const DeviceType._(String str): super(str);
+  const DeviceType._(String str) : super(str);
 }
 
 /**
  * Information about the state of the Bluetooth adapter.
  */
 class AdapterState extends ChromeObject {
-  AdapterState({String address, String name, bool powered, bool available, bool discovering}) {
+  AdapterState({String address, String name, bool powered, bool available,
+      bool discovering}) {
     if (address != null) this.address = address;
     if (name != null) this.name = name;
     if (powered != null) this.powered = powered;
     if (available != null) this.available = available;
     if (discovering != null) this.discovering = discovering;
   }
-  AdapterState.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  AdapterState.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get address => jsProxy['address'];
   set address(String value) => jsProxy['address'] = value;
@@ -193,7 +223,11 @@ class AdapterState extends ChromeObject {
  * Information about the state of a known Bluetooth device.
  */
 class BluetoothDevice extends ChromeObject {
-  BluetoothDevice({String address, String name, int deviceClass, VendorIdSource vendorIdSource, int vendorId, int productId, int deviceId, DeviceType type, bool paired, bool connected, int rssi, int currentHostTransmitPower, int maximumHostTransmitPower, List<String> uuids}) {
+  BluetoothDevice({String address, String name, int deviceClass,
+      VendorIdSource vendorIdSource, int vendorId, int productId, int deviceId,
+      DeviceType type, bool paired, bool connected, int rssi,
+      int currentHostTransmitPower, int maximumHostTransmitPower, List<String> uuids})
+      {
     if (address != null) this.address = address;
     if (name != null) this.name = name;
     if (deviceClass != null) this.deviceClass = deviceClass;
@@ -205,11 +239,13 @@ class BluetoothDevice extends ChromeObject {
     if (paired != null) this.paired = paired;
     if (connected != null) this.connected = connected;
     if (rssi != null) this.rssi = rssi;
-    if (currentHostTransmitPower != null) this.currentHostTransmitPower = currentHostTransmitPower;
-    if (maximumHostTransmitPower != null) this.maximumHostTransmitPower = maximumHostTransmitPower;
+    if (currentHostTransmitPower != null) this.currentHostTransmitPower =
+        currentHostTransmitPower;
+    if (maximumHostTransmitPower != null) this.maximumHostTransmitPower =
+        maximumHostTransmitPower;
     if (uuids != null) this.uuids = uuids;
   }
-  BluetoothDevice.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BluetoothDevice.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get address => jsProxy['address'];
   set address(String value) => jsProxy['address'] = value;
@@ -220,8 +256,10 @@ class BluetoothDevice extends ChromeObject {
   int get deviceClass => jsProxy['deviceClass'];
   set deviceClass(int value) => jsProxy['deviceClass'] = value;
 
-  VendorIdSource get vendorIdSource => _createVendorIdSource(jsProxy['vendorIdSource']);
-  set vendorIdSource(VendorIdSource value) => jsProxy['vendorIdSource'] = jsify(value);
+  VendorIdSource get vendorIdSource =>
+      _createVendorIdSource(jsProxy['vendorIdSource']);
+  set vendorIdSource(VendorIdSource value) => jsProxy['vendorIdSource'] =
+      jsify(value);
 
   int get vendorId => jsProxy['vendorId'];
   set vendorId(int value) => jsProxy['vendorId'] = value;
@@ -245,16 +283,22 @@ class BluetoothDevice extends ChromeObject {
   set rssi(int value) => jsProxy['rssi'] = value;
 
   int get currentHostTransmitPower => jsProxy['currentHostTransmitPower'];
-  set currentHostTransmitPower(int value) => jsProxy['currentHostTransmitPower'] = value;
+  set currentHostTransmitPower(int value) => jsProxy['currentHostTransmitPower'] =
+      value;
 
   int get maximumHostTransmitPower => jsProxy['maximumHostTransmitPower'];
-  set maximumHostTransmitPower(int value) => jsProxy['maximumHostTransmitPower'] = value;
+  set maximumHostTransmitPower(int value) => jsProxy['maximumHostTransmitPower'] =
+      value;
 
   List<String> get uuids => listify(jsProxy['uuids']);
   set uuids(List<String> value) => jsProxy['uuids'] = jsify(value);
 }
 
-AdapterState _createAdapterState(JsObject jsProxy) => jsProxy == null ? null : new AdapterState.fromProxy(jsProxy);
-BluetoothDevice _createDevice(JsObject jsProxy) => jsProxy == null ? null : new BluetoothDevice.fromProxy(jsProxy);
-VendorIdSource _createVendorIdSource(String value) => VendorIdSource.VALUES.singleWhere((ChromeEnum e) => e.value == value);
-DeviceType _createDeviceType(String value) => DeviceType.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+AdapterState _createAdapterState(JsObject jsProxy) =>
+    jsProxy == null ? null : new AdapterState.fromProxy(jsProxy);
+BluetoothDevice _createDevice(JsObject jsProxy) =>
+    jsProxy == null ? null : new BluetoothDevice.fromProxy(jsProxy);
+VendorIdSource _createVendorIdSource(String value) =>
+    VendorIdSource.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+DeviceType _createDeviceType(String value) =>
+    DeviceType.VALUES.singleWhere((ChromeEnum e) => e.value == value);

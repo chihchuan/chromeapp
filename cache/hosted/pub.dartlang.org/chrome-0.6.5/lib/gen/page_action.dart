@@ -27,7 +27,8 @@ class ChromePageAction extends ChromeApi {
 
   ChromePageAction._() {
     var getApi = () => _pageAction;
-    _onClicked = new ChromeStreamController<Tab>.oneArg(getApi, 'onClicked', _createTab);
+    _onClicked =
+        new ChromeStreamController<Tab>.oneArg(getApi, 'onClicked', _createTab);
   }
 
   bool get available => _pageAction != null;
@@ -121,7 +122,8 @@ class PageActionSetTitleParams extends ChromeObject {
     if (tabId != null) this.tabId = tabId;
     if (title != null) this.title = title;
   }
-  PageActionSetTitleParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  PageActionSetTitleParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * The id of the tab for which you want to modify the page action.
@@ -140,7 +142,8 @@ class PageActionGetTitleParams extends ChromeObject {
   PageActionGetTitleParams({int tabId}) {
     if (tabId != null) this.tabId = tabId;
   }
-  PageActionGetTitleParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  PageActionGetTitleParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Specify the tab to get the title from.
@@ -156,7 +159,8 @@ class PageActionSetIconParams extends ChromeObject {
     if (path != null) this.path = path;
     if (iconIndex != null) this.iconIndex = iconIndex;
   }
-  PageActionSetIconParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  PageActionSetIconParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * The id of the tab for which you want to modify the page action.
@@ -202,7 +206,8 @@ class PageActionSetPopupParams extends ChromeObject {
     if (tabId != null) this.tabId = tabId;
     if (popup != null) this.popup = popup;
   }
-  PageActionSetPopupParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  PageActionSetPopupParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * The id of the tab for which you want to modify the page action.
@@ -222,7 +227,8 @@ class PageActionGetPopupParams extends ChromeObject {
   PageActionGetPopupParams({int tabId}) {
     if (tabId != null) this.tabId = tabId;
   }
-  PageActionGetPopupParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  PageActionGetPopupParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Specify the tab to get the popup from.
@@ -231,4 +237,5 @@ class PageActionGetPopupParams extends ChromeObject {
   set tabId(int value) => jsProxy['tabId'] = value;
 }
 
-Tab _createTab(JsObject jsProxy) => jsProxy == null ? null : new Tab.fromProxy(jsProxy);
+Tab _createTab(JsObject jsProxy) =>
+    jsProxy == null ? null : new Tab.fromProxy(jsProxy);

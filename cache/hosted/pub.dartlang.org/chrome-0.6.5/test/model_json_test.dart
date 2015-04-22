@@ -1,4 +1,3 @@
-
 library model_json_test;
 
 import 'dart:io';
@@ -16,15 +15,20 @@ void main() {
 
     // The unittest script likes to be run with the cwd set to the project root.
     if (testFile.existsSync()) {
-      Iterable<File> jsonFiles = new Directory('idl')
-          .listSync(recursive: true, followLinks: false)
-          .where((f) => f.path.endsWith('.json'));
+      Iterable<File> jsonFiles = new Directory(
+          'idl').listSync(
+              recursive: true,
+              followLinks: false).where((f) => f.path.endsWith('.json'));
 
       for (File file in jsonFiles) {
-        // skip _api_features.json, _manifest_features.json, _permission_features.json
-        if (!file.path.contains('/_') && !file.path.contains('test_presubmit')) {
+
+
+            // skip _api_features.json, _manifest_features.json, _permission_features.json
+        if (!file.path.contains('/_') &&
+            !file.path.contains('test_presubmit')) {
           test(file.path, () {
-            json_model.JsonNamespace namespace = json_parser.parse(file.readAsStringSync());
+            json_model.JsonNamespace namespace =
+                json_parser.parse(file.readAsStringSync());
             expect(namespace.namespace, isNotNull);
           });
         }

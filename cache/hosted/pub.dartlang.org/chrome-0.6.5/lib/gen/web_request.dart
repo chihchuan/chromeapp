@@ -82,15 +82,26 @@ class ChromeWebRequest extends ChromeApi {
 
   ChromeWebRequest._() {
     var getApi = () => _webRequest;
-    _onBeforeRequest = new ChromeStreamController<Map>.oneArg(getApi, 'onBeforeRequest', mapify);
-    _onBeforeSendHeaders = new ChromeStreamController<Map>.oneArg(getApi, 'onBeforeSendHeaders', mapify);
-    _onSendHeaders = new ChromeStreamController<Map>.oneArg(getApi, 'onSendHeaders', mapify);
-    _onHeadersReceived = new ChromeStreamController<Map>.oneArg(getApi, 'onHeadersReceived', mapify);
-    _onAuthRequired = new ChromeStreamController<OnAuthRequiredEvent>.twoArgs(getApi, 'onAuthRequired', _createOnAuthRequiredEvent);
-    _onResponseStarted = new ChromeStreamController<Map>.oneArg(getApi, 'onResponseStarted', mapify);
-    _onBeforeRedirect = new ChromeStreamController<Map>.oneArg(getApi, 'onBeforeRedirect', mapify);
-    _onCompleted = new ChromeStreamController<Map>.oneArg(getApi, 'onCompleted', mapify);
-    _onErrorOccurred = new ChromeStreamController<Map>.oneArg(getApi, 'onErrorOccurred', mapify);
+    _onBeforeRequest =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onBeforeRequest', mapify);
+    _onBeforeSendHeaders =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onBeforeSendHeaders', mapify);
+    _onSendHeaders =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onSendHeaders', mapify);
+    _onHeadersReceived =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onHeadersReceived', mapify);
+    _onAuthRequired = new ChromeStreamController<OnAuthRequiredEvent>.twoArgs(
+        getApi,
+        'onAuthRequired',
+        _createOnAuthRequiredEvent);
+    _onResponseStarted =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onResponseStarted', mapify);
+    _onBeforeRedirect =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onBeforeRedirect', mapify);
+    _onCompleted =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onCompleted', mapify);
+    _onErrorOccurred =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onErrorOccurred', mapify);
   }
 
   bool get available => _webRequest != null;
@@ -100,7 +111,8 @@ class ChromeWebRequest extends ChromeApi {
    * 10 minute sustained interval. `handlerBehaviorChanged` is an expensive
    * function call that shouldn't be called often.
    */
-  int get MAX_HANDLER_BEHAVIOR_CHANGED_CALLS_PER_10_MINUTES => _webRequest['MAX_HANDLER_BEHAVIOR_CHANGED_CALLS_PER_10_MINUTES'];
+  int get MAX_HANDLER_BEHAVIOR_CHANGED_CALLS_PER_10_MINUTES =>
+      _webRequest['MAX_HANDLER_BEHAVIOR_CHANGED_CALLS_PER_10_MINUTES'];
 
   /**
    * Needs to be called when the behavior of the webRequest handlers has changed
@@ -143,7 +155,8 @@ class AuthCredentialsWebRequest extends ChromeObject {
     if (username != null) this.username = username;
     if (password != null) this.password = password;
   }
-  AuthCredentialsWebRequest.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  AuthCredentialsWebRequest.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   String get username => jsProxy['username'];
   set username(String value) => jsProxy['username'] = value;
@@ -156,13 +169,14 @@ class AuthCredentialsWebRequest extends ChromeObject {
  * An object describing filters to apply to webRequest events.
  */
 class RequestFilter extends ChromeObject {
-  RequestFilter({List<String> urls, List<String> types, int tabId, int windowId}) {
+  RequestFilter({List<String> urls, List<String> types, int tabId,
+      int windowId}) {
     if (urls != null) this.urls = urls;
     if (types != null) this.types = types;
     if (tabId != null) this.tabId = tabId;
     if (windowId != null) this.windowId = windowId;
   }
-  RequestFilter.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  RequestFilter.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * A list of URLs or URL patterns. Requests that cannot match any of the URLs
@@ -191,7 +205,7 @@ class RequestFilter extends ChromeObject {
  */
 class HttpHeaders extends ChromeObject {
   HttpHeaders();
-  HttpHeaders.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  HttpHeaders.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 }
 
 /**
@@ -199,14 +213,15 @@ class HttpHeaders extends ChromeObject {
  * applied. Allows the event handler to modify network requests.
  */
 class BlockingResponse extends ChromeObject {
-  BlockingResponse({bool cancel, String redirectUrl, HttpHeaders requestHeaders, HttpHeaders responseHeaders, AuthCredentialsWebRequest authCredentials}) {
+  BlockingResponse({bool cancel, String redirectUrl, HttpHeaders requestHeaders,
+      HttpHeaders responseHeaders, AuthCredentialsWebRequest authCredentials}) {
     if (cancel != null) this.cancel = cancel;
     if (redirectUrl != null) this.redirectUrl = redirectUrl;
     if (requestHeaders != null) this.requestHeaders = requestHeaders;
     if (responseHeaders != null) this.responseHeaders = responseHeaders;
     if (authCredentials != null) this.authCredentials = authCredentials;
   }
-  BlockingResponse.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BlockingResponse.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * If true, the request is cancelled. Used in onBeforeRequest, this prevents
@@ -231,8 +246,10 @@ class BlockingResponse extends ChromeObject {
    * Only used as a response to the onBeforeSendHeaders event. If set, the
    * request is made with these request headers instead.
    */
-  HttpHeaders get requestHeaders => _createHttpHeaders(jsProxy['requestHeaders']);
-  set requestHeaders(HttpHeaders value) => jsProxy['requestHeaders'] = jsify(value);
+  HttpHeaders get requestHeaders =>
+      _createHttpHeaders(jsProxy['requestHeaders']);
+  set requestHeaders(HttpHeaders value) => jsProxy['requestHeaders'] =
+      jsify(value);
 
   /**
    * Only used as a response to the onHeadersReceived event. If set, the server
@@ -241,15 +258,19 @@ class BlockingResponse extends ChromeObject {
    * to limit the number of conflicts (only one extension may modify
    * `responseHeaders` for each request).
    */
-  HttpHeaders get responseHeaders => _createHttpHeaders(jsProxy['responseHeaders']);
-  set responseHeaders(HttpHeaders value) => jsProxy['responseHeaders'] = jsify(value);
+  HttpHeaders get responseHeaders =>
+      _createHttpHeaders(jsProxy['responseHeaders']);
+  set responseHeaders(HttpHeaders value) => jsProxy['responseHeaders'] =
+      jsify(value);
 
   /**
    * Only used as a response to the onAuthRequired event. If set, the request is
    * made using the supplied credentials.
    */
-  AuthCredentialsWebRequest get authCredentials => _createAuthCredentialsWebRequest(jsProxy['authCredentials']);
-  set authCredentials(AuthCredentialsWebRequest value) => jsProxy['authCredentials'] = jsify(value);
+  AuthCredentialsWebRequest get authCredentials =>
+      _createAuthCredentialsWebRequest(jsProxy['authCredentials']);
+  set authCredentials(AuthCredentialsWebRequest value) => jsProxy['authCredentials'] =
+      jsify(value);
 }
 
 /**
@@ -260,7 +281,7 @@ class UploadData extends ChromeObject {
     if (bytes != null) this.bytes = bytes;
     if (file != null) this.file = file;
   }
-  UploadData.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  UploadData.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * An ArrayBuffer with a copy of the data.
@@ -281,7 +302,7 @@ class RequestBodyWebRequest extends ChromeObject {
     if (formData != null) this.formData = formData;
     if (raw != null) this.raw = raw;
   }
-  RequestBodyWebRequest.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  RequestBodyWebRequest.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Errors when obtaining request body data.
@@ -314,7 +335,7 @@ class ChallengerWebRequest extends ChromeObject {
     if (host != null) this.host = host;
     if (port != null) this.port = port;
   }
-  ChallengerWebRequest.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ChallengerWebRequest.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get host => jsProxy['host'];
   set host(String value) => jsProxy['host'] = value;
@@ -323,8 +344,12 @@ class ChallengerWebRequest extends ChromeObject {
   set port(int value) => jsProxy['port'] = value;
 }
 
-OnAuthRequiredEvent _createOnAuthRequiredEvent(JsObject details, JsObject callback) =>
+OnAuthRequiredEvent _createOnAuthRequiredEvent(JsObject details,
+    JsObject callback) =>
     new OnAuthRequiredEvent(mapify(details), callback);
-HttpHeaders _createHttpHeaders(JsObject jsProxy) => jsProxy == null ? null : new HttpHeaders.fromProxy(jsProxy);
-AuthCredentialsWebRequest _createAuthCredentialsWebRequest(JsObject jsProxy) => jsProxy == null ? null : new AuthCredentialsWebRequest.fromProxy(jsProxy);
-UploadData _createUploadData(JsObject jsProxy) => jsProxy == null ? null : new UploadData.fromProxy(jsProxy);
+HttpHeaders _createHttpHeaders(JsObject jsProxy) =>
+    jsProxy == null ? null : new HttpHeaders.fromProxy(jsProxy);
+AuthCredentialsWebRequest _createAuthCredentialsWebRequest(JsObject jsProxy) =>
+    jsProxy == null ? null : new AuthCredentialsWebRequest.fromProxy(jsProxy);
+UploadData _createUploadData(JsObject jsProxy) =>
+    jsProxy == null ? null : new UploadData.fromProxy(jsProxy);

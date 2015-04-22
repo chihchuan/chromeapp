@@ -25,15 +25,30 @@ class ChromeBluetoothSocket extends ChromeApi {
   Stream<BluetoothReceiveInfo> get onReceive => _onReceive.stream;
   ChromeStreamController<BluetoothReceiveInfo> _onReceive;
 
-  Stream<BluetoothReceiveErrorInfo> get onReceiveError => _onReceiveError.stream;
+  Stream<BluetoothReceiveErrorInfo> get onReceiveError =>
+      _onReceiveError.stream;
   ChromeStreamController<BluetoothReceiveErrorInfo> _onReceiveError;
 
   ChromeBluetoothSocket._() {
     var getApi = () => _bluetoothSocket;
-    _onAccept = new ChromeStreamController<BluetoothAcceptInfo>.oneArg(getApi, 'onAccept', _createAcceptInfo);
-    _onAcceptError = new ChromeStreamController<BluetoothAcceptErrorInfo>.oneArg(getApi, 'onAcceptError', _createAcceptErrorInfo);
-    _onReceive = new ChromeStreamController<BluetoothReceiveInfo>.oneArg(getApi, 'onReceive', _createReceiveInfo);
-    _onReceiveError = new ChromeStreamController<BluetoothReceiveErrorInfo>.oneArg(getApi, 'onReceiveError', _createReceiveErrorInfo);
+    _onAccept = new ChromeStreamController<BluetoothAcceptInfo>.oneArg(
+        getApi,
+        'onAccept',
+        _createAcceptInfo);
+    _onAcceptError =
+        new ChromeStreamController<BluetoothAcceptErrorInfo>.oneArg(
+            getApi,
+            'onAcceptError',
+            _createAcceptErrorInfo);
+    _onReceive = new ChromeStreamController<BluetoothReceiveInfo>.oneArg(
+        getApi,
+        'onReceive',
+        _createReceiveInfo);
+    _onReceiveError =
+        new ChromeStreamController<BluetoothReceiveErrorInfo>.oneArg(
+            getApi,
+            'onReceiveError',
+            _createReceiveErrorInfo);
   }
 
   bool get available => _bluetoothSocket != null;
@@ -50,8 +65,11 @@ class ChromeBluetoothSocket extends ChromeApi {
   Future<BluetoothCreateInfo> create([BluetoothSocketProperties properties]) {
     if (_bluetoothSocket == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<BluetoothCreateInfo>.oneArg(_createCreateInfo);
-    _bluetoothSocket.callMethod('create', [jsify(properties), completer.callback]);
+    var completer =
+        new ChromeCompleter<BluetoothCreateInfo>.oneArg(_createCreateInfo);
+    _bluetoothSocket.callMethod(
+        'create',
+        [jsify(properties), completer.callback]);
     return completer.future;
   }
 
@@ -65,7 +83,9 @@ class ChromeBluetoothSocket extends ChromeApi {
     if (_bluetoothSocket == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _bluetoothSocket.callMethod('update', [socketId, jsify(properties), completer.callback]);
+    _bluetoothSocket.callMethod(
+        'update',
+        [socketId, jsify(properties), completer.callback]);
     return completer.future;
   }
 
@@ -84,7 +104,9 @@ class ChromeBluetoothSocket extends ChromeApi {
     if (_bluetoothSocket == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _bluetoothSocket.callMethod('setPaused', [socketId, paused, completer.callback]);
+    _bluetoothSocket.callMethod(
+        'setPaused',
+        [socketId, paused, completer.callback]);
     return completer.future;
   }
 
@@ -99,7 +121,9 @@ class ChromeBluetoothSocket extends ChromeApi {
     if (_bluetoothSocket == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _bluetoothSocket.callMethod('listenUsingRfcomm', [socketId, uuid, jsify(options), completer.callback]);
+    _bluetoothSocket.callMethod(
+        'listenUsingRfcomm',
+        [socketId, uuid, jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -114,7 +138,9 @@ class ChromeBluetoothSocket extends ChromeApi {
     if (_bluetoothSocket == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _bluetoothSocket.callMethod('listenUsingL2cap', [socketId, uuid, jsify(options), completer.callback]);
+    _bluetoothSocket.callMethod(
+        'listenUsingL2cap',
+        [socketId, uuid, jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -134,7 +160,9 @@ class ChromeBluetoothSocket extends ChromeApi {
     if (_bluetoothSocket == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _bluetoothSocket.callMethod('connect', [socketId, address, uuid, completer.callback]);
+    _bluetoothSocket.callMethod(
+        'connect',
+        [socketId, address, uuid, completer.callback]);
     return completer.future;
   }
 
@@ -181,7 +209,9 @@ class ChromeBluetoothSocket extends ChromeApi {
     if (_bluetoothSocket == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<int>.oneArg();
-    _bluetoothSocket.callMethod('send', [socketId, jsify(data), completer.callback]);
+    _bluetoothSocket.callMethod(
+        'send',
+        [socketId, jsify(data), completer.callback]);
     return completer.future;
   }
 
@@ -197,7 +227,8 @@ class ChromeBluetoothSocket extends ChromeApi {
   Future<BluetoothSocketInfo> getInfo(int socketId) {
     if (_bluetoothSocket == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<BluetoothSocketInfo>.oneArg(_createSocketInfo);
+    var completer =
+        new ChromeCompleter<BluetoothSocketInfo>.oneArg(_createSocketInfo);
     _bluetoothSocket.callMethod('getInfo', [socketId, completer.callback]);
     return completer.future;
   }
@@ -213,7 +244,8 @@ class ChromeBluetoothSocket extends ChromeApi {
   Future<List<BluetoothSocketInfo>> getSockets() {
     if (_bluetoothSocket == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<BluetoothSocketInfo>>.oneArg((e) => listify(e, _createSocketInfo));
+    var completer = new ChromeCompleter<List<BluetoothSocketInfo>>.oneArg(
+        (e) => listify(e, _createSocketInfo));
     _bluetoothSocket.callMethod('getSockets', [completer.callback]);
     return completer.future;
   }
@@ -227,19 +259,25 @@ class AcceptError extends ChromeEnum {
   static const AcceptError SYSTEM_ERROR = const AcceptError._('system_error');
   static const AcceptError NOT_LISTENING = const AcceptError._('not_listening');
 
-  static const List<AcceptError> VALUES = const[SYSTEM_ERROR, NOT_LISTENING];
+  static const List<AcceptError> VALUES = const [SYSTEM_ERROR, NOT_LISTENING];
 
-  const AcceptError._(String str): super(str);
+  const AcceptError._(String str) : super(str);
 }
 
 class BluetoothReceiveError extends ChromeEnum {
-  static const BluetoothReceiveError DISCONNECTED = const BluetoothReceiveError._('disconnected');
-  static const BluetoothReceiveError SYSTEM_ERROR = const BluetoothReceiveError._('system_error');
-  static const BluetoothReceiveError NOT_CONNECTED = const BluetoothReceiveError._('not_connected');
+  static const BluetoothReceiveError DISCONNECTED =
+      const BluetoothReceiveError._('disconnected');
+  static const BluetoothReceiveError SYSTEM_ERROR =
+      const BluetoothReceiveError._('system_error');
+  static const BluetoothReceiveError NOT_CONNECTED =
+      const BluetoothReceiveError._('not_connected');
 
-  static const List<BluetoothReceiveError> VALUES = const[DISCONNECTED, SYSTEM_ERROR, NOT_CONNECTED];
+  static const List<BluetoothReceiveError> VALUES = const [
+      DISCONNECTED,
+      SYSTEM_ERROR,
+      NOT_CONNECTED];
 
-  const BluetoothReceiveError._(String str): super(str);
+  const BluetoothReceiveError._(String str) : super(str);
 }
 
 /**
@@ -254,7 +292,8 @@ class BluetoothSocketProperties extends ChromeObject {
     if (name != null) this.name = name;
     if (bufferSize != null) this.bufferSize = bufferSize;
   }
-  BluetoothSocketProperties.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BluetoothSocketProperties.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   bool get persistent => jsProxy['persistent'];
   set persistent(bool value) => jsProxy['persistent'] = value;
@@ -273,7 +312,7 @@ class BluetoothCreateInfo extends ChromeObject {
   BluetoothCreateInfo({int socketId}) {
     if (socketId != null) this.socketId = socketId;
   }
-  BluetoothCreateInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BluetoothCreateInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get socketId => jsProxy['socketId'];
   set socketId(int value) => jsProxy['socketId'] = value;
@@ -290,7 +329,7 @@ class ListenOptions extends ChromeObject {
     if (psm != null) this.psm = psm;
     if (backlog != null) this.backlog = backlog;
   }
-  ListenOptions.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ListenOptions.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get channel => jsProxy['channel'];
   set channel(int value) => jsProxy['channel'] = value;
@@ -306,7 +345,8 @@ class ListenOptions extends ChromeObject {
  * Result of the `getInfo` method.
  */
 class BluetoothSocketInfo extends ChromeObject {
-  BluetoothSocketInfo({int socketId, bool persistent, String name, int bufferSize, bool paused, bool connected, String address, String uuid}) {
+  BluetoothSocketInfo({int socketId, bool persistent, String name,
+      int bufferSize, bool paused, bool connected, String address, String uuid}) {
     if (socketId != null) this.socketId = socketId;
     if (persistent != null) this.persistent = persistent;
     if (name != null) this.name = name;
@@ -316,7 +356,7 @@ class BluetoothSocketInfo extends ChromeObject {
     if (address != null) this.address = address;
     if (uuid != null) this.uuid = uuid;
   }
-  BluetoothSocketInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BluetoothSocketInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get socketId => jsProxy['socketId'];
   set socketId(int value) => jsProxy['socketId'] = value;
@@ -351,7 +391,7 @@ class BluetoothAcceptInfo extends ChromeObject {
     if (socketId != null) this.socketId = socketId;
     if (clientSocketId != null) this.clientSocketId = clientSocketId;
   }
-  BluetoothAcceptInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BluetoothAcceptInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get socketId => jsProxy['socketId'];
   set socketId(int value) => jsProxy['socketId'] = value;
@@ -364,12 +404,14 @@ class BluetoothAcceptInfo extends ChromeObject {
  * Data from an `onAcceptError` event.
  */
 class BluetoothAcceptErrorInfo extends ChromeObject {
-  BluetoothAcceptErrorInfo({int socketId, String errorMessage, AcceptError error}) {
+  BluetoothAcceptErrorInfo({int socketId, String errorMessage,
+      AcceptError error}) {
     if (socketId != null) this.socketId = socketId;
     if (errorMessage != null) this.errorMessage = errorMessage;
     if (error != null) this.error = error;
   }
-  BluetoothAcceptErrorInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BluetoothAcceptErrorInfo.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   int get socketId => jsProxy['socketId'];
   set socketId(int value) => jsProxy['socketId'] = value;
@@ -389,7 +431,7 @@ class BluetoothReceiveInfo extends ChromeObject {
     if (socketId != null) this.socketId = socketId;
     if (data != null) this.data = data;
   }
-  BluetoothReceiveInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BluetoothReceiveInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get socketId => jsProxy['socketId'];
   set socketId(int value) => jsProxy['socketId'] = value;
@@ -402,12 +444,14 @@ class BluetoothReceiveInfo extends ChromeObject {
  * Data from an `onReceiveError` event.
  */
 class BluetoothReceiveErrorInfo extends ChromeObject {
-  BluetoothReceiveErrorInfo({int socketId, String errorMessage, BluetoothReceiveError error}) {
+  BluetoothReceiveErrorInfo({int socketId, String errorMessage,
+      BluetoothReceiveError error}) {
     if (socketId != null) this.socketId = socketId;
     if (errorMessage != null) this.errorMessage = errorMessage;
     if (error != null) this.error = error;
   }
-  BluetoothReceiveErrorInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BluetoothReceiveErrorInfo.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   int get socketId => jsProxy['socketId'];
   set socketId(int value) => jsProxy['socketId'] = value;
@@ -419,12 +463,21 @@ class BluetoothReceiveErrorInfo extends ChromeObject {
   set error(BluetoothReceiveError value) => jsProxy['error'] = jsify(value);
 }
 
-BluetoothAcceptInfo _createAcceptInfo(JsObject jsProxy) => jsProxy == null ? null : new BluetoothAcceptInfo.fromProxy(jsProxy);
-BluetoothAcceptErrorInfo _createAcceptErrorInfo(JsObject jsProxy) => jsProxy == null ? null : new BluetoothAcceptErrorInfo.fromProxy(jsProxy);
-BluetoothReceiveInfo _createReceiveInfo(JsObject jsProxy) => jsProxy == null ? null : new BluetoothReceiveInfo.fromProxy(jsProxy);
-BluetoothReceiveErrorInfo _createReceiveErrorInfo(JsObject jsProxy) => jsProxy == null ? null : new BluetoothReceiveErrorInfo.fromProxy(jsProxy);
-BluetoothCreateInfo _createCreateInfo(JsObject jsProxy) => jsProxy == null ? null : new BluetoothCreateInfo.fromProxy(jsProxy);
-BluetoothSocketInfo _createSocketInfo(JsObject jsProxy) => jsProxy == null ? null : new BluetoothSocketInfo.fromProxy(jsProxy);
-AcceptError _createAcceptError(String value) => AcceptError.VALUES.singleWhere((ChromeEnum e) => e.value == value);
-ArrayBuffer _createArrayBuffer(/*JsObject*/ jsProxy) => jsProxy == null ? null : new ArrayBuffer.fromProxy(jsProxy);
-BluetoothReceiveError _createReceiveError(String value) => BluetoothReceiveError.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+BluetoothAcceptInfo _createAcceptInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new BluetoothAcceptInfo.fromProxy(jsProxy);
+BluetoothAcceptErrorInfo _createAcceptErrorInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new BluetoothAcceptErrorInfo.fromProxy(jsProxy);
+BluetoothReceiveInfo _createReceiveInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new BluetoothReceiveInfo.fromProxy(jsProxy);
+BluetoothReceiveErrorInfo _createReceiveErrorInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new BluetoothReceiveErrorInfo.fromProxy(jsProxy);
+BluetoothCreateInfo _createCreateInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new BluetoothCreateInfo.fromProxy(jsProxy);
+BluetoothSocketInfo _createSocketInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new BluetoothSocketInfo.fromProxy(jsProxy);
+AcceptError _createAcceptError(String value) =>
+    AcceptError.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+ArrayBuffer _createArrayBuffer(/*JsObject*/ jsProxy) =>
+    jsProxy == null ? null : new ArrayBuffer.fromProxy(jsProxy);
+BluetoothReceiveError _createReceiveError(String value) =>
+    BluetoothReceiveError.VALUES.singleWhere((ChromeEnum e) => e.value == value);

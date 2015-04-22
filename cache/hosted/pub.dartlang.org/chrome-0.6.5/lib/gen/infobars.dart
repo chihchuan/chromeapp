@@ -48,7 +48,7 @@ class InfobarsShowParams extends ChromeObject {
     if (path != null) this.path = path;
     if (height != null) this.height = height;
   }
-  InfobarsShowParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  InfobarsShowParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The tab id for the tab to display the infobar in.
@@ -70,4 +70,5 @@ class InfobarsShowParams extends ChromeObject {
   set height(int value) => jsProxy['height'] = value;
 }
 
-Window _createWindow(JsObject jsProxy) => jsProxy == null ? null : new Window.fromProxy(jsProxy);
+Window _createWindow(JsObject jsProxy) =>
+    jsProxy == null ? null : new Window.fromProxy(jsProxy);

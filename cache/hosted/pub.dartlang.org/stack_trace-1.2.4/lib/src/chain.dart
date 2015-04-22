@@ -51,7 +51,7 @@ class Chain implements StackTrace {
 
   /// The [StackZoneSpecification] for the current zone.
   static StackZoneSpecification get _currentSpec =>
-    Zone.current[#stack_trace.stack_zone.spec];
+      Zone.current[#stack_trace.stack_zone.spec];
 
   /// Runs [callback] in a [Zone] in which the current stack chain is tracked
   /// and automatically associated with (most) errors.
@@ -105,7 +105,7 @@ class Chain implements StackTrace {
   ///
   /// If this is called outside of a [capture] zone, it just returns a
   /// single-trace chain.
-  factory Chain.current([int level=0]) {
+  factory Chain.current([int level = 0]) {
     if (_currentSpec != null) return _currentSpec.currentChain(level + 1);
     return new Chain([new Trace.current(level + 1)]);
   }
@@ -128,7 +128,7 @@ class Chain implements StackTrace {
   ///
   /// Specifically, this parses the output of [Chain.toString].
   factory Chain.parse(String chain) =>
-    new Chain(chain.split(_gap).map((trace) => new Trace.parseFriendly(trace)));
+      new Chain(chain.split(_gap).map((trace) => new Trace.parseFriendly(trace)));
 
   /// Returns a new [Chain] comprised of [traces].
   Chain(Iterable<Trace> traces)
@@ -154,8 +154,8 @@ class Chain implements StackTrace {
   /// library or from this package, and simplify core library frames as in
   /// [Trace.terse].
   Chain foldFrames(bool predicate(Frame frame), {bool terse: false}) {
-    var foldedTraces = traces.map(
-        (trace) => trace.foldFrames(predicate, terse: terse));
+    var foldedTraces =
+        traces.map((trace) => trace.foldFrames(predicate, terse: terse));
     var nonEmptyTraces = foldedTraces.where((trace) {
       // Ignore traces that contain only folded frames.
       if (trace.frames.length > 1) return true;
@@ -185,8 +185,8 @@ class Chain implements StackTrace {
   String toString() {
     // Figure out the longest path so we know how much to pad.
     var longest = traces.map((trace) {
-      return trace.frames.map((frame) => frame.location.length)
-          .fold(0, math.max);
+      return trace.frames.map(
+          (frame) => frame.location.length).fold(0, math.max);
     }).fold(0, math.max);
 
     // Don't call out to [Trace.toString] here because that doesn't ensure that

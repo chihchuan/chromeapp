@@ -1,4 +1,3 @@
-
 library transformer_test;
 
 import 'package:unittest/unittest.dart';
@@ -11,9 +10,7 @@ defineTests() {
   group('transformer', () {
 
     test('invalid html', () {
-      expect(
-          transformer.rewriteContent("foo bar"),
-          "foo bar");
+      expect(transformer.rewriteContent("foo bar"), "foo bar");
     });
 
     test('test1', () {

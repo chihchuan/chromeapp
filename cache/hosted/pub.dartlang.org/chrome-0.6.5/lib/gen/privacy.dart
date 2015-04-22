@@ -48,7 +48,7 @@ class ChromePrivacy extends ChromeApi {
 
 class NetworkPrivacy extends ChromeObject {
   NetworkPrivacy();
-  NetworkPrivacy.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  NetworkPrivacy.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * If enabled, Chrome attempts to speed up your web browsing experience by
@@ -56,36 +56,41 @@ class NetworkPrivacy extends ChromeObject {
    * ...&gt;`), and preemptively opening TCP and SSL connections to servers.
    * This preference's value is a boolean, defaulting to `true`.
    */
-  ChromeSetting get networkPredictionEnabled => _createChromeSetting(jsProxy['networkPredictionEnabled']);
+  ChromeSetting get networkPredictionEnabled =>
+      _createChromeSetting(jsProxy['networkPredictionEnabled']);
 }
 
 class ServicesPrivacy extends ChromeObject {
   ServicesPrivacy();
-  ServicesPrivacy.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ServicesPrivacy.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * If enabled, Chrome uses a web service to help resolve navigation errors.
    * This preference's value is a boolean, defaulting to `true`.
    */
-  ChromeSetting get alternateErrorPagesEnabled => _createChromeSetting(jsProxy['alternateErrorPagesEnabled']);
+  ChromeSetting get alternateErrorPagesEnabled =>
+      _createChromeSetting(jsProxy['alternateErrorPagesEnabled']);
 
   /**
    * If enabled, Chrome offers to automatically fill in forms. This preference's
    * value is a boolean, defaulting to `true`.
    */
-  ChromeSetting get autofillEnabled => _createChromeSetting(jsProxy['autofillEnabled']);
+  ChromeSetting get autofillEnabled =>
+      _createChromeSetting(jsProxy['autofillEnabled']);
 
   /**
    * If enabled, the password manager will ask if you want to save passwords.
    * This preference's value is a boolean, defaulting to `true`.
    */
-  ChromeSetting get passwordSavingEnabled => _createChromeSetting(jsProxy['passwordSavingEnabled']);
+  ChromeSetting get passwordSavingEnabled =>
+      _createChromeSetting(jsProxy['passwordSavingEnabled']);
 
   /**
    * If enabled, Chrome does its best to protect you from phishing and malware.
    * This preference's value is a boolean, defaulting to `true`.
    */
-  ChromeSetting get safeBrowsingEnabled => _createChromeSetting(jsProxy['safeBrowsingEnabled']);
+  ChromeSetting get safeBrowsingEnabled =>
+      _createChromeSetting(jsProxy['safeBrowsingEnabled']);
 
   /**
    * If enabled, Chrome sends the text you type into the Omnibox to your default
@@ -93,38 +98,43 @@ class ServicesPrivacy extends ChromeObject {
    * likely completions of what you've typed so far. This preference's value is
    * a boolean, defaulting to `true`.
    */
-  ChromeSetting get searchSuggestEnabled => _createChromeSetting(jsProxy['searchSuggestEnabled']);
+  ChromeSetting get searchSuggestEnabled =>
+      _createChromeSetting(jsProxy['searchSuggestEnabled']);
 
   /**
    * If enabled, Chrome uses a web service to help correct spelling errors. This
    * preference's value is a boolean, defaulting to `false`.
    */
-  ChromeSetting get spellingServiceEnabled => _createChromeSetting(jsProxy['spellingServiceEnabled']);
+  ChromeSetting get spellingServiceEnabled =>
+      _createChromeSetting(jsProxy['spellingServiceEnabled']);
 
   /**
    * If enabled, Chrome offers to translate pages that aren't in a language you
    * read. This preference's value is a boolean, defaulting to `true`.
    */
-  ChromeSetting get translationServiceEnabled => _createChromeSetting(jsProxy['translationServiceEnabled']);
+  ChromeSetting get translationServiceEnabled =>
+      _createChromeSetting(jsProxy['translationServiceEnabled']);
 }
 
 class WebsitesPrivacy extends ChromeObject {
   WebsitesPrivacy();
-  WebsitesPrivacy.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  WebsitesPrivacy.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * If disabled, Chrome blocks third-party sites from setting cookies. The
    * value of this preference is of type boolean, and the default value is
    * `true`.
    */
-  ChromeSetting get thirdPartyCookiesAllowed => _createChromeSetting(jsProxy['thirdPartyCookiesAllowed']);
+  ChromeSetting get thirdPartyCookiesAllowed =>
+      _createChromeSetting(jsProxy['thirdPartyCookiesAllowed']);
 
   /**
    * If enabled, Chrome sends auditing pings when requested by a website (`&lt;a
    * ping&gt;`). The value of this preference is of type boolean, and the
    * default value is `true`.
    */
-  ChromeSetting get hyperlinkAuditingEnabled => _createChromeSetting(jsProxy['hyperlinkAuditingEnabled']);
+  ChromeSetting get hyperlinkAuditingEnabled =>
+      _createChromeSetting(jsProxy['hyperlinkAuditingEnabled']);
 
   /**
    * If enabled, Chrome sends `referer` headers with your requests. Yes, the
@@ -132,17 +142,23 @@ class WebsitesPrivacy extends ChromeObject {
    * going to change it. The value of this preference is of type boolean, and
    * the default value is `true`.
    */
-  ChromeSetting get referrersEnabled => _createChromeSetting(jsProxy['referrersEnabled']);
+  ChromeSetting get referrersEnabled =>
+      _createChromeSetting(jsProxy['referrersEnabled']);
 
   /**
    * *Available on Windows and ChromeOS only*: If enabled, Chrome provides a
    * unique ID to plugins in order to run protected content. The value of this
    * preference is of type boolean, and the default value is `true`.
    */
-  ChromeSetting get protectedContentEnabled => _createChromeSetting(jsProxy['protectedContentEnabled']);
+  ChromeSetting get protectedContentEnabled =>
+      _createChromeSetting(jsProxy['protectedContentEnabled']);
 }
 
-NetworkPrivacy _createNetworkPrivacy(JsObject jsProxy) => jsProxy == null ? null : new NetworkPrivacy.fromProxy(jsProxy);
-ServicesPrivacy _createServicesPrivacy(JsObject jsProxy) => jsProxy == null ? null : new ServicesPrivacy.fromProxy(jsProxy);
-WebsitesPrivacy _createWebsitesPrivacy(JsObject jsProxy) => jsProxy == null ? null : new WebsitesPrivacy.fromProxy(jsProxy);
-ChromeSetting _createChromeSetting(JsObject jsProxy) => jsProxy == null ? null : new ChromeSetting.fromProxy(jsProxy);
+NetworkPrivacy _createNetworkPrivacy(JsObject jsProxy) =>
+    jsProxy == null ? null : new NetworkPrivacy.fromProxy(jsProxy);
+ServicesPrivacy _createServicesPrivacy(JsObject jsProxy) =>
+    jsProxy == null ? null : new ServicesPrivacy.fromProxy(jsProxy);
+WebsitesPrivacy _createWebsitesPrivacy(JsObject jsProxy) =>
+    jsProxy == null ? null : new WebsitesPrivacy.fromProxy(jsProxy);
+ChromeSetting _createChromeSetting(JsObject jsProxy) =>
+    jsProxy == null ? null : new ChromeSetting.fromProxy(jsProxy);

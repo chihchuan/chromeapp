@@ -21,8 +21,8 @@ class AssetNotFoundException implements Exception {
 
 /// Replaces any occurrences of [AggregateException] in [errors] with the list
 /// of errors it contains.
-Iterable<BarbackException> flattenAggregateExceptions(
-    Iterable<BarbackException> errors) {
+Iterable<BarbackException>
+    flattenAggregateExceptions(Iterable<BarbackException> errors) {
   return errors.expand((error) {
     if (error is! AggregateException) return [error];
     return error.errors;
@@ -60,8 +60,8 @@ class AggregateException implements BarbackException {
     buffer.writeln("Multiple errors occurred:\n");
 
     for (var error in errors) {
-      buffer.writeln(prefixLines(error.toString(),
-                                 prefix: "  ", firstPrefix: "- "));
+      buffer.writeln(
+          prefixLines(error.toString(), prefix: "  ", firstPrefix: "- "));
     }
 
     return buffer.toString();
@@ -105,8 +105,9 @@ class InvalidOutputException implements BarbackException {
 
   InvalidOutputException(this.transform, this.id);
 
-  String toString() => "Transform $transform emitted $id, which wasn't in the "
-      "same package (${transform.primaryId.package}).";
+  String toString() =>
+      "Transform $transform emitted $id, which wasn't in the "
+          "same package (${transform.primaryId.package}).";
 }
 
 /// Base class for an error that wraps another.
@@ -179,12 +180,13 @@ class TransformInfo {
 
   TransformInfo(transformer, this.primaryId)
       : transformer = transformer is WrappingAggregateTransformer ?
-            transformer.transformer : transformer;
+          transformer.transformer :
+          transformer;
 
-  bool operator==(other) =>
+  bool operator ==(other) =>
       other is TransformInfo &&
-      other.transformer == transformer &&
-      other.primaryId == primaryId;
+          other.transformer == transformer &&
+          other.primaryId == primaryId;
 
   int get hashCode => transformer.hashCode ^ primaryId.hashCode;
 

@@ -30,7 +30,7 @@ class ChromeTypes extends ChromeApi {
  */
 class ChromeSetting extends ChromeObject {
   ChromeSetting();
-  ChromeSetting.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ChromeSetting.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Gets the value of a setting.
@@ -77,7 +77,7 @@ class ImageDetails extends ChromeObject {
     if (format != null) this.format = format;
     if (quality != null) this.quality = quality;
   }
-  ImageDetails.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ImageDetails.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The format of the resulting image.  Default is `"jpeg"`.
@@ -100,7 +100,7 @@ class TypesGetParams extends ChromeObject {
   TypesGetParams({bool incognito}) {
     if (incognito != null) this.incognito = incognito;
   }
-  TypesGetParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  TypesGetParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Whether to return the value that applies to the incognito session (default
@@ -115,7 +115,7 @@ class TypesSetParams extends ChromeObject {
     if (value != null) this.value = value;
     if (scope != null) this.scope = scope;
   }
-  TypesSetParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  TypesSetParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The value of the setting. <br/>Note that every setting has a specific value
@@ -147,7 +147,7 @@ class TypesClearParams extends ChromeObject {
   TypesClearParams({String scope}) {
     if (scope != null) this.scope = scope;
   }
-  TypesClearParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  TypesClearParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Where to clear the setting (default: regular). One of<ul><li>[regular]:

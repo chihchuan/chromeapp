@@ -36,192 +36,226 @@ void main() {
     test('.parse parses a VM stack trace correctly', () {
       var trace = new Trace.parse(
           '#0      Foo._bar (file:///home/nweiz/code/stuff.dart:42:21)\n'
-          '#1      zip.<anonymous closure>.zap (dart:async/future.dart:0:2)\n'
-          '#2      zip.<anonymous closure>.zap (http://pub.dartlang.org/thing.'
+              '#1      zip.<anonymous closure>.zap (dart:async/future.dart:0:2)\n'
+              '#2      zip.<anonymous closure>.zap (http://pub.dartlang.org/thing.'
               'dart:1:100)');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("file:///home/nweiz/code/stuff.dart")));
       expect(trace.frames[1].uri, equals(Uri.parse("dart:async/future.dart")));
-      expect(trace.frames[2].uri,
+      expect(
+          trace.frames[2].uri,
           equals(Uri.parse("http://pub.dartlang.org/thing.dart")));
     });
 
     test('parses a V8 stack trace correctly', () {
       var trace = new Trace.parse(
-          'Error\n'
-          '    at Foo._bar (http://pub.dartlang.org/stuff.js:42:21)\n'
-          '    at http://pub.dartlang.org/stuff.js:0:2\n'
-          '    at zip.<anonymous>.zap '
+          'Error\n' '    at Foo._bar (http://pub.dartlang.org/stuff.js:42:21)\n'
+              '    at http://pub.dartlang.org/stuff.js:0:2\n' '    at zip.<anonymous>.zap '
               '(http://pub.dartlang.org/thing.js:1:100)');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[1].uri,
+      expect(
+          trace.frames[1].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[2].uri,
+      expect(
+          trace.frames[2].uri,
           equals(Uri.parse("http://pub.dartlang.org/thing.js")));
 
       trace = new Trace.parse(
-          "Exception: foo\n"
-          '    at Foo._bar (http://pub.dartlang.org/stuff.js:42:21)\n'
-          '    at http://pub.dartlang.org/stuff.js:0:2\n'
-          '    at zip.<anonymous>.zap '
+          "Exception: foo\n" '    at Foo._bar (http://pub.dartlang.org/stuff.js:42:21)\n'
+              '    at http://pub.dartlang.org/stuff.js:0:2\n' '    at zip.<anonymous>.zap '
               '(http://pub.dartlang.org/thing.js:1:100)');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[1].uri,
+      expect(
+          trace.frames[1].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[2].uri,
+      expect(
+          trace.frames[2].uri,
           equals(Uri.parse("http://pub.dartlang.org/thing.js")));
 
       trace = new Trace.parse(
-          'Exception: foo\n'
-          '    bar\n'
-          '    at Foo._bar (http://pub.dartlang.org/stuff.js:42:21)\n'
-          '    at http://pub.dartlang.org/stuff.js:0:2\n'
-          '    at zip.<anonymous>.zap '
+          'Exception: foo\n' '    bar\n'
+              '    at Foo._bar (http://pub.dartlang.org/stuff.js:42:21)\n'
+              '    at http://pub.dartlang.org/stuff.js:0:2\n' '    at zip.<anonymous>.zap '
               '(http://pub.dartlang.org/thing.js:1:100)');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[1].uri,
+      expect(
+          trace.frames[1].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[2].uri,
+      expect(
+          trace.frames[2].uri,
           equals(Uri.parse("http://pub.dartlang.org/thing.js")));
     });
 
     test('parses a Firefox/Safari stack trace correctly', () {
       var trace = new Trace.parse(
           'Foo._bar@http://pub.dartlang.org/stuff.js:42\n'
-          'zip/<@http://pub.dartlang.org/stuff.js:0\n'
-          'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1');
+              'zip/<@http://pub.dartlang.org/stuff.js:0\n'
+              'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[1].uri,
+      expect(
+          trace.frames[1].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[2].uri,
+      expect(
+          trace.frames[2].uri,
           equals(Uri.parse("http://pub.dartlang.org/thing.js")));
 
       trace = new Trace.parse(
           'zip/<@http://pub.dartlang.org/stuff.js:0\n'
-          'Foo._bar@http://pub.dartlang.org/stuff.js:42\n'
-          'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1');
+              'Foo._bar@http://pub.dartlang.org/stuff.js:42\n'
+              'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[1].uri,
+      expect(
+          trace.frames[1].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[2].uri,
+      expect(
+          trace.frames[2].uri,
           equals(Uri.parse("http://pub.dartlang.org/thing.js")));
 
       trace = new Trace.parse(
           'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1\n'
-          'zip/<@http://pub.dartlang.org/stuff.js:0\n'
-          'Foo._bar@http://pub.dartlang.org/stuff.js:42');
+              'zip/<@http://pub.dartlang.org/stuff.js:0\n'
+              'Foo._bar@http://pub.dartlang.org/stuff.js:42');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("http://pub.dartlang.org/thing.js")));
-      expect(trace.frames[1].uri,
+      expect(
+          trace.frames[1].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[2].uri,
+      expect(
+          trace.frames[2].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
     });
 
-    test('parses a Firefox/Safari stack trace containing native code correctly',
+    test(
+        'parses a Firefox/Safari stack trace containing native code correctly',
         () {
       var trace = new Trace.parse(
           'Foo._bar@http://pub.dartlang.org/stuff.js:42\n'
-          'zip/<@http://pub.dartlang.org/stuff.js:0\n'
-          'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1\n'
-          '[native code]');
+              'zip/<@http://pub.dartlang.org/stuff.js:0\n'
+              'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1\n' '[native code]');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[1].uri,
+      expect(
+          trace.frames[1].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[2].uri,
+      expect(
+          trace.frames[2].uri,
           equals(Uri.parse("http://pub.dartlang.org/thing.js")));
       expect(trace.frames.length, equals(3));
     });
 
-    test('parses a Firefox/Safari stack trace without a method name correctly',
+    test(
+        'parses a Firefox/Safari stack trace without a method name correctly',
         () {
       var trace = new Trace.parse(
           'http://pub.dartlang.org/stuff.js:42\n'
-          'zip/<@http://pub.dartlang.org/stuff.js:0\n'
-          'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1');
+              'zip/<@http://pub.dartlang.org/stuff.js:0\n'
+              'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
       expect(trace.frames[0].member, equals('<fn>'));
-      expect(trace.frames[1].uri,
+      expect(
+          trace.frames[1].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[2].uri,
+      expect(
+          trace.frames[2].uri,
           equals(Uri.parse("http://pub.dartlang.org/thing.js")));
     });
 
-    test('parses a Firefox/Safari stack trace with an empty line correctly',
+    test(
+        'parses a Firefox/Safari stack trace with an empty line correctly',
         () {
       var trace = new Trace.parse(
-          'Foo._bar@http://pub.dartlang.org/stuff.js:42\n'
-          '\n'
-          'zip/<@http://pub.dartlang.org/stuff.js:0\n'
-          'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1');
+          'Foo._bar@http://pub.dartlang.org/stuff.js:42\n' '\n'
+              'zip/<@http://pub.dartlang.org/stuff.js:0\n'
+              'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[1].uri,
+      expect(
+          trace.frames[1].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[2].uri,
+      expect(
+          trace.frames[2].uri,
           equals(Uri.parse("http://pub.dartlang.org/thing.js")));
     });
 
-    test('parses a Firefox/Safari stack trace with a column number correctly',
+    test(
+        'parses a Firefox/Safari stack trace with a column number correctly',
         () {
       var trace = new Trace.parse(
           'Foo._bar@http://pub.dartlang.org/stuff.js:42:2\n'
-          'zip/<@http://pub.dartlang.org/stuff.js:0\n'
-          'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1');
+              'zip/<@http://pub.dartlang.org/stuff.js:0\n'
+              'zip.zap(12, "@)()/<")@http://pub.dartlang.org/thing.js:1');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
       expect(trace.frames[0].line, equals(42));
       expect(trace.frames[0].column, equals(2));
-      expect(trace.frames[1].uri,
+      expect(
+          trace.frames[1].uri,
           equals(Uri.parse("http://pub.dartlang.org/stuff.js")));
-      expect(trace.frames[2].uri,
+      expect(
+          trace.frames[2].uri,
           equals(Uri.parse("http://pub.dartlang.org/thing.js")));
     });
 
     test('parses a package:stack_trace stack trace correctly', () {
       var trace = new Trace.parse(
           'http://dartlang.org/foo/bar.dart 10:11  Foo.<fn>.bar\n'
-          'http://dartlang.org/foo/baz.dart        Foo.<fn>.bar');
+              'http://dartlang.org/foo/baz.dart        Foo.<fn>.bar');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("http://dartlang.org/foo/bar.dart")));
-      expect(trace.frames[1].uri,
+      expect(
+          trace.frames[1].uri,
           equals(Uri.parse("http://dartlang.org/foo/baz.dart")));
     });
 
     test('parses a package:stack_trace stack chain correctly', () {
       var trace = new Trace.parse(
           'http://dartlang.org/foo/bar.dart 10:11  Foo.<fn>.bar\n'
-          'http://dartlang.org/foo/baz.dart        Foo.<fn>.bar\n'
-          '===== asynchronous gap ===========================\n'
-          'http://dartlang.org/foo/bang.dart 10:11  Foo.<fn>.bar\n'
-          'http://dartlang.org/foo/quux.dart        Foo.<fn>.bar');
+              'http://dartlang.org/foo/baz.dart        Foo.<fn>.bar\n'
+              '===== asynchronous gap ===========================\n'
+              'http://dartlang.org/foo/bang.dart 10:11  Foo.<fn>.bar\n'
+              'http://dartlang.org/foo/quux.dart        Foo.<fn>.bar');
 
-      expect(trace.frames[0].uri,
+      expect(
+          trace.frames[0].uri,
           equals(Uri.parse("http://dartlang.org/foo/bar.dart")));
-      expect(trace.frames[1].uri,
+      expect(
+          trace.frames[1].uri,
           equals(Uri.parse("http://dartlang.org/foo/baz.dart")));
-      expect(trace.frames[2].uri,
+      expect(
+          trace.frames[2].uri,
           equals(Uri.parse("http://dartlang.org/foo/bang.dart")));
-      expect(trace.frames[3].uri,
+      expect(
+          trace.frames[3].uri,
           equals(Uri.parse("http://dartlang.org/foo/quux.dart")));
     });
 
@@ -253,16 +287,18 @@ http://pub.dartlang.org/thing.dart 1:100  zip.<fn>.zap
 
   test('.vmTrace returns a native-style trace', () {
     var uri = path.toUri(path.absolute('foo'));
-    var trace = new Trace([
-      new Frame(uri, 10, 20, 'Foo.<fn>'),
-      new Frame(Uri.parse('http://dartlang.org/foo.dart'), null, null, 'bar'),
-      new Frame(Uri.parse('dart:async'), 15, null, 'baz'),
-    ]);
+    var trace = new Trace(
+        [
+            new Frame(uri, 10, 20, 'Foo.<fn>'),
+            new Frame(Uri.parse('http://dartlang.org/foo.dart'), null, null, 'bar'),
+            new Frame(Uri.parse('dart:async'), 15, null, 'baz'),]);
 
-    expect(trace.vmTrace.toString(), equals(
-        '#1      Foo.<anonymous closure> ($uri:10:20)\n'
-        '#2      bar (http://dartlang.org/foo.dart:0:0)\n'
-        '#3      baz (dart:async:15:0)\n'));
+    expect(
+        trace.vmTrace.toString(),
+        equals(
+            '#1      Foo.<anonymous closure> ($uri:10:20)\n'
+                '#2      bar (http://dartlang.org/foo.dart:0:0)\n'
+                '#3      baz (dart:async:15:0)\n'));
   });
 
   test('.terse folds core frames together bottom-up', () {
@@ -351,8 +387,8 @@ dart:async-patch/future.dart 9:11  fooBottom
 #5 coreBottom (dart:async-patch/future.dart:9:11)
 ''');
 
-    var folded = trace.foldFrames((frame) => frame.member.startsWith('foo'),
-        terse: true);
+    var folded =
+        trace.foldFrames((frame) => frame.member.startsWith('foo'), terse: true);
     expect(folded.toString(), equals('''
 foo.dart 42:21  notFoo
 dart:async      coreBottom
@@ -370,8 +406,8 @@ bar.dart 10:20  alsoNotFoo
 #5 fooBottom (foo/bar.dart:9:11)
 ''');
 
-    var folded = trace.foldFrames((frame) => frame.member.startsWith('foo'),
-        terse: true);
+    var folded =
+        trace.foldFrames((frame) => frame.member.startsWith('foo'), terse: true);
     expect(folded.toString(), equals('''
 foo.dart 42:21  notFoo
 package:foo     fooBottom

@@ -57,8 +57,8 @@ class PackageGraph {
   final _logController = new StreamController<LogEntry>.broadcast(sync: true);
 
   /// How far along [this] is in processing its assets.
-  NodeStatus get _status => NodeStatus.dirtiest(
-      _cascades.values.map((cascade) => cascade.status));
+  NodeStatus get _status =>
+      NodeStatus.dirtiest(_cascades.values.map((cascade) => cascade.status));
 
   /// Whether a [BuildResult] is scheduled to be emitted on [results] (see
   /// [_tryScheduleResult]).
@@ -100,8 +100,9 @@ class PackageGraph {
         StaticPackageProvider staticProvider = provider;
         for (var package in staticProvider.staticPackages) {
           if (_cascades.containsKey(package)) {
-            throw new StateError('Package "$package" is in both '
-                'PackageProvider.packages and PackageProvider.staticPackages.');
+            throw new StateError(
+                'Package "$package" is in both '
+                    'PackageProvider.packages and PackageProvider.staticPackages.');
           }
 
           var cascade = new StaticAssetCascade(this, package);
@@ -109,7 +110,8 @@ class PackageGraph {
         }
       }
 
-      _errors = mergeStreams(_cascades.values.map((cascade) => cascade.errors),
+      _errors = mergeStreams(
+          _cascades.values.map((cascade) => cascade.errors),
           broadcast: true);
       _errors.listen(_accumulatedErrors.add);
 
@@ -165,9 +167,8 @@ class PackageGraph {
     }
 
     // Otherwise, return all of the final output assets.
-    return Future.wait(_cascades.values.map(
-            (cascade) => cascade.availableOutputs))
-          .then((assetSets) {
+    return Future.wait(
+        _cascades.values.map((cascade) => cascade.availableOutputs)).then((assetSets) {
       var assets = unionAll(assetSets.map((assetSet) => assetSet.toSet()));
       return new Future.value(new AssetSet.from(assets));
     });

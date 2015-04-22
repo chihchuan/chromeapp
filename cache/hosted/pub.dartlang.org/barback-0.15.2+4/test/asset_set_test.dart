@@ -18,10 +18,8 @@ main() {
 
   group(".from()", () {
     test("creates a set from an iterable", () {
-      var set = new AssetSet.from([
-        new Asset.fromString(fooId, "foo"),
-        new Asset.fromString(barId, "bar")
-      ]);
+      var set = new AssetSet.from(
+          [new Asset.fromString(fooId, "foo"), new Asset.fromString(barId, "bar")]);
 
       expect(set.containsId(fooId), isTrue);
       expect(set.containsId(barId), isTrue);

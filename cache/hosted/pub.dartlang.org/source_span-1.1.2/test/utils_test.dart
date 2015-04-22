@@ -33,7 +33,8 @@ main() {
           list.add(i);
         }
         for (int pos = 0; pos <= size; pos++) {
-          expect(binarySearch(list, (x) => x >= pos),
+          expect(
+              binarySearch(list, (x) => x >= pos),
               _linearSearch(list, (x) => x >= pos));
         }
       }

@@ -25,7 +25,10 @@ class ChromeTts extends ChromeApi {
 
   ChromeTts._() {
     var getApi = () => _tts;
-    _onEvent = new ChromeStreamController<TtsEvent>.oneArg(getApi, 'onEvent', _createTtsEvent);
+    _onEvent = new ChromeStreamController<TtsEvent>.oneArg(
+        getApi,
+        'onEvent',
+        _createTtsEvent);
   }
 
   bool get available => _tts != null;
@@ -104,7 +107,8 @@ class ChromeTts extends ChromeApi {
   Future<List<TtsVoice>> getVoices() {
     if (_tts == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<TtsVoice>>.oneArg((e) => listify(e, _createTtsVoice));
+    var completer =
+        new ChromeCompleter<List<TtsVoice>>.oneArg((e) => listify(e, _createTtsVoice));
     _tts.callMethod('getVoices', [completer.callback]);
     return completer.future;
   }
@@ -123,7 +127,7 @@ class TtsEvent extends ChromeObject {
     if (charIndex != null) this.charIndex = charIndex;
     if (errorMessage != null) this.errorMessage = errorMessage;
   }
-  TtsEvent.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  TtsEvent.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The type can be 'start' as soon as speech has started, 'word' when a word
@@ -159,7 +163,8 @@ class TtsEvent extends ChromeObject {
  * A description of a voice available for speech synthesis.
  */
 class TtsVoice extends ChromeObject {
-  TtsVoice({String voiceName, String lang, String gender, bool remote, String extensionId, List<String> eventTypes}) {
+  TtsVoice({String voiceName, String lang, String gender, bool remote,
+      String extensionId, List<String> eventTypes}) {
     if (voiceName != null) this.voiceName = voiceName;
     if (lang != null) this.lang = lang;
     if (gender != null) this.gender = gender;
@@ -167,7 +172,7 @@ class TtsVoice extends ChromeObject {
     if (extensionId != null) this.extensionId = extensionId;
     if (eventTypes != null) this.eventTypes = eventTypes;
   }
-  TtsVoice.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  TtsVoice.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The name of the voice.
@@ -210,7 +215,9 @@ class TtsVoice extends ChromeObject {
 }
 
 class TtsSpeakParams extends ChromeObject {
-  TtsSpeakParams({bool enqueue, String voiceName, String extensionId, String lang, String gender, var rate, var pitch, var volume, List<String> requiredEventTypes, List<String> desiredEventTypes}) {
+  TtsSpeakParams({bool enqueue, String voiceName, String extensionId,
+      String lang, String gender, var rate, var pitch, var volume,
+      List<String> requiredEventTypes, List<String> desiredEventTypes}) {
     if (enqueue != null) this.enqueue = enqueue;
     if (voiceName != null) this.voiceName = voiceName;
     if (extensionId != null) this.extensionId = extensionId;
@@ -219,10 +226,11 @@ class TtsSpeakParams extends ChromeObject {
     if (rate != null) this.rate = rate;
     if (pitch != null) this.pitch = pitch;
     if (volume != null) this.volume = volume;
-    if (requiredEventTypes != null) this.requiredEventTypes = requiredEventTypes;
+    if (requiredEventTypes != null) this.requiredEventTypes =
+        requiredEventTypes;
     if (desiredEventTypes != null) this.desiredEventTypes = desiredEventTypes;
   }
-  TtsSpeakParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  TtsSpeakParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * If true, enqueues this utterance if TTS is already in progress. If false
@@ -288,18 +296,21 @@ class TtsSpeakParams extends ChromeObject {
    * The TTS event types the voice must support.
    */
   List<String> get requiredEventTypes => listify(jsProxy['requiredEventTypes']);
-  set requiredEventTypes(List<String> value) => jsProxy['requiredEventTypes'] = jsify(value);
+  set requiredEventTypes(List<String> value) => jsProxy['requiredEventTypes'] =
+      jsify(value);
 
   /**
    * The TTS event types that you are interested in listening to. If missing,
    * all event types may be sent.
    */
   List<String> get desiredEventTypes => listify(jsProxy['desiredEventTypes']);
-  set desiredEventTypes(List<String> value) => jsProxy['desiredEventTypes'] = jsify(value);
+  set desiredEventTypes(List<String> value) => jsProxy['desiredEventTypes'] =
+      jsify(value);
 
-  void onEvent([var arg1]) =>
-         jsProxy.callMethod('onEvent', [jsify(arg1)]);
+  void onEvent([var arg1]) => jsProxy.callMethod('onEvent', [jsify(arg1)]);
 }
 
-TtsEvent _createTtsEvent(JsObject jsProxy) => jsProxy == null ? null : new TtsEvent.fromProxy(jsProxy);
-TtsVoice _createTtsVoice(JsObject jsProxy) => jsProxy == null ? null : new TtsVoice.fromProxy(jsProxy);
+TtsEvent _createTtsEvent(JsObject jsProxy) =>
+    jsProxy == null ? null : new TtsEvent.fromProxy(jsProxy);
+TtsVoice _createTtsVoice(JsObject jsProxy) =>
+    jsProxy == null ? null : new TtsVoice.fromProxy(jsProxy);

@@ -40,26 +40,31 @@ main() {
       test('context must contain text', () {
         var start = new SourceLocation(2);
         var end = new SourceLocation(5);
-        expect(() => new SourceSpanWithContext(
-              start, end, "abc", "--axc--"), throwsArgumentError);
+        expect(
+            () => new SourceSpanWithContext(start, end, "abc", "--axc--"),
+            throwsArgumentError);
       });
 
       test('text starts at start.column in context', () {
         var start = new SourceLocation(3);
         var end = new SourceLocation(5);
-        expect(() => new SourceSpanWithContext(
-              start, end, "abc", "--abc--"), throwsArgumentError);
+        expect(
+            () => new SourceSpanWithContext(start, end, "abc", "--abc--"),
+            throwsArgumentError);
       });
 
       test('text starts at start.column of line in multi-line context', () {
         var start = new SourceLocation(4, line: 55, column: 3);
         var end = new SourceLocation(7, line: 55, column: 6);
-        expect(() => new SourceSpanWithContext(
-              start, end, "abc", "\n--abc--"), throwsArgumentError);
-        expect(() => new SourceSpanWithContext(
-              start, end, "abc", "\n----abc--"), throwsArgumentError);
-        expect(() => new SourceSpanWithContext(
-              start, end, "abc", "\n\n--abc--"), throwsArgumentError);
+        expect(
+            () => new SourceSpanWithContext(start, end, "abc", "\n--abc--"),
+            throwsArgumentError);
+        expect(
+            () => new SourceSpanWithContext(start, end, "abc", "\n----abc--"),
+            throwsArgumentError);
+        expect(
+            () => new SourceSpanWithContext(start, end, "abc", "\n\n--abc--"),
+            throwsArgumentError);
 
         // However, these are valid:
         new SourceSpanWithContext(start, end, "abc", "\n---abc--");
@@ -75,10 +80,12 @@ main() {
         new SourceSpanWithContext(start1, end1, "abc", "--abc--abc--\n");
         new SourceSpanWithContext(start2, end2, "abc", "--abc---abc--\n");
         new SourceSpanWithContext(start2, end2, "abc", "---abc--abc--\n");
-        expect(() => new SourceSpanWithContext(
-              start1, end1, "abc", "---abc--abc--\n"), throwsArgumentError);
-        expect(() => new SourceSpanWithContext(
-              start2, end2, "abc", "--abc--abc--\n"), throwsArgumentError);
+        expect(
+            () => new SourceSpanWithContext(start1, end1, "abc", "---abc--abc--\n"),
+            throwsArgumentError);
+        expect(
+            () => new SourceSpanWithContext(start2, end2, "abc", "--abc--abc--\n"),
+            throwsArgumentError);
       });
     });
 
@@ -196,8 +203,8 @@ foo bar
     });
 
     test("gracefully handles a missing source URL", () {
-      var span = new SourceSpan(
-          new SourceLocation(5), new SourceLocation(12), "foo bar");
+      var span =
+          new SourceSpan(new SourceLocation(5), new SourceLocation(12), "foo bar");
 
       expect(span.message("oh no"), equalsIgnoringWhitespace("""
 line 1, column 6: oh no
@@ -206,11 +213,10 @@ foo bar
     });
 
     test("gracefully handles empty text", () {
-      var span = new SourceSpan(
-          new SourceLocation(5), new SourceLocation(5), "");
+      var span =
+          new SourceSpan(new SourceLocation(5), new SourceLocation(5), "");
 
-      expect(span.message("oh no"),
-          equals("line 1, column 6: oh no"));
+      expect(span.message("oh no"), equals("line 1, column 6: oh no"));
     });
 
     test("doesn't colorize if color is false", () {
@@ -221,8 +227,7 @@ foo bar
     });
 
     test("colorizes if color is true", () {
-      expect(span.message("oh no", color: true),
-          equals("""
+      expect(span.message("oh no", color: true), equals("""
 line 1, column 6 of foo.dart: oh no
 ${colors.RED}foo bar${colors.NONE}
 ${colors.RED}^^^^^^^${colors.NONE}"""));
@@ -263,7 +268,7 @@ line 1, column 6 of foo.dart: oh no
 line 1, column 10 of foo.dart: oh no
 -----foo ${colors.YELLOW}foo${colors.NONE}-----
          ${colors.YELLOW}^^^${colors.NONE}"""));
-  });
+    });
 
     test("supports lines of preceeding context", () {
       var span = new SourceSpanWithContext(

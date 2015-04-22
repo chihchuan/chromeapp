@@ -12,9 +12,8 @@ import 'aggregate_many_to_many.dart';
 
 /// Like [AggregateManyToManyTransformer], but declares its assets ahead of
 /// time.
-class DeclaringAggregateManyToManyTransformer
-    extends AggregateManyToManyTransformer
-    implements DeclaringAggregateTransformer {
+class DeclaringAggregateManyToManyTransformer extends
+    AggregateManyToManyTransformer implements DeclaringAggregateTransformer {
   DeclaringAggregateManyToManyTransformer(String extension)
       : super(extension);
 

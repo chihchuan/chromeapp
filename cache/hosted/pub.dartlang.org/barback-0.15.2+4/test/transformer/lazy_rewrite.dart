@@ -10,8 +10,8 @@ import 'declaring_rewrite.dart';
 
 /// Like [RewriteTransformer], but returns a lazy asset that doesn't perform the
 /// rewrite until it's materialized.
-class LazyRewriteTransformer extends DeclaringRewriteTransformer
-    implements LazyTransformer {
+class LazyRewriteTransformer extends DeclaringRewriteTransformer implements
+    LazyTransformer {
   LazyRewriteTransformer(String from, String to)
       : super(from, to);
 }

@@ -27,8 +27,8 @@ class Fallible<E> {
   /// This will throw a [StateError] if [this] has an [error].
   E get value {
     if (hasValue) return _value;
-    throw new StateError("Fallible has no value.\n"
-        "$_error$_stackTraceSuffix");
+    throw new StateError(
+        "Fallible has no value.\n" "$_error$_stackTraceSuffix");
   }
 
   /// The error.
@@ -157,16 +157,17 @@ List flatten(Iterable nested) {
 
 /// Returns the union of all elements in each set in [sets].
 Set unionAll(Iterable<Set> sets) =>
-  sets.fold(new Set(), (union, set) => union.union(set));
+    sets.fold(new Set(), (union, set) => union.union(set));
 
 /// Creates a new map from [map] with new keys and values.
 ///
 /// The return values of [keyFn] are used as the keys and the return values of
 /// [valueFn] are used as the values for the new map.
 Map mapMap(Map map, keyFn(key, value), valueFn(key, value)) =>
-  new Map.fromIterable(map.keys,
-      key: (key) => keyFn(key, map[key]),
-      value: (key) => valueFn(key, map[key]));
+    new Map.fromIterable(
+        map.keys,
+        key: (key) => keyFn(key, map[key]),
+        value: (key) => valueFn(key, map[key]));
 
 /// Creates a new map from [map] with the same keys.
 ///
@@ -180,7 +181,7 @@ Map mapMapKeys(Map map, fn(key, value)) => mapMap(map, fn, (_, value) => value);
 
 /// Returns whether [set1] has exactly the same elements as [set2].
 bool setEquals(Set set1, Set set2) =>
-  set1.length == set2.length && set1.containsAll(set2);
+    set1.length == set2.length && set1.containsAll(set2);
 
 /// Merges [streams] into a single stream that emits events from all sources.
 ///
@@ -193,14 +194,12 @@ Stream mergeStreams(Iterable<Stream> streams, {bool broadcast: false}) {
   // If the inputs are sync, then this will be sync as well; if the inputs are
   // async, then the events we receive will also be async, and forwarding them
   // sync won't change that.
-  var controller = broadcast ? new StreamController.broadcast(sync: true)
-      : new StreamController(sync: true);
+  var controller = broadcast ?
+      new StreamController.broadcast(sync: true) :
+      new StreamController(sync: true);
 
   for (var stream in streams) {
-    stream.listen(
-        controller.add,
-        onError: controller.addError,
-        onDone: () {
+    stream.listen(controller.add, onError: controller.addError, onDone: () {
       doneCount++;
       if (doneCount == streams.length) controller.close();
     });
@@ -226,7 +225,7 @@ String prefixLines(String text, {String prefix: '| ', String firstPrefix}) {
 /// Returns a [Future] that completes after pumping the event queue [times]
 /// times. By default, this should pump the event queue enough times to allow
 /// any code to run, as long as it's not waiting on some external event.
-Future pumpEventQueue([int times=20]) {
+Future pumpEventQueue([int times = 20]) {
   if (times == 0) return new Future.value();
   // We use a delayed future to allow microtask events to finish. The
   // Future.value or Future() constructors use scheduleMicrotask themselves and
@@ -282,10 +281,12 @@ Stream futureStream(Future<Stream> future, {bool broadcast: false}) {
 
   if (broadcast) {
     controller = new StreamController.broadcast(
-        sync: true, onListen: onListen, onCancel: onCancel);
+        sync: true,
+        onListen: onListen,
+        onCancel: onCancel);
   } else {
-    controller = new StreamController(
-        sync: true, onListen: onListen, onCancel: onCancel);
+    controller =
+        new StreamController(sync: true, onListen: onListen, onCancel: onCancel);
   }
   return controller.stream;
 }
@@ -298,7 +299,8 @@ Stream callbackStream(Stream callback()) {
   var subscription;
   var controller;
   controller = new StreamController(onListen: () {
-    subscription = callback().listen(controller.add,
+    subscription = callback().listen(
+        controller.add,
         onError: controller.addError,
         onDone: controller.close);
   },
@@ -320,7 +322,8 @@ Stream broadcastToSingleSubscription(Stream broadcast) {
   // are fixed.
   var subscription;
   var controller = new StreamController(onCancel: () => subscription.cancel());
-  subscription = broadcast.listen(controller.add,
+  subscription = broadcast.listen(
+      controller.add,
       onError: controller.addError,
       onDone: controller.close);
   return controller.stream;
@@ -335,7 +338,7 @@ final _exceptionPrefix = new RegExp(r'^([A-Z][a-zA-Z]*)?(Exception|Error): ');
 /// Many exceptions include the exception class name at the beginning of their
 /// [toString], so we remove that if it exists.
 String getErrorMessage(error) =>
-  error.toString().replaceFirst(_exceptionPrefix, '');
+    error.toString().replaceFirst(_exceptionPrefix, '');
 
 /// Returns a human-friendly representation of [duration].
 String niceDuration(Duration duration) {

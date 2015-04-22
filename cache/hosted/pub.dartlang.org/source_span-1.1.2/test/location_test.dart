@@ -8,8 +8,8 @@ import 'package:source_span/source_span.dart';
 main() {
   var location;
   setUp(() {
-    location = new SourceLocation(15,
-        line: 2, column: 6, sourceUrl: "foo.dart");
+    location =
+        new SourceLocation(15, line: 2, column: 6, sourceUrl: "foo.dart");
   });
 
   group('errors', () {
@@ -28,12 +28,14 @@ main() {
     });
 
     test('for distance() source URLs must match', () {
-      expect(() => location.distance(new SourceLocation(0)),
+      expect(
+          () => location.distance(new SourceLocation(0)),
           throwsArgumentError);
     });
 
     test('for compareTo() source URLs must match', () {
-      expect(() => location.compareTo(new SourceLocation(0)),
+      expect(
+          () => location.compareTo(new SourceLocation(0)),
           throwsArgumentError);
     });
   });

@@ -30,7 +30,8 @@ class ChromeHid extends ChromeApi {
   Future<List<HidDeviceInfo>> getDevices(HidGetDevicesOptions options) {
     if (_hid == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<HidDeviceInfo>>.oneArg((e) => listify(e, _createHidDeviceInfo));
+    var completer = new ChromeCompleter<List<HidDeviceInfo>>.oneArg(
+        (e) => listify(e, _createHidDeviceInfo));
     _hid.callMethod('getDevices', [jsify(options), completer.callback]);
     return completer.future;
   }
@@ -43,7 +44,8 @@ class ChromeHid extends ChromeApi {
   Future<HidConnectInfo> connect(int deviceId) {
     if (_hid == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<HidConnectInfo>.oneArg(_createHidConnectInfo);
+    var completer =
+        new ChromeCompleter<HidConnectInfo>.oneArg(_createHidConnectInfo);
     _hid.callMethod('connect', [deviceId, completer.callback]);
     return completer.future;
   }
@@ -97,7 +99,9 @@ class ChromeHid extends ChromeApi {
     if (_hid == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _hid.callMethod('send', [connectionId, reportId, jsify(data), completer.callback]);
+    _hid.callMethod(
+        'send',
+        [connectionId, reportId, jsify(data), completer.callback]);
     return completer.future;
   }
 
@@ -114,11 +118,14 @@ class ChromeHid extends ChromeApi {
    * is finished.
    * [data]: The content of the report.
    */
-  Future<ArrayBuffer> receiveFeatureReport(int connectionId, int reportId, int size) {
+  Future<ArrayBuffer> receiveFeatureReport(int connectionId, int reportId,
+      int size) {
     if (_hid == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<ArrayBuffer>.oneArg(_createArrayBuffer);
-    _hid.callMethod('receiveFeatureReport', [connectionId, reportId, size, completer.callback]);
+    _hid.callMethod(
+        'receiveFeatureReport',
+        [connectionId, reportId, size, completer.callback]);
     return completer.future;
   }
 
@@ -136,7 +143,9 @@ class ChromeHid extends ChromeApi {
     if (_hid == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter.noArgs();
-    _hid.callMethod('sendFeatureReport', [connectionId, reportId, jsify(data), completer.callback]);
+    _hid.callMethod(
+        'sendFeatureReport',
+        [connectionId, reportId, jsify(data), completer.callback]);
     return completer.future;
   }
 
@@ -158,7 +167,7 @@ class HidCollectionInfo extends ChromeObject {
     if (usage != null) this.usage = usage;
     if (reportIds != null) this.reportIds = reportIds;
   }
-  HidCollectionInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  HidCollectionInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get usagePage => jsProxy['usagePage'];
   set usagePage(int value) => jsProxy['usagePage'] = value;
@@ -182,16 +191,21 @@ class HidCollectionInfo extends ChromeObject {
  * [maxFeatureReportSize]: Top-level collection's max feature report size.
  */
 class HidDeviceInfo extends ChromeObject {
-  HidDeviceInfo({int deviceId, int vendorId, int productId, List<HidCollectionInfo> collections, int maxInputReportSize, int maxOutputReportSize, int maxFeatureReportSize}) {
+  HidDeviceInfo({int deviceId, int vendorId, int productId,
+      List<HidCollectionInfo> collections, int maxInputReportSize,
+      int maxOutputReportSize, int maxFeatureReportSize}) {
     if (deviceId != null) this.deviceId = deviceId;
     if (vendorId != null) this.vendorId = vendorId;
     if (productId != null) this.productId = productId;
     if (collections != null) this.collections = collections;
-    if (maxInputReportSize != null) this.maxInputReportSize = maxInputReportSize;
-    if (maxOutputReportSize != null) this.maxOutputReportSize = maxOutputReportSize;
-    if (maxFeatureReportSize != null) this.maxFeatureReportSize = maxFeatureReportSize;
+    if (maxInputReportSize != null) this.maxInputReportSize =
+        maxInputReportSize;
+    if (maxOutputReportSize != null) this.maxOutputReportSize =
+        maxOutputReportSize;
+    if (maxFeatureReportSize != null) this.maxFeatureReportSize =
+        maxFeatureReportSize;
   }
-  HidDeviceInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  HidDeviceInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get deviceId => jsProxy['deviceId'];
   set deviceId(int value) => jsProxy['deviceId'] = value;
@@ -202,8 +216,10 @@ class HidDeviceInfo extends ChromeObject {
   int get productId => jsProxy['productId'];
   set productId(int value) => jsProxy['productId'] = value;
 
-  List<HidCollectionInfo> get collections => listify(jsProxy['collections'], _createHidCollectionInfo);
-  set collections(List<HidCollectionInfo> value) => jsProxy['collections'] = jsify(value);
+  List<HidCollectionInfo> get collections =>
+      listify(jsProxy['collections'], _createHidCollectionInfo);
+  set collections(List<HidCollectionInfo> value) => jsProxy['collections'] =
+      jsify(value);
 
   int get maxInputReportSize => jsProxy['maxInputReportSize'];
   set maxInputReportSize(int value) => jsProxy['maxInputReportSize'] = value;
@@ -212,7 +228,8 @@ class HidDeviceInfo extends ChromeObject {
   set maxOutputReportSize(int value) => jsProxy['maxOutputReportSize'] = value;
 
   int get maxFeatureReportSize => jsProxy['maxFeatureReportSize'];
-  set maxFeatureReportSize(int value) => jsProxy['maxFeatureReportSize'] = value;
+  set maxFeatureReportSize(int value) => jsProxy['maxFeatureReportSize'] =
+      value;
 }
 
 /**
@@ -223,7 +240,7 @@ class HidConnectInfo extends ChromeObject {
   HidConnectInfo({int connectionId}) {
     if (connectionId != null) this.connectionId = connectionId;
   }
-  HidConnectInfo.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  HidConnectInfo.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get connectionId => jsProxy['connectionId'];
   set connectionId(int value) => jsProxy['connectionId'] = value;
@@ -237,7 +254,7 @@ class HidGetDevicesOptions extends ChromeObject {
     if (vendorId != null) this.vendorId = vendorId;
     if (productId != null) this.productId = productId;
   }
-  HidGetDevicesOptions.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  HidGetDevicesOptions.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get vendorId => jsProxy['vendorId'];
   set vendorId(int value) => jsProxy['vendorId'] = value;
@@ -246,7 +263,11 @@ class HidGetDevicesOptions extends ChromeObject {
   set productId(int value) => jsProxy['productId'] = value;
 }
 
-HidDeviceInfo _createHidDeviceInfo(JsObject jsProxy) => jsProxy == null ? null : new HidDeviceInfo.fromProxy(jsProxy);
-HidConnectInfo _createHidConnectInfo(JsObject jsProxy) => jsProxy == null ? null : new HidConnectInfo.fromProxy(jsProxy);
-ArrayBuffer _createArrayBuffer(/*JsObject*/ jsProxy) => jsProxy == null ? null : new ArrayBuffer.fromProxy(jsProxy);
-HidCollectionInfo _createHidCollectionInfo(JsObject jsProxy) => jsProxy == null ? null : new HidCollectionInfo.fromProxy(jsProxy);
+HidDeviceInfo _createHidDeviceInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new HidDeviceInfo.fromProxy(jsProxy);
+HidConnectInfo _createHidConnectInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new HidConnectInfo.fromProxy(jsProxy);
+ArrayBuffer _createArrayBuffer(/*JsObject*/ jsProxy) =>
+    jsProxy == null ? null : new ArrayBuffer.fromProxy(jsProxy);
+HidCollectionInfo _createHidCollectionInfo(JsObject jsProxy) =>
+    jsProxy == null ? null : new HidCollectionInfo.fromProxy(jsProxy);

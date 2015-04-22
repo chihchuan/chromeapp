@@ -33,8 +33,8 @@ class CheckContentAndRenameTransformer extends MockTransformer {
       return input.readAsString().then((contents) {
         if (contents != oldContent) return;
 
-        transform.addOutput(new Asset.fromString(
-            input.id.changeExtension('.$newExtension'), newContent));
+        transform.addOutput(
+            new Asset.fromString(input.id.changeExtension('.$newExtension'), newContent));
       });
     });
   }

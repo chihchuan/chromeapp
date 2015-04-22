@@ -43,8 +43,14 @@ class ChromeAppRuntime extends ChromeApi {
 
   ChromeAppRuntime._() {
     var getApi = () => _app_runtime;
-    _onEmbedRequested = new ChromeStreamController<EmbedRequest>.oneArg(getApi, 'onEmbedRequested', _createEmbedRequest);
-    _onLaunched = new ChromeStreamController<LaunchData>.oneArg(getApi, 'onLaunched', _createLaunchData);
+    _onEmbedRequested = new ChromeStreamController<EmbedRequest>.oneArg(
+        getApi,
+        'onEmbedRequested',
+        _createEmbedRequest);
+    _onLaunched = new ChromeStreamController<LaunchData>.oneArg(
+        getApi,
+        'onLaunched',
+        _createLaunchData);
     _onRestarted = new ChromeStreamController.noArgs(getApi, 'onRestarted');
   }
 
@@ -60,7 +66,7 @@ class LaunchItem extends ChromeObject {
     if (entry != null) this.entry = entry;
     if (type != null) this.type = type;
   }
-  LaunchItem.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  LaunchItem.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   FileEntry get entry => _createFileEntry(jsProxy['entry']);
   set entry(FileEntry value) => jsProxy['entry'] = jsify(value);
@@ -74,14 +80,15 @@ class LaunchItem extends ChromeObject {
  * referrerUrl`) can be present for any given launch.
  */
 class LaunchData extends ChromeObject {
-  LaunchData({String id, List<LaunchItem> items, String url, String referrerUrl, bool isKioskSession}) {
+  LaunchData({String id, List<LaunchItem> items, String url, String referrerUrl,
+      bool isKioskSession}) {
     if (id != null) this.id = id;
     if (items != null) this.items = items;
     if (url != null) this.url = url;
     if (referrerUrl != null) this.referrerUrl = referrerUrl;
     if (isKioskSession != null) this.isKioskSession = isKioskSession;
   }
-  LaunchData.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  LaunchData.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get id => jsProxy['id'];
   set id(String value) => jsProxy['id'] = value;
@@ -109,7 +116,7 @@ class EmbedRequest extends ChromeObject {
   EmbedRequest({String embedderId}) {
     if (embedderId != null) this.embedderId = embedderId;
   }
-  EmbedRequest.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  EmbedRequest.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get embedderId => jsProxy['embedderId'];
   set embedderId(String value) => jsProxy['embedderId'] = value;
@@ -131,10 +138,14 @@ class EmbedRequest extends ChromeObject {
   }
 }
 
-EmbedRequest _createEmbedRequest(JsObject jsProxy) => jsProxy == null ? null : new EmbedRequest.fromProxy(jsProxy);
-LaunchData _createLaunchData(JsObject jsProxy) => jsProxy == null ? null : new LaunchData.fromProxy(jsProxy);
-FileEntry _createFileEntry(JsObject jsProxy) => jsProxy == null ? null : new ChromeFileEntry.fromProxy(jsProxy);
-LaunchItem _createLaunchItem(JsObject jsProxy) => jsProxy == null ? null : new LaunchItem.fromProxy(jsProxy);
+EmbedRequest _createEmbedRequest(JsObject jsProxy) =>
+    jsProxy == null ? null : new EmbedRequest.fromProxy(jsProxy);
+LaunchData _createLaunchData(JsObject jsProxy) =>
+    jsProxy == null ? null : new LaunchData.fromProxy(jsProxy);
+FileEntry _createFileEntry(JsObject jsProxy) =>
+    jsProxy == null ? null : new ChromeFileEntry.fromProxy(jsProxy);
+LaunchItem _createLaunchItem(JsObject jsProxy) =>
+    jsProxy == null ? null : new LaunchItem.fromProxy(jsProxy);
 
 /**
  * Use the `chrome.app.window` API to create windows. Windows have an optional
@@ -169,13 +180,16 @@ class _ChromeAppWindow extends ChromeApi {
 
   _ChromeAppWindow._() {
     var getApi = () => _app_window;
-    _onBoundsChanged = new ChromeStreamController.noArgs(getApi, 'onBoundsChanged');
+    _onBoundsChanged =
+        new ChromeStreamController.noArgs(getApi, 'onBoundsChanged');
     _onClosed = new ChromeStreamController.noArgs(getApi, 'onClosed');
-    _onFullscreened = new ChromeStreamController.noArgs(getApi, 'onFullscreened');
+    _onFullscreened =
+        new ChromeStreamController.noArgs(getApi, 'onFullscreened');
     _onMaximized = new ChromeStreamController.noArgs(getApi, 'onMaximized');
     _onMinimized = new ChromeStreamController.noArgs(getApi, 'onMinimized');
     _onRestored = new ChromeStreamController.noArgs(getApi, 'onRestored');
-    _onWindowFirstShown = new ChromeStreamController.noArgs(getApi, 'onWindowFirstShown');
+    _onWindowFirstShown =
+        new ChromeStreamController.noArgs(getApi, 'onWindowFirstShown');
   }
 
   bool get available => _app_window != null;
@@ -273,9 +287,13 @@ class State extends ChromeEnum {
   static const State MAXIMIZED = const State._('maximized');
   static const State MINIMIZED = const State._('minimized');
 
-  static const List<State> VALUES = const[NORMAL, FULLSCREEN, MAXIMIZED, MINIMIZED];
+  static const List<State> VALUES = const [
+      NORMAL,
+      FULLSCREEN,
+      MAXIMIZED,
+      MINIMIZED];
 
-  const State._(String str): super(str);
+  const State._(String str) : super(str);
 }
 
 /**
@@ -286,9 +304,9 @@ class WindowType extends ChromeEnum {
   static const WindowType SHELL = const WindowType._('shell');
   static const WindowType PANEL = const WindowType._('panel');
 
-  static const List<WindowType> VALUES = const[SHELL, PANEL];
+  static const List<WindowType> VALUES = const [SHELL, PANEL];
 
-  const WindowType._(String str): super(str);
+  const WindowType._(String str) : super(str);
 }
 
 /**
@@ -301,7 +319,7 @@ class ContentBounds extends ChromeObject {
     if (width != null) this.width = width;
     if (height != null) this.height = height;
   }
-  ContentBounds.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  ContentBounds.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get left => jsProxy['left'];
   set left(int value) => jsProxy['left'] = value;
@@ -317,7 +335,8 @@ class ContentBounds extends ChromeObject {
 }
 
 class BoundsSpecification extends ChromeObject {
-  BoundsSpecification({int left, int top, int width, int height, int minWidth, int minHeight, int maxWidth, int maxHeight}) {
+  BoundsSpecification({int left, int top, int width, int height, int minWidth,
+      int minHeight, int maxWidth, int maxHeight}) {
     if (left != null) this.left = left;
     if (top != null) this.top = top;
     if (width != null) this.width = width;
@@ -327,7 +346,7 @@ class BoundsSpecification extends ChromeObject {
     if (maxWidth != null) this.maxWidth = maxWidth;
     if (maxHeight != null) this.maxHeight = maxHeight;
   }
-  BoundsSpecification.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  BoundsSpecification.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get left => jsProxy['left'];
   set left(int value) => jsProxy['left'] = value;
@@ -355,13 +374,14 @@ class BoundsSpecification extends ChromeObject {
 }
 
 class FrameOptions extends ChromeObject {
-  FrameOptions({String type, String color, String activeColor, String inactiveColor}) {
+  FrameOptions({String type, String color, String activeColor,
+      String inactiveColor}) {
     if (type != null) this.type = type;
     if (color != null) this.color = color;
     if (activeColor != null) this.activeColor = activeColor;
     if (inactiveColor != null) this.inactiveColor = inactiveColor;
   }
-  FrameOptions.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  FrameOptions.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get type => jsProxy['type'];
   set type(String value) => jsProxy['type'] = value;
@@ -377,7 +397,12 @@ class FrameOptions extends ChromeObject {
 }
 
 class CreateWindowOptions extends ChromeObject {
-  CreateWindowOptions({String id, BoundsSpecification innerBounds, BoundsSpecification outerBounds, int defaultWidth, int defaultHeight, int defaultLeft, int defaultTop, int width, int height, int left, int top, int minWidth, int minHeight, int maxWidth, int maxHeight, WindowType type, var frame, ContentBounds bounds, bool transparentBackground, State state, bool hidden, bool resizable, bool singleton, bool alwaysOnTop, bool focused}) {
+  CreateWindowOptions({String id, BoundsSpecification innerBounds,
+      BoundsSpecification outerBounds, int defaultWidth, int defaultHeight,
+      int defaultLeft, int defaultTop, int width, int height, int left, int top,
+      int minWidth, int minHeight, int maxWidth, int maxHeight, WindowType type, var
+      frame, ContentBounds bounds, bool transparentBackground, State state,
+      bool hidden, bool resizable, bool singleton, bool alwaysOnTop, bool focused}) {
     if (id != null) this.id = id;
     if (innerBounds != null) this.innerBounds = innerBounds;
     if (outerBounds != null) this.outerBounds = outerBounds;
@@ -396,7 +421,8 @@ class CreateWindowOptions extends ChromeObject {
     if (type != null) this.type = type;
     if (frame != null) this.frame = frame;
     if (bounds != null) this.bounds = bounds;
-    if (transparentBackground != null) this.transparentBackground = transparentBackground;
+    if (transparentBackground != null) this.transparentBackground =
+        transparentBackground;
     if (state != null) this.state = state;
     if (hidden != null) this.hidden = hidden;
     if (resizable != null) this.resizable = resizable;
@@ -404,16 +430,20 @@ class CreateWindowOptions extends ChromeObject {
     if (alwaysOnTop != null) this.alwaysOnTop = alwaysOnTop;
     if (focused != null) this.focused = focused;
   }
-  CreateWindowOptions.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  CreateWindowOptions.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get id => jsProxy['id'];
   set id(String value) => jsProxy['id'] = value;
 
-  BoundsSpecification get innerBounds => _createBoundsSpecification(jsProxy['innerBounds']);
-  set innerBounds(BoundsSpecification value) => jsProxy['innerBounds'] = jsify(value);
+  BoundsSpecification get innerBounds =>
+      _createBoundsSpecification(jsProxy['innerBounds']);
+  set innerBounds(BoundsSpecification value) => jsProxy['innerBounds'] =
+      jsify(value);
 
-  BoundsSpecification get outerBounds => _createBoundsSpecification(jsProxy['outerBounds']);
-  set outerBounds(BoundsSpecification value) => jsProxy['outerBounds'] = jsify(value);
+  BoundsSpecification get outerBounds =>
+      _createBoundsSpecification(jsProxy['outerBounds']);
+  set outerBounds(BoundsSpecification value) => jsProxy['outerBounds'] =
+      jsify(value);
 
   int get defaultWidth => jsProxy['defaultWidth'];
   set defaultWidth(int value) => jsProxy['defaultWidth'] = value;
@@ -461,7 +491,8 @@ class CreateWindowOptions extends ChromeObject {
   set bounds(ContentBounds value) => jsProxy['bounds'] = jsify(value);
 
   bool get transparentBackground => jsProxy['transparentBackground'];
-  set transparentBackground(bool value) => jsProxy['transparentBackground'] = value;
+  set transparentBackground(bool value) => jsProxy['transparentBackground'] =
+      value;
 
   State get state => _createState(jsProxy['state']);
   set state(State value) => jsProxy['state'] = jsify(value);
@@ -483,17 +514,21 @@ class CreateWindowOptions extends ChromeObject {
 }
 
 class _AppWindow extends ChromeObject {
-  _AppWindow({bool hasFrameColor, int activeFrameColor, int inactiveFrameColor, bool firstShowHasHappened, Window contentWindow, String id, Bounds innerBounds, Bounds outerBounds}) {
+  _AppWindow({bool hasFrameColor, int activeFrameColor, int inactiveFrameColor,
+      bool firstShowHasHappened, Window contentWindow, String id, Bounds innerBounds,
+      Bounds outerBounds}) {
     if (hasFrameColor != null) this.hasFrameColor = hasFrameColor;
     if (activeFrameColor != null) this.activeFrameColor = activeFrameColor;
-    if (inactiveFrameColor != null) this.inactiveFrameColor = inactiveFrameColor;
-    if (firstShowHasHappened != null) this.firstShowHasHappened = firstShowHasHappened;
+    if (inactiveFrameColor != null) this.inactiveFrameColor =
+        inactiveFrameColor;
+    if (firstShowHasHappened != null) this.firstShowHasHappened =
+        firstShowHasHappened;
     if (contentWindow != null) this.contentWindow = contentWindow;
     if (id != null) this.id = id;
     if (innerBounds != null) this.innerBounds = innerBounds;
     if (outerBounds != null) this.outerBounds = outerBounds;
   }
-  _AppWindow.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  _AppWindow.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   bool get hasFrameColor => jsProxy['hasFrameColor'];
   set hasFrameColor(bool value) => jsProxy['hasFrameColor'] = value;
@@ -505,7 +540,8 @@ class _AppWindow extends ChromeObject {
   set inactiveFrameColor(int value) => jsProxy['inactiveFrameColor'] = value;
 
   bool get firstShowHasHappened => jsProxy['firstShowHasHappened'];
-  set firstShowHasHappened(bool value) => jsProxy['firstShowHasHappened'] = value;
+  set firstShowHasHappened(bool value) => jsProxy['firstShowHasHappened'] =
+      value;
 
   Window get contentWindow => _createWindow(jsProxy['contentWindow']);
   set contentWindow(Window value) => jsProxy['contentWindow'] = jsify(value);
@@ -688,10 +724,17 @@ class _AppWindow extends ChromeObject {
   }
 }
 
-AppWindow _createAppWindow(JsObject jsProxy) => jsProxy == null ? null : new AppWindow.fromProxy(jsProxy);
-BoundsSpecification _createBoundsSpecification(JsObject jsProxy) => jsProxy == null ? null : new BoundsSpecification.fromProxy(jsProxy);
-WindowType _createWindowType(String value) => WindowType.VALUES.singleWhere((ChromeEnum e) => e.value == value);
-ContentBounds _createContentBounds(JsObject jsProxy) => jsProxy == null ? null : new ContentBounds.fromProxy(jsProxy);
-State _createState(String value) => State.VALUES.singleWhere((ChromeEnum e) => e.value == value);
-Window _createWindow(JsObject jsProxy) => jsProxy == null ? null : new Window.fromProxy(jsProxy);
-Bounds _createBounds(JsObject jsProxy) => jsProxy == null ? null : new Bounds.fromProxy(jsProxy);
+AppWindow _createAppWindow(JsObject jsProxy) =>
+    jsProxy == null ? null : new AppWindow.fromProxy(jsProxy);
+BoundsSpecification _createBoundsSpecification(JsObject jsProxy) =>
+    jsProxy == null ? null : new BoundsSpecification.fromProxy(jsProxy);
+WindowType _createWindowType(String value) =>
+    WindowType.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+ContentBounds _createContentBounds(JsObject jsProxy) =>
+    jsProxy == null ? null : new ContentBounds.fromProxy(jsProxy);
+State _createState(String value) =>
+    State.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+Window _createWindow(JsObject jsProxy) =>
+    jsProxy == null ? null : new Window.fromProxy(jsProxy);
+Bounds _createBounds(JsObject jsProxy) =>
+    jsProxy == null ? null : new Bounds.fromProxy(jsProxy);

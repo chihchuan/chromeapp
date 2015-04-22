@@ -14,12 +14,12 @@ main() {
   initConfig();
 
   test("logs messages from a transformer", () {
-    var transformer = new LogTransformer([
-      "error: This is an error.",
-      "warning: This is a warning.",
-      "info: This is info.",
-      "fine: This is fine."
-    ]);
+    var transformer = new LogTransformer(
+        [
+            "error: This is an error.",
+            "warning: This is a warning.",
+            "info: This is info.",
+            "fine: This is fine."]);
     initGraph(["app|foo.txt"], {
       "app": [[transformer]]
     });
@@ -32,16 +32,16 @@ main() {
   });
 
   test("logs messages from a transformer group", () {
-    var transformer = new LogTransformer([
-      "error: This is an error.",
-      "warning: This is a warning.",
-      "info: This is info.",
-      "fine: This is fine."
-    ]);
+    var transformer = new LogTransformer(
+        [
+            "error: This is an error.",
+            "warning: This is a warning.",
+            "info: This is info.",
+            "fine: This is fine."]);
 
-    initGraph(["app|foo.txt"], {"app": [
-      [new TransformerGroup([[transformer]])]
-    ]});
+    initGraph(["app|foo.txt"], {
+      "app": [[new TransformerGroup([[transformer]])]]
+    });
 
     updateSources(["app|foo.txt"]);
     buildShouldLog(LogLevel.ERROR, equals("This is an error."));

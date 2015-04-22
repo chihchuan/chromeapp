@@ -25,7 +25,8 @@ class ChromeNotifications extends ChromeApi {
   Stream<OnButtonClickedEvent> get onButtonClicked => _onButtonClicked.stream;
   ChromeStreamController<OnButtonClickedEvent> _onButtonClicked;
 
-  Stream<PermissionLevel> get onPermissionLevelChanged => _onPermissionLevelChanged.stream;
+  Stream<PermissionLevel> get onPermissionLevelChanged =>
+      _onPermissionLevelChanged.stream;
   ChromeStreamController<PermissionLevel> _onPermissionLevelChanged;
 
   Stream get onShowSettings => _onShowSettings.stream;
@@ -33,11 +34,23 @@ class ChromeNotifications extends ChromeApi {
 
   ChromeNotifications._() {
     var getApi = () => _notifications;
-    _onClosed = new ChromeStreamController<OnClosedEvent>.twoArgs(getApi, 'onClosed', _createOnClosedEvent);
-    _onClicked = new ChromeStreamController<String>.oneArg(getApi, 'onClicked', selfConverter);
-    _onButtonClicked = new ChromeStreamController<OnButtonClickedEvent>.twoArgs(getApi, 'onButtonClicked', _createOnButtonClickedEvent);
-    _onPermissionLevelChanged = new ChromeStreamController<PermissionLevel>.oneArg(getApi, 'onPermissionLevelChanged', _createPermissionLevel);
-    _onShowSettings = new ChromeStreamController.noArgs(getApi, 'onShowSettings');
+    _onClosed = new ChromeStreamController<OnClosedEvent>.twoArgs(
+        getApi,
+        'onClosed',
+        _createOnClosedEvent);
+    _onClicked =
+        new ChromeStreamController<String>.oneArg(getApi, 'onClicked', selfConverter);
+    _onButtonClicked = new ChromeStreamController<OnButtonClickedEvent>.twoArgs(
+        getApi,
+        'onButtonClicked',
+        _createOnButtonClickedEvent);
+    _onPermissionLevelChanged =
+        new ChromeStreamController<PermissionLevel>.oneArg(
+            getApi,
+            'onPermissionLevelChanged',
+            _createPermissionLevel);
+    _onShowSettings =
+        new ChromeStreamController.noArgs(getApi, 'onShowSettings');
   }
 
   bool get available => _notifications != null;
@@ -55,7 +68,9 @@ class ChromeNotifications extends ChromeApi {
     if (_notifications == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<String>.oneArg();
-    _notifications.callMethod('create', [notificationId, jsify(options), completer.callback]);
+    _notifications.callMethod(
+        'create',
+        [notificationId, jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -70,7 +85,9 @@ class ChromeNotifications extends ChromeApi {
     if (_notifications == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<bool>.oneArg();
-    _notifications.callMethod('update', [notificationId, jsify(options), completer.callback]);
+    _notifications.callMethod(
+        'update',
+        [notificationId, jsify(options), completer.callback]);
     return completer.future;
   }
 
@@ -108,7 +125,8 @@ class ChromeNotifications extends ChromeApi {
   Future<PermissionLevel> getPermissionLevel() {
     if (_notifications == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<PermissionLevel>.oneArg(_createPermissionLevel);
+    var completer =
+        new ChromeCompleter<PermissionLevel>.oneArg(_createPermissionLevel);
     _notifications.callMethod('getPermissionLevel', [completer.callback]);
     return completer.future;
   }
@@ -140,18 +158,18 @@ class TemplateType extends ChromeEnum {
   static const TemplateType LIST = const TemplateType._('list');
   static const TemplateType PROGRESS = const TemplateType._('progress');
 
-  static const List<TemplateType> VALUES = const[BASIC, IMAGE, LIST, PROGRESS];
+  static const List<TemplateType> VALUES = const [BASIC, IMAGE, LIST, PROGRESS];
 
-  const TemplateType._(String str): super(str);
+  const TemplateType._(String str) : super(str);
 }
 
 class PermissionLevel extends ChromeEnum {
   static const PermissionLevel GRANTED = const PermissionLevel._('granted');
   static const PermissionLevel DENIED = const PermissionLevel._('denied');
 
-  static const List<PermissionLevel> VALUES = const[GRANTED, DENIED];
+  static const List<PermissionLevel> VALUES = const [GRANTED, DENIED];
 
-  const PermissionLevel._(String str): super(str);
+  const PermissionLevel._(String str) : super(str);
 }
 
 class NotificationItem extends ChromeObject {
@@ -159,7 +177,7 @@ class NotificationItem extends ChromeObject {
     if (title != null) this.title = title;
     if (message != null) this.message = message;
   }
-  NotificationItem.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  NotificationItem.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get title => jsProxy['title'];
   set title(String value) => jsProxy['title'] = value;
@@ -174,7 +192,7 @@ class NotificationBitmap extends ChromeObject {
     if (height != null) this.height = height;
     if (data != null) this.data = data;
   }
-  NotificationBitmap.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  NotificationBitmap.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   int get width => jsProxy['width'];
   set width(int value) => jsProxy['width'] = value;
@@ -187,12 +205,13 @@ class NotificationBitmap extends ChromeObject {
 }
 
 class NotificationButton extends ChromeObject {
-  NotificationButton({String title, String iconUrl, NotificationBitmap iconBitmap}) {
+  NotificationButton({String title, String iconUrl,
+      NotificationBitmap iconBitmap}) {
     if (title != null) this.title = title;
     if (iconUrl != null) this.iconUrl = iconUrl;
     if (iconBitmap != null) this.iconBitmap = iconBitmap;
   }
-  NotificationButton.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  NotificationButton.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   String get title => jsProxy['title'];
   set title(String value) => jsProxy['title'] = value;
@@ -200,12 +219,19 @@ class NotificationButton extends ChromeObject {
   String get iconUrl => jsProxy['iconUrl'];
   set iconUrl(String value) => jsProxy['iconUrl'] = value;
 
-  NotificationBitmap get iconBitmap => _createNotificationBitmap(jsProxy['iconBitmap']);
-  set iconBitmap(NotificationBitmap value) => jsProxy['iconBitmap'] = jsify(value);
+  NotificationBitmap get iconBitmap =>
+      _createNotificationBitmap(jsProxy['iconBitmap']);
+  set iconBitmap(NotificationBitmap value) => jsProxy['iconBitmap'] =
+      jsify(value);
 }
 
 class NotificationOptions extends ChromeObject {
-  NotificationOptions({TemplateType type, String iconUrl, NotificationBitmap iconBitmap, String title, String message, String contextMessage, int priority, num eventTime, List<NotificationButton> buttons, String expandedMessage, String imageUrl, NotificationBitmap imageBitmap, List<NotificationItem> items, int progress, bool isClickable}) {
+  NotificationOptions({TemplateType type, String iconUrl,
+      NotificationBitmap iconBitmap, String title, String message,
+      String contextMessage, int priority, num eventTime,
+      List<NotificationButton> buttons, String expandedMessage, String imageUrl,
+      NotificationBitmap imageBitmap, List<NotificationItem> items, int progress,
+      bool isClickable}) {
     if (type != null) this.type = type;
     if (iconUrl != null) this.iconUrl = iconUrl;
     if (iconBitmap != null) this.iconBitmap = iconBitmap;
@@ -222,7 +248,7 @@ class NotificationOptions extends ChromeObject {
     if (progress != null) this.progress = progress;
     if (isClickable != null) this.isClickable = isClickable;
   }
-  NotificationOptions.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  NotificationOptions.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   TemplateType get type => _createTemplateType(jsProxy['type']);
   set type(TemplateType value) => jsProxy['type'] = jsify(value);
@@ -230,8 +256,10 @@ class NotificationOptions extends ChromeObject {
   String get iconUrl => jsProxy['iconUrl'];
   set iconUrl(String value) => jsProxy['iconUrl'] = value;
 
-  NotificationBitmap get iconBitmap => _createNotificationBitmap(jsProxy['iconBitmap']);
-  set iconBitmap(NotificationBitmap value) => jsProxy['iconBitmap'] = jsify(value);
+  NotificationBitmap get iconBitmap =>
+      _createNotificationBitmap(jsProxy['iconBitmap']);
+  set iconBitmap(NotificationBitmap value) => jsProxy['iconBitmap'] =
+      jsify(value);
 
   String get title => jsProxy['title'];
   set title(String value) => jsProxy['title'] = value;
@@ -248,8 +276,10 @@ class NotificationOptions extends ChromeObject {
   num get eventTime => jsProxy['eventTime'];
   set eventTime(num value) => jsProxy['eventTime'] = jsify(value);
 
-  List<NotificationButton> get buttons => listify(jsProxy['buttons'], _createNotificationButton);
-  set buttons(List<NotificationButton> value) => jsProxy['buttons'] = jsify(value);
+  List<NotificationButton> get buttons =>
+      listify(jsProxy['buttons'], _createNotificationButton);
+  set buttons(List<NotificationButton> value) => jsProxy['buttons'] =
+      jsify(value);
 
   String get expandedMessage => jsProxy['expandedMessage'];
   set expandedMessage(String value) => jsProxy['expandedMessage'] = value;
@@ -257,10 +287,13 @@ class NotificationOptions extends ChromeObject {
   String get imageUrl => jsProxy['imageUrl'];
   set imageUrl(String value) => jsProxy['imageUrl'] = value;
 
-  NotificationBitmap get imageBitmap => _createNotificationBitmap(jsProxy['imageBitmap']);
-  set imageBitmap(NotificationBitmap value) => jsProxy['imageBitmap'] = jsify(value);
+  NotificationBitmap get imageBitmap =>
+      _createNotificationBitmap(jsProxy['imageBitmap']);
+  set imageBitmap(NotificationBitmap value) => jsProxy['imageBitmap'] =
+      jsify(value);
 
-  List<NotificationItem> get items => listify(jsProxy['items'], _createNotificationItem);
+  List<NotificationItem> get items =>
+      listify(jsProxy['items'], _createNotificationItem);
   set items(List<NotificationItem> value) => jsProxy['items'] = jsify(value);
 
   int get progress => jsProxy['progress'];
@@ -272,11 +305,18 @@ class NotificationOptions extends ChromeObject {
 
 OnClosedEvent _createOnClosedEvent(String notificationId, bool byUser) =>
     new OnClosedEvent(notificationId, byUser);
-OnButtonClickedEvent _createOnButtonClickedEvent(String notificationId, int buttonIndex) =>
+OnButtonClickedEvent _createOnButtonClickedEvent(String notificationId,
+    int buttonIndex) =>
     new OnButtonClickedEvent(notificationId, buttonIndex);
-PermissionLevel _createPermissionLevel(String value) => PermissionLevel.VALUES.singleWhere((ChromeEnum e) => e.value == value);
-ArrayBuffer _createArrayBuffer(/*JsObject*/ jsProxy) => jsProxy == null ? null : new ArrayBuffer.fromProxy(jsProxy);
-NotificationBitmap _createNotificationBitmap(JsObject jsProxy) => jsProxy == null ? null : new NotificationBitmap.fromProxy(jsProxy);
-TemplateType _createTemplateType(String value) => TemplateType.VALUES.singleWhere((ChromeEnum e) => e.value == value);
-NotificationButton _createNotificationButton(JsObject jsProxy) => jsProxy == null ? null : new NotificationButton.fromProxy(jsProxy);
-NotificationItem _createNotificationItem(JsObject jsProxy) => jsProxy == null ? null : new NotificationItem.fromProxy(jsProxy);
+PermissionLevel _createPermissionLevel(String value) =>
+    PermissionLevel.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+ArrayBuffer _createArrayBuffer(/*JsObject*/ jsProxy) =>
+    jsProxy == null ? null : new ArrayBuffer.fromProxy(jsProxy);
+NotificationBitmap _createNotificationBitmap(JsObject jsProxy) =>
+    jsProxy == null ? null : new NotificationBitmap.fromProxy(jsProxy);
+TemplateType _createTemplateType(String value) =>
+    TemplateType.VALUES.singleWhere((ChromeEnum e) => e.value == value);
+NotificationButton _createNotificationButton(JsObject jsProxy) =>
+    jsProxy == null ? null : new NotificationButton.fromProxy(jsProxy);
+NotificationItem _createNotificationItem(JsObject jsProxy) =>
+    jsProxy == null ? null : new NotificationItem.fromProxy(jsProxy);

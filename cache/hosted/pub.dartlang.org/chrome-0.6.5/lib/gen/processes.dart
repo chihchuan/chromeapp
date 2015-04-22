@@ -54,11 +54,22 @@ class ChromeProcesses extends ChromeApi {
 
   ChromeProcesses._() {
     var getApi = () => _processes;
-    _onUpdated = new ChromeStreamController<Map>.oneArg(getApi, 'onUpdated', mapify);
-    _onUpdatedWithMemory = new ChromeStreamController<Map>.oneArg(getApi, 'onUpdatedWithMemory', mapify);
-    _onCreated = new ChromeStreamController<Process>.oneArg(getApi, 'onCreated', _createProcess);
-    _onUnresponsive = new ChromeStreamController<Process>.oneArg(getApi, 'onUnresponsive', _createProcess);
-    _onExited = new ChromeStreamController<OnExitedEvent>.threeArgs(getApi, 'onExited', _createOnExitedEvent);
+    _onUpdated =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onUpdated', mapify);
+    _onUpdatedWithMemory =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onUpdatedWithMemory', mapify);
+    _onCreated = new ChromeStreamController<Process>.oneArg(
+        getApi,
+        'onCreated',
+        _createProcess);
+    _onUnresponsive = new ChromeStreamController<Process>.oneArg(
+        getApi,
+        'onUnresponsive',
+        _createProcess);
+    _onExited = new ChromeStreamController<OnExitedEvent>.threeArgs(
+        getApi,
+        'onExited',
+        _createOnExitedEvent);
   }
 
   bool get available => _processes != null;
@@ -118,7 +129,9 @@ class ChromeProcesses extends ChromeApi {
     if (_processes == null) _throwNotAvailable();
 
     var completer = new ChromeCompleter<Map>.oneArg(mapify);
-    _processes.callMethod('getProcessInfo', [jsify(processIds), includeMemory, completer.callback]);
+    _processes.callMethod(
+        'getProcessInfo',
+        [jsify(processIds), includeMemory, completer.callback]);
     return completer.future;
   }
 
@@ -155,7 +168,10 @@ class OnExitedEvent {
  * An object containing information about one of the browser's processes.
  */
 class Process extends ChromeObject {
-  Process({int id, int osProcessId, String title, String type, String profile, int naclDebugPort, List<int> tabs, var cpu, var network, var privateMemory, var jsMemoryAllocated, var jsMemoryUsed, var sqliteMemory, Cache imageCache, Cache scriptCache, Cache cssCache}) {
+  Process({int id, int osProcessId, String title, String type, String profile,
+      int naclDebugPort, List<int> tabs, var cpu, var network, var privateMemory, var
+      jsMemoryAllocated, var jsMemoryUsed, var sqliteMemory, Cache imageCache,
+      Cache scriptCache, Cache cssCache}) {
     if (id != null) this.id = id;
     if (osProcessId != null) this.osProcessId = osProcessId;
     if (title != null) this.title = title;
@@ -173,7 +189,7 @@ class Process extends ChromeObject {
     if (scriptCache != null) this.scriptCache = scriptCache;
     if (cssCache != null) this.cssCache = cssCache;
   }
-  Process.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Process.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * Unique ID of the process provided by the browser.
@@ -251,7 +267,8 @@ class Process extends ChromeObject {
    * onUpdated or onUpdatedWithMemory.
    */
   dynamic get jsMemoryAllocated => jsProxy['jsMemoryAllocated'];
-  set jsMemoryAllocated(var value) => jsProxy['jsMemoryAllocated'] = jsify(value);
+  set jsMemoryAllocated(var value) => jsProxy['jsMemoryAllocated'] =
+      jsify(value);
 
   /**
    * The most recent measurement of the process JavaScript memory used, in
@@ -303,7 +320,7 @@ class Cache extends ChromeObject {
     if (size != null) this.size = size;
     if (liveSize != null) this.liveSize = liveSize;
   }
-  Cache.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  Cache.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The size of the cache, in bytes.
@@ -318,7 +335,9 @@ class Cache extends ChromeObject {
   set liveSize(var value) => jsProxy['liveSize'] = jsify(value);
 }
 
-Process _createProcess(JsObject jsProxy) => jsProxy == null ? null : new Process.fromProxy(jsProxy);
+Process _createProcess(JsObject jsProxy) =>
+    jsProxy == null ? null : new Process.fromProxy(jsProxy);
 OnExitedEvent _createOnExitedEvent(int processId, int exitType, int exitCode) =>
     new OnExitedEvent(processId, exitType, exitCode);
-Cache _createCache(JsObject jsProxy) => jsProxy == null ? null : new Cache.fromProxy(jsProxy);
+Cache _createCache(JsObject jsProxy) =>
+    jsProxy == null ? null : new Cache.fromProxy(jsProxy);

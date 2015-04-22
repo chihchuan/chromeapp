@@ -293,9 +293,13 @@ class DelegatingQueue<E> extends DelegatingIterable<E> implements Queue<E> {
 
   bool remove(Object object) => _baseQueue.remove(object);
 
-  void removeWhere(bool test(E element)) { _baseQueue.removeWhere(test); }
+  void removeWhere(bool test(E element)) {
+    _baseQueue.removeWhere(test);
+  }
 
-  void retainWhere(bool test(E element)) { _baseQueue.retainWhere(test); }
+  void retainWhere(bool test(E element)) {
+    _baseQueue.retainWhere(test);
+  }
 
   E removeFirst() => _baseQueue.removeFirst();
 
@@ -364,8 +368,8 @@ class DelegatingMap<K, V> implements Map<K, V> {
  *
  * Note that [lookup] is not supported for this set.
  */
-class MapKeySet<E> extends _DelegatingIterableBase<E>
-    with UnmodifiableSetMixin<E> {
+class MapKeySet<E> extends _DelegatingIterableBase<E> with
+    UnmodifiableSetMixin<E> {
   final Map<E, dynamic> _baseMap;
 
   MapKeySet(Map<E, dynamic> base) : _baseMap = base;
@@ -411,8 +415,8 @@ class MapKeySet<E> extends _DelegatingIterableBase<E>
    * Throws an [UnsupportedError] since there's no corresponding method for
    * [Map]s.
    */
-  E lookup(E element) => throw new UnsupportedError(
-      "MapKeySet doesn't support lookup().");
+  E lookup(E element) =>
+      throw new UnsupportedError("MapKeySet doesn't support lookup().");
 
   /**
    * Returns a new set which contains all the elements of [this] and [other].

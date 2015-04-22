@@ -82,8 +82,9 @@ class AssetCascade {
   Stream<NodeStatus> get onStatusChange => _streams.onStatusChange;
 
   /// Returns all currently-available output assets from this cascade.
-  Future<AssetSet> get availableOutputs => new Future.value(new AssetSet.from(
-      _phases.last.availableOutputs.map((node) => node.asset)));
+  Future<AssetSet> get availableOutputs =>
+      new Future.value(
+          new AssetSet.from(_phases.last.availableOutputs.map((node) => node.asset)));
 
   /// Creates a new [AssetCascade].
   ///
@@ -139,8 +140,8 @@ class AssetCascade {
       // return out-of-date contents for the asset.
       if (_loadingSources.containsKey(id)) _loadingSources[id].cancel();
 
-      _loadingSources[id] = new CancelableFuture<Asset>(
-          syncFuture(() => graph.provider.getAsset(id)));
+      _loadingSources[id] =
+          new CancelableFuture<Asset>(syncFuture(() => graph.provider.getAsset(id)));
       _loadingSources[id].whenComplete(() {
         _loadingSources.remove(id);
       }).then((asset) {
@@ -193,8 +194,8 @@ class AssetCascade {
     _phases.removeRange(transformers.length + 1, _phases.length);
 
     _phaseStatusSubscription.cancel();
-    _phaseStatusSubscription = _phases.last.onStatusChange
-        .listen(_streams.changeStatus);
+    _phaseStatusSubscription =
+        _phases.last.onStatusChange.listen(_streams.changeStatus);
   }
 
   /// Force all [LazyTransformer]s' transforms in this cascade to begin

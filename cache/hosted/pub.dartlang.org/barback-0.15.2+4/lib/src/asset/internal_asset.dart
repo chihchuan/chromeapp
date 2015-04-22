@@ -52,9 +52,12 @@ Map serializeAsset(Asset asset) {
 Asset deserializeAsset(Map asset) {
   var id = deserializeId(asset['id']);
   switch (asset['type']) {
-    case 'binary': return new BinaryAsset(id, asset['contents']);
-    case 'file': return new FileAsset(id, asset['path']);
-    case 'string': return new StringAsset(id, asset['contents']);
+    case 'binary':
+      return new BinaryAsset(id, asset['contents']);
+    case 'file':
+      return new FileAsset(id, asset['path']);
+    case 'string':
+      return new StringAsset(id, asset['contents']);
     case 'stream':
       return new StreamAsset(id, deserializeStream(asset['stream']));
     default:
@@ -147,8 +150,8 @@ class StringAsset implements Asset {
     // Don't show the whole string if it's long.
     var contents = _contents;
     if (contents.length > 40) {
-      contents = contents.substring(0, 20) + " ... " +
-                 contents.substring(contents.length - 20);
+      contents =
+          contents.substring(0, 20) + " ... " + contents.substring(contents.length - 20);
     }
 
     contents = _escape(contents);
@@ -156,11 +159,9 @@ class StringAsset implements Asset {
   }
 
   String _escape(String string) {
-    return string
-        .replaceAll("\"", r'\"')
-        .replaceAll("\n", r"\n")
-        .replaceAll("\r", r"\r")
-        .replaceAll("\t", r"\t");
+    return string.replaceAll(
+        "\"",
+        r'\"').replaceAll("\n", r"\n").replaceAll("\r", r"\r").replaceAll("\t", r"\t");
   }
 }
 
@@ -177,8 +178,8 @@ class StreamAsset implements Asset {
 
   Future<String> readAsString({Encoding encoding}) {
     if (encoding == null) encoding = UTF8;
-    return _replayer.getReplay().toList()
-        .then((chunks) => encoding.decode(flatten(chunks)));
+    return _replayer.getReplay().toList().then(
+        (chunks) => encoding.decode(flatten(chunks)));
   }
 
   Stream<List<int>> read() => _replayer.getReplay();

@@ -10,9 +10,8 @@ import 'declaring_aggregate_many_to_many.dart';
 
 /// An [AggregateTransformer] that takes all assets in each directory with a
 /// given extension and adds to their contents.
-class LazyAggregateManyToManyTransformer
-    extends DeclaringAggregateManyToManyTransformer
-    implements LazyAggregateTransformer {
+class LazyAggregateManyToManyTransformer extends
+    DeclaringAggregateManyToManyTransformer implements LazyAggregateTransformer {
   LazyAggregateManyToManyTransformer(String extension)
       : super(extension);
 }

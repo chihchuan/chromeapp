@@ -44,10 +44,18 @@ class ChromeOmnibox extends ChromeApi {
 
   ChromeOmnibox._() {
     var getApi = () => _omnibox;
-    _onInputStarted = new ChromeStreamController.noArgs(getApi, 'onInputStarted');
-    _onInputChanged = new ChromeStreamController<OnInputChangedEvent>.twoArgs(getApi, 'onInputChanged', _createOnInputChangedEvent);
-    _onInputEntered = new ChromeStreamController<OnInputEnteredEvent>.twoArgs(getApi, 'onInputEntered', _createOnInputEnteredEvent);
-    _onInputCancelled = new ChromeStreamController.noArgs(getApi, 'onInputCancelled');
+    _onInputStarted =
+        new ChromeStreamController.noArgs(getApi, 'onInputStarted');
+    _onInputChanged = new ChromeStreamController<OnInputChangedEvent>.twoArgs(
+        getApi,
+        'onInputChanged',
+        _createOnInputChangedEvent);
+    _onInputEntered = new ChromeStreamController<OnInputEnteredEvent>.twoArgs(
+        getApi,
+        'onInputEntered',
+        _createOnInputEnteredEvent);
+    _onInputCancelled =
+        new ChromeStreamController.noArgs(getApi, 'onInputCancelled');
   }
 
   bool get available => _omnibox != null;
@@ -124,7 +132,7 @@ class SuggestResult extends ChromeObject {
     if (content != null) this.content = content;
     if (description != null) this.description = description;
   }
-  SuggestResult.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  SuggestResult.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The text that is put into the URL bar, and that is sent to the extension
@@ -151,7 +159,7 @@ class DefaultSuggestResult extends ChromeObject {
   DefaultSuggestResult({String description}) {
     if (description != null) this.description = description;
   }
-  DefaultSuggestResult.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  DefaultSuggestResult.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The text that is displayed in the URL dropdown. Can contain XML-style
@@ -166,5 +174,6 @@ class DefaultSuggestResult extends ChromeObject {
 
 OnInputChangedEvent _createOnInputChangedEvent(String text, JsObject suggest) =>
     new OnInputChangedEvent(text, suggest);
-OnInputEnteredEvent _createOnInputEnteredEvent(String text, String disposition) =>
+OnInputEnteredEvent _createOnInputEnteredEvent(String text, String disposition)
+    =>
     new OnInputEnteredEvent(text, disposition);

@@ -65,7 +65,7 @@ class StackZoneSpecification {
   /// By default, the first frame of the first trace will be the line where
   /// [currentChain] is called. If [level] is passed, the first trace will start
   /// that many frames up instead.
-  Chain currentChain([int level=0]) => _createNode(level + 1).toChain();
+  Chain currentChain([int level = 0]) => _createNode(level + 1).toChain();
 
   /// Returns the stack chain associated with [trace], if one exists.
   ///
@@ -84,7 +84,7 @@ class StackZoneSpecification {
   /// By default, the first frame of the first trace will be the line where
   /// [trackFuture] is called. If [level] is passed, the first trace will start
   /// that many frames up instead.
-  Future trackFuture(Future future, [int level=0]) {
+  Future trackFuture(Future future, [int level = 0]) {
     var completer = new Completer.sync();
     var node = _createNode(level + 1);
     future.then(completer.complete).catchError((e, stackTrace) {
@@ -103,10 +103,10 @@ class StackZoneSpecification {
   /// By default, the first frame of the first trace will be the line where
   /// [trackStream] is called. If [level] is passed, the first trace will start
   /// that many frames up instead.
-  Stream trackStream(Stream stream, [int level=0]) {
+  Stream trackStream(Stream stream, [int level = 0]) {
     var node = _createNode(level + 1);
-    return stream.transform(new StreamTransformer.fromHandlers(
-        handleError: (error, stackTrace, sink) {
+    return stream.transform(
+        new StreamTransformer.fromHandlers(handleError: (error, stackTrace, sink) {
       if (stackTrace == null) stackTrace = new Trace.current();
       if (stackTrace is! Chain && _chains[stackTrace] == null) {
         _chains[stackTrace] = node;
@@ -194,8 +194,8 @@ class StackZoneSpecification {
   /// By default, the first frame of the first trace will be the line where
   /// [_createNode] is called. If [level] is passed, the first trace will start
   /// that many frames up instead.
-  _Node _createNode([int level=0]) =>
-    new _Node(new Trace.current(level + 1), _currentNode);
+  _Node _createNode([int level = 0]) =>
+      new _Node(new Trace.current(level + 1), _currentNode);
 
   // TODO(nweiz): use a more robust way of detecting and tracking errors when
   // issue 15105 is fixed.

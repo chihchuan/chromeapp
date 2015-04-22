@@ -48,7 +48,9 @@ main() {
 
   test("updates transformers many times", () {
     var rewrite = new RewriteTransformer("txt", "out");
-    initGraph(["app|foo.txt"], {"app": [[rewrite]]});
+    initGraph(["app|foo.txt"], {
+      "app": [[rewrite]]
+    });
     updateSources(["app|foo.txt"]);
 
     for (var i = 0; i < 1000; i++) {
@@ -61,7 +63,9 @@ main() {
 
   test("updates and removes transformers many times", () {
     var rewrite = new RewriteTransformer("txt", "out");
-    initGraph(["app|foo.txt"], {"app": [[rewrite]]});
+    initGraph(["app|foo.txt"], {
+      "app": [[rewrite]]
+    });
     updateSources(["app|foo.txt"]);
 
     for (var i = 0; i < 1000; i++) {

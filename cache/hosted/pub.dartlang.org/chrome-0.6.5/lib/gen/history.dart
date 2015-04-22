@@ -34,8 +34,12 @@ class ChromeHistory extends ChromeApi {
 
   ChromeHistory._() {
     var getApi = () => _history;
-    _onVisited = new ChromeStreamController<HistoryItem>.oneArg(getApi, 'onVisited', _createHistoryItem);
-    _onVisitRemoved = new ChromeStreamController<Map>.oneArg(getApi, 'onVisitRemoved', mapify);
+    _onVisited = new ChromeStreamController<HistoryItem>.oneArg(
+        getApi,
+        'onVisited',
+        _createHistoryItem);
+    _onVisitRemoved =
+        new ChromeStreamController<Map>.oneArg(getApi, 'onVisitRemoved', mapify);
   }
 
   bool get available => _history != null;
@@ -47,7 +51,8 @@ class ChromeHistory extends ChromeApi {
   Future<List<HistoryItem>> search(HistorySearchParams query) {
     if (_history == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<HistoryItem>>.oneArg((e) => listify(e, _createHistoryItem));
+    var completer = new ChromeCompleter<List<HistoryItem>>.oneArg(
+        (e) => listify(e, _createHistoryItem));
     _history.callMethod('search', [jsify(query), completer.callback]);
     return completer.future;
   }
@@ -58,7 +63,8 @@ class ChromeHistory extends ChromeApi {
   Future<List<VisitItem>> getVisits(HistoryGetVisitsParams details) {
     if (_history == null) _throwNotAvailable();
 
-    var completer = new ChromeCompleter<List<VisitItem>>.oneArg((e) => listify(e, _createVisitItem));
+    var completer = new ChromeCompleter<List<VisitItem>>.oneArg(
+        (e) => listify(e, _createVisitItem));
     _history.callMethod('getVisits', [jsify(details), completer.callback]);
     return completer.future;
   }
@@ -119,7 +125,8 @@ class ChromeHistory extends ChromeApi {
  * An object encapsulating one result of a history query.
  */
 class HistoryItem extends ChromeObject {
-  HistoryItem({String id, String url, String title, var lastVisitTime, int visitCount, int typedCount}) {
+  HistoryItem({String id, String url, String title, var lastVisitTime,
+      int visitCount, int typedCount}) {
     if (id != null) this.id = id;
     if (url != null) this.url = url;
     if (title != null) this.title = title;
@@ -127,7 +134,7 @@ class HistoryItem extends ChromeObject {
     if (visitCount != null) this.visitCount = visitCount;
     if (typedCount != null) this.typedCount = typedCount;
   }
-  HistoryItem.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  HistoryItem.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The unique identifier for the item.
@@ -172,14 +179,15 @@ class HistoryItem extends ChromeObject {
  * An object encapsulating one visit to a URL.
  */
 class VisitItem extends ChromeObject {
-  VisitItem({String id, String visitId, var visitTime, String referringVisitId, String transition}) {
+  VisitItem({String id, String visitId, var visitTime, String referringVisitId,
+      String transition}) {
     if (id != null) this.id = id;
     if (visitId != null) this.visitId = visitId;
     if (visitTime != null) this.visitTime = visitTime;
     if (referringVisitId != null) this.referringVisitId = referringVisitId;
     if (transition != null) this.transition = transition;
   }
-  VisitItem.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  VisitItem.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The unique identifier for the item.
@@ -216,13 +224,14 @@ class VisitItem extends ChromeObject {
 }
 
 class HistorySearchParams extends ChromeObject {
-  HistorySearchParams({String text, var startTime, var endTime, int maxResults}) {
+  HistorySearchParams({String text, var startTime, var endTime, int maxResults})
+      {
     if (text != null) this.text = text;
     if (startTime != null) this.startTime = startTime;
     if (endTime != null) this.endTime = endTime;
     if (maxResults != null) this.maxResults = maxResults;
   }
-  HistorySearchParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  HistorySearchParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * A free-text query to the history service.  Leave empty to retrieve all
@@ -256,7 +265,7 @@ class HistoryGetVisitsParams extends ChromeObject {
   HistoryGetVisitsParams({String url}) {
     if (url != null) this.url = url;
   }
-  HistoryGetVisitsParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  HistoryGetVisitsParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The URL for which to retrieve visit information.  It must be in the format
@@ -270,7 +279,7 @@ class HistoryAddUrlParams extends ChromeObject {
   HistoryAddUrlParams({String url}) {
     if (url != null) this.url = url;
   }
-  HistoryAddUrlParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  HistoryAddUrlParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The URL to add.
@@ -283,7 +292,7 @@ class HistoryDeleteUrlParams extends ChromeObject {
   HistoryDeleteUrlParams({String url}) {
     if (url != null) this.url = url;
   }
-  HistoryDeleteUrlParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  HistoryDeleteUrlParams.fromProxy(JsObject jsProxy) : super.fromProxy(jsProxy);
 
   /**
    * The URL to remove.
@@ -297,7 +306,8 @@ class HistoryDeleteRangeParams extends ChromeObject {
     if (startTime != null) this.startTime = startTime;
     if (endTime != null) this.endTime = endTime;
   }
-  HistoryDeleteRangeParams.fromProxy(JsObject jsProxy): super.fromProxy(jsProxy);
+  HistoryDeleteRangeParams.fromProxy(JsObject jsProxy)
+      : super.fromProxy(jsProxy);
 
   /**
    * Items added to history after this date, represented in milliseconds since
@@ -314,5 +324,7 @@ class HistoryDeleteRangeParams extends ChromeObject {
   set endTime(var value) => jsProxy['endTime'] = jsify(value);
 }
 
-HistoryItem _createHistoryItem(JsObject jsProxy) => jsProxy == null ? null : new HistoryItem.fromProxy(jsProxy);
-VisitItem _createVisitItem(JsObject jsProxy) => jsProxy == null ? null : new VisitItem.fromProxy(jsProxy);
+HistoryItem _createHistoryItem(JsObject jsProxy) =>
+    jsProxy == null ? null : new HistoryItem.fromProxy(jsProxy);
+VisitItem _createVisitItem(JsObject jsProxy) =>
+    jsProxy == null ? null : new VisitItem.fromProxy(jsProxy);
