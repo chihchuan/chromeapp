@@ -4058,7 +4058,12 @@ J.UQ(y,"runtime").V7("getPlatformInfo",[x.Hi])
 x.HH.MM.ml(new F.Qs())},"$1","bc",2,0,36,2],
 Qs:{
 "^":"Tp:15;",
-$1:[function(a){document.querySelector("#msg").textContent=a.gNv()
+$1:[function(a){var z,y,x
+z=document.querySelector("#msg")
+y=z.textContent
+x=a.gNv()
+if(y==null)return y.g()
+z.textContent=J.WB(y,x)
 return},"$1",null,2,0,null,57,"call"]}},1],])
 I.$finishClasses($$,$,null)
 $$=null
