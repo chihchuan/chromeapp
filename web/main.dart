@@ -11,6 +11,6 @@ void handleClick(Event e) {
 }
 
 handleInfo(PlatformInfo m) {
-  querySelector("#msg").text += m.arch;
+  querySelector("#msg").text += "<br/>"+m.arch;
 }
 

@@ -19,9 +19,9 @@ h1, p {
 }
 
 #msg {
-  font-size: 24pt;
-  text-align: center;
-  //margin-top: 140px;
+  font-size: 14pt;
+  text-align: left;
+  /*margin-top: 140px;*/
   padding: 1px;
 }
 
