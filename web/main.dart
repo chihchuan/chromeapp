@@ -8,7 +8,8 @@ void main() {
 }
 
 void handleClick(Event e) {
-  chrome.serial.getDevices().then((infoList) => handleInfoList(infoList));  
+  chrome.serial.getDevices().then((infoList) => handleInfoList(infoList))
+    .catchError((e) => addMsg(e.toString()));  
 }
 
 handleInfoList(List infoList) {
