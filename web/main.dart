@@ -13,11 +13,15 @@ void handleClick(Event e) {
 }
 
 handleInfoList(List<DeviceInfo> infoList) {
-  infoList.forEach(handleInfo);
+  if (infoList.isNotEmpty) {
+    infoList.forEach(handleInfo);
+  } else {
+    addMsg("InfoList is Empty !");
+  }  
 }
 
 handleInfo(DeviceInfo info) {
-  addMsg(info.displayName);
+  addMsg(info.path);
 }
 
 void addMsg(String str) {
