@@ -1,23 +1,16 @@
 import 'dart:html';
-
 import 'package:chrome/chrome_app.dart' as chrome;
-
-int boundsChange = 100;
-int count = 0;
+import 'package:chrome/gen/runtime.dart';
 
 void main() {
-  querySelector('#text_id').onClick.listen(resizeWindow);
+  querySelector("btn").onClick.listen(handleClick);
 }
 
-void resizeWindow(MouseEvent event) {
-  chrome.ContentBounds bounds = chrome.app.window.current().getBounds();
-
-  bounds.width += boundsChange;
-  bounds.left -= boundsChange ~/ 2;
-
-  chrome.app.window.current().setBounds(bounds);
-
-  boundsChange *= -1;
-
-  querySelector("#count").text = (count++).toString();
+void handleClick(Event e) {
+  chrome.runtime.getPlatformInfo().then((m) => handleInfo(m));
 }
+
+handleInfo(PlatformInfo m) {
+  querySelector("msg").text = m.arch;
+}
+

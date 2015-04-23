@@ -11,15 +11,20 @@ h1, p {
   color: #333;
 }
 
-#container_id {
+#contain {
   height: 400px;
   position: relative;
   border: 1px solid #ccc;
   background-color: #fff;
 }
 
-#text_id {
+#msg {
   font-size: 24pt;
   text-align: center;
   margin-top: 140px;
+}
+
+#btn {
+  height: 100px;
+  margin-top: 50px;
 }
