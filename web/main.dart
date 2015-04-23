@@ -3,7 +3,7 @@ import 'package:chrome/chrome_app.dart' as chrome;
 import 'package:chrome/gen/runtime.dart';
 
 void main() {
-  querySelector("btn").onClick.listen(handleClick);
+  querySelector("#btn").onClick.listen(handleClick);
 }
 
 void handleClick(Event e) {
@@ -11,6 +11,6 @@ void handleClick(Event e) {
 }
 
 handleInfo(PlatformInfo m) {
-  querySelector("msg").text = m.arch;
+  querySelector("#msg").text = m.arch;
 }
 

@@ -4046,7 +4046,7 @@ return}if(typeof window=="object")return
 if(typeof print=="function"){print(a)
 return}throw"Unable to print message: "+String(a)}}],["","",,F,{
 "^":"",
-QL:[function(){var z=J.Vg(document.querySelector("btn"))
+QL:[function(){var z=J.Vg(document.querySelector("#btn"))
 H.VM(new W.xC(0,z.J6,z.fA,W.VF(F.bc()),z.el),[H.Kp(z,0)]).DN()},"$0","Bt",0,0,17],
 cl:[function(a){var z,y,x
 z=$.yK()
@@ -4058,7 +4058,7 @@ J.UQ(y,"runtime").V7("getPlatformInfo",[x.Hi])
 x.HH.MM.ml(new F.Qs())},"$1","bc",2,0,36,2],
 Qs:{
 "^":"Tp:15;",
-$1:[function(a){document.querySelector("msg").textContent=a.gNv()
+$1:[function(a){document.querySelector("#msg").textContent=a.gNv()
 return},"$1",null,2,0,null,57,"call"]}},1],])
 I.$finishClasses($$,$,null)
 $$=null
