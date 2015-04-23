@@ -15,7 +15,9 @@ h1, p {
   height: 400px;
   position: relative;
   border: 1px solid #ccc;
-  background-color: #fff;
+  /*background-color: #fff;*/
+  background-color: black;
+  color: green;
 }
 
 #msg {
