@@ -12,7 +12,7 @@ void handleClick(Event e) {
     .catchError((e) => addMsg(e.toString()));  
 }
 
-handleInfoList(List infoList) {
+handleInfoList(List<DeviceInfo> infoList) {
   infoList.forEach(handleInfo);
 }
 
@@ -21,6 +21,6 @@ handleInfo(DeviceInfo info) {
 }
 
 void addMsg(String str) {
-  querySelector("#msg").appendText("\n"+str);
+  querySelector("#msg").appendHtml("<br/>"+str);
 }
 
