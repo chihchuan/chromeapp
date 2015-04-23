@@ -1,16 +1,25 @@
 import 'dart:html';
 import 'package:chrome/chrome_app.dart' as chrome;
 import 'package:chrome/gen/runtime.dart';
+import 'package:chrome/gen/serial.dart';
 
 void main() {
   querySelector("#btn").onClick.listen(handleClick);
 }
 
 void handleClick(Event e) {
-  chrome.runtime.getPlatformInfo().then((m) => handleInfo(m));
+  chrome.serial.getDevices().then((infoList) => handleInfoList(infoList));  
 }
 
-handleInfo(PlatformInfo m) {
-  querySelector("#msg").text += "<br/>"+m.arch;
+handleInfoList(List infoList) {
+  infoList.forEach(handleInfo);
+}
+
+handleInfo(DeviceInfo info) {
+  addMsg(info.displayName);
+}
+
+void addMsg(String str) {
+  querySelector("#msg").appendText("\n"+str);
 }
 
