@@ -9,6 +9,7 @@ chrome.app.runtime.onLaunched.addListener(function(launchData) {
     'index.html',
     {
       id: 'mainWindow',
+      frame: "none",
       bounds: {width: 800, height: 600 }
     }
   );
