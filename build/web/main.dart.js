@@ -1327,12 +1327,12 @@ Ty:function(a,b,c){throw H.b(P.f("Cannot invoke insertAdjacentHtml on SVG."))},
 "^":"",
 Iq:function(){var z,y
 J.IR($.Tk(),"beforeend","Init...")
-J.IR($.Tk(),"beforeend","<br>")
+J.IR($.Tk(),"beforeend","\n")
 z=$.tU()
 y=J.m4(z)
 y=J.nJ(C.N0.gbG(z).t(0,y))
 J.IR($.Tk(),"beforeend",y)
-J.IR($.Tk(),"beforeend","<br>")}},1],])
+J.IR($.Tk(),"beforeend","\n")}},1],])
 I.$finishClasses($$,$,null)
 $$=null
 J.Qc=function(a){if(typeof a=="number")return J.P.prototype

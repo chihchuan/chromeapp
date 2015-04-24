@@ -13,7 +13,7 @@ void main() {
 
 void addMsg(String str) {
   msgField.appendHtml(str);
-  msgField.appendHtml("<br>");
+  msgField.appendHtml("\n");
 }
 
 String getOptionValue(SelectElement e, int index) {
