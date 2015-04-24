@@ -20,14 +20,20 @@ h1, p {
 }
 
 #msg {
-  font-size: 14pt;
+  font-size: 12pt;
   text-align: left;
-  /*margin-top: 140px;*/
-  padding: 1px;
+  padding: 2px;
   color: lightgreen;
+  background-color: black;
 }
 
-#btn {
-  height: 100px;
-  margin-top: 50px;
+#ctrlPanel, #selectPanel {
+  border: 1px;
+  margin: 2px;
+  padding: 2px;
+}
+
+.selectClass {
+  margin-left: 2px;
+  margin-right: 2px;
 }
