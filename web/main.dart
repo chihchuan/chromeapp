@@ -12,8 +12,9 @@ void main() {
 }
 
 void addMsg(String str) {
-  msgField.appendHtml(str);
-  msgField.appendHtml("\n");
+  DateTime now = new DateTime.now();
+  msgField.appendHtml("[${now.toString()}]:\t");
+  msgField.appendHtml(str + "\n");  
 }
 
 String getOptionValue(SelectElement e, int index) {
