@@ -8,10 +8,17 @@ var selectport = querySelector("#selectPort");
 
 void main() {  
   addMsg("Init...");
-  addMsg(selectport.selectedIndex);
+  addMsg(getOptionText(selectport, selectport.selectedIndex));
 }
 
 void addMsg(String str) {
-  msgField.appendHtml(str);
+  msgField.appendHtml(str + "<br/>");
 }
 
+String getOptionValue(SelectElement e, int index) {
+  return e.options[index].value;
+}
+
+String getOptionText(SelectElement e, int index) {
+  return e.options[index].text;
+}
