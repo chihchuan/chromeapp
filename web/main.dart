@@ -38,6 +38,6 @@ String getOptionText(SelectElement e, int index) {
 
 Map getOption(SelectElement e, int index) {
   String result;
-  result = '{"value": ${e.options[index].value}, "text": e.options[index].text}';
+  result = '{"value": "${e.options[index].value}", "text": "${e.options[index].text}"}';
   return JSON.decode(result);
 }

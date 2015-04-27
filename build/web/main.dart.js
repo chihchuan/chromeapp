@@ -3496,7 +3496,7 @@ Im:{
 "^":"D0;",
 "%":"MIDIInput;MIDIPort"},
 KV:{
-"^":"D0;",
+"^":"D0;a4:textContent=",
 wg:function(a){var z=a.parentNode
 if(z!=null)z.removeChild(a)},
 bu:function(a){var z=a.nodeValue
@@ -3554,6 +3554,7 @@ $isK5:true,
 "%":"DOMWindow|Window"},
 RX:{
 "^":"KV;oc:name=,P:value=",
+ga4:function(a){return a.textContent},
 "%":"Attr"},
 YC:{
 "^":"Gv;OR:bottom=,fg:height=,Bb:left=,T8:right=,G6:top=,R:width=",
@@ -4117,8 +4118,11 @@ return}throw"Unable to print message: "+String(a)}}],["","",,F,{
 "^":"",
 QL:[function(){F.AA("\u7a0b\u5f0f\u555f\u52d5 ...")
 $.GO().tA().ml(F.QX())},"$0","Bt",0,0,14],
-nP:[function(a){if(J.FN(a)===!0)F.AA("\u6c92\u6709\u627e\u5230 COM Port !!")
-else F.AA(J.UQ(C.xr.kV("{\"value\": "+H.d(J.Vm(J.UQ(J.Wy($.tU()),0)))+", \"text\": e.options[index].text}"),"value"))},"$1","QX",2,0,33,34],
+nP:[function(a){var z,y
+if(J.FN(a)===!0)F.AA("\u6c92\u6709\u627e\u5230 COM Port !!")
+else{z=$.tU()
+y=J.RE(z)
+F.AA(J.UQ(C.xr.kV("{\"value\": \""+H.d(J.Vm(J.UQ(y.gbG(z),0)))+"\", \"text\": \""+H.d(J.nJ(J.UQ(y.gbG(z),0)))+"\"}"),"value"))}},"$1","QX",2,0,33,34],
 AA:function(a){var z=Date.now()
 J.IR($.Tk(),"beforeend","["+new P.iP(z,!1).bu(0)+"]:\t")
 J.IR($.Tk(),"beforeend",J.WB(a,"\n"))}},1],])
@@ -4283,7 +4287,6 @@ J.Vm=function(a){return J.RE(a).gP(a)}
 J.Vs=function(a){return J.RE(a).gQg(a)}
 J.WB=function(a,b){if(typeof a=="number"&&typeof b=="number")return a+b
 return J.Qc(a).g(a,b)}
-J.Wy=function(a){return J.RE(a).gbG(a)}
 J.c1=function(a,b){return J.Wx(a).O(a,b)}
 J.i4=function(a,b){return J.w1(a).Zv(a,b)}
 J.jV=function(a,b){return J.RE(a).wR(a,b)}
@@ -4292,6 +4295,7 @@ J.kE=function(a,b){return J.U6(a).tg(a,b)}
 J.kH=function(a,b){return J.w1(a).aN(a,b)}
 J.kl=function(a,b){return J.w1(a).ez(a,b)}
 J.kp=function(a,b,c,d){return J.RE(a).r6(a,b,c,d)}
+J.nJ=function(a){return J.RE(a).ga4(a)}
 J.oE=function(a,b){return J.Qc(a).iM(a,b)}
 J.q8=function(a){return J.U6(a).gB(a)}
 J.qA=function(a){return J.w1(a).br(a)}
@@ -4852,11 +4856,11 @@ if(!"name" in rV)rV.name="rV"
 $desc=$collectedClasses.rV
 if($desc instanceof Array)$desc=$desc[1]
 rV.prototype=$desc
-function K4(){}K4.builtin$cls="K4"
-if(!"name" in K4)K4.name="K4"
-$desc=$collectedClasses.K4
+function Wy(){}Wy.builtin$cls="Wy"
+if(!"name" in Wy)Wy.name="Wy"
+$desc=$collectedClasses.Wy
 if($desc instanceof Array)$desc=$desc[1]
-K4.prototype=$desc
+Wy.prototype=$desc
 function QF(){}QF.builtin$cls="QF"
 if(!"name" in QF)QF.name="QF"
 $desc=$collectedClasses.QF
@@ -5209,6 +5213,7 @@ if(!"name" in KV)KV.name="KV"
 $desc=$collectedClasses.KV
 if($desc instanceof Array)$desc=$desc[1]
 KV.prototype=$desc
+KV.prototype.ga4=function(receiver){return receiver.textContent}
 function BH(){}BH.builtin$cls="BH"
 if(!"name" in BH)BH.name="BH"
 $desc=$collectedClasses.BH
@@ -7640,4 +7645,4 @@ if(!"name" in Ip)Ip.name="Ip"
 $desc=$collectedClasses.Ip
 if($desc instanceof Array)$desc=$desc[1]
 Ip.prototype=$desc
-return[qE,Gh,rK,F6,LL,fY,Mr,lJ,P2,nB,it,Az,QP,IF,n6,Ny,nx,QQ,MA,y4,d7,DG,HA,vH,xO,qs,Em,NW,rV,K4,QF,Ec,cm,Nh,ae,IB,cv,Fs,hY,ea,D0,zZ,as,hH,Aa,u5,UM,Yu,H2,iG,jP,mK,xf,xn,Vb,QH,ST,X2,tb,Sg,pA,Mi,KD,Ln,HL,MX,wP,eP,AL,Qj,cS,M6,El,mC,SV,aB,fJ,Ih,D8,Vh,qm,ZY,DH,cx,Ee,Yr,PG,xe,F3,bn,Im,xI,Aj,oU,FO,KV,BH,KY,G7,l9,Ql,wL,bP,mX,SN,HD,nU,ni,p3,qj,nC,KR,ew,Mw,fs,u2,BQ,h8,BL,ip,Mx,j2,Ea,lp,kd,I0,yN,Cp,zD,Ul,KK,ii,fq,h4,qk,GI,Tb,Iv,BT,yY,Un,FB,xV,FH,y6,RH,Kn,Z2,w6,lz,vw,aG,J6,K5,Xg,RX,YC,hq,w4,NL,yp,Eh,Mq,Nf,Nc,rj,rh,Zv,Q7,hF,yK,Y0,ZJ,mU,ph,IT,JY,Pq,kx,nV,Zc,ui,D6,DQ,Sm,xL,QU,es,jw,lv,pf,py,Tx,HC,wf,TU,ih,Nd,zp,Xu,lu,tk,me,oB,Ah,yu,MI,Ub,bM,pQ,Qy,ju,OE,N9,BA,d0,tp,rE,PI,PQ,uz,NB,p8,AD,Gr,cs,GH,To,jr,qI,qB,rQ,Lx,d5,hy,r8,aS,CG,qF,jk,Rk,Eo,Pe,o4,ZD,Rl,cu,BD,vR,Ja,zI,cB,LQ,yR,HP,fa,l4,Et,np,Pi,qO,xt,tG,P0,xl,Xr,Sl,Qm,WZ,ET,df,zU,K8,xj,dE,ZA,dT,nl,eE,V6,FK,Gv,yE,YE,Ue,iC,is,Q,P,bU,VA,O,PK,JO,O2,aX,NY,cC,RA,IY,JH,jl,Vg,Iy,JM,Ua,ns,yo,Bj,NO,II,fP,X1,HU,oo,OW,Tf,iY,yH,FA,Av,ku,LI,FD,Nv,Cj,u8,Zr,Zo,L4,vV,Am,XO,dr,TL,KX,uZ,OQ,Tp,Bp,v,GS,lb,tD,hJ,dC,wN,VX,XG,W1,c7,oD,Fx,Og,U9,GF,dQ,QN,P4,oe,uU,rf,yr,aL,bX,a7,i1,xy,MH,A8,U5,SO,TN,Lj,Qr,IW,GD,th,ha,C6,Ft,fA,WV,yZ,tK,DL,b8,Pf,Zf,Fe,vs,da,pV,U7,rH,cX,ZL,rq,RW,YP,FZ,ez,OM,qh,MO,Uf,KA,fI,LV,OH,m0,pK,R8,hj,MK,k6,oi,fG,EQ,YB,a1,db,i5,N6,b6,tj,zQ,Yp,u3,mW,LU,E9,lD,W0,Sw,o0,Ma,Vj,uw,FE,Uk,zF,by,QM,Y2,CL,a2,fR,iP,CP,a6,P7,DW,Ge,LK,AT,bJ,eY,JS,ub,ds,lj,UV,VS,t7,HG,aE,eV,kM,KN,An,zM,c8,lf,a,mE,qU,Rn,wv,wz,B1,zL,ec,dx,x5,S6,hm,rl,tJ,i7,JQ,Pb,zW,mD,Eg,m6,ct,IA,W9,kF,mk,MM,fm,Eq,E4,r7,Tz,Wk,DV,Hp,Nz,Jd,QS,b0,Dg,Ob,GV,Pg,fj,Ip]}
+return[qE,Gh,rK,F6,LL,fY,Mr,lJ,P2,nB,it,Az,QP,IF,n6,Ny,nx,QQ,MA,y4,d7,DG,HA,vH,xO,qs,Em,NW,rV,Wy,QF,Ec,cm,Nh,ae,IB,cv,Fs,hY,ea,D0,zZ,as,hH,Aa,u5,UM,Yu,H2,iG,jP,mK,xf,xn,Vb,QH,ST,X2,tb,Sg,pA,Mi,KD,Ln,HL,MX,wP,eP,AL,Qj,cS,M6,El,mC,SV,aB,fJ,Ih,D8,Vh,qm,ZY,DH,cx,Ee,Yr,PG,xe,F3,bn,Im,xI,Aj,oU,FO,KV,BH,KY,G7,l9,Ql,wL,bP,mX,SN,HD,nU,ni,p3,qj,nC,KR,ew,Mw,fs,u2,BQ,h8,BL,ip,Mx,j2,Ea,lp,kd,I0,yN,Cp,zD,Ul,KK,ii,fq,h4,qk,GI,Tb,Iv,BT,yY,Un,FB,xV,FH,y6,RH,Kn,Z2,w6,lz,vw,aG,J6,K5,Xg,RX,YC,hq,w4,NL,yp,Eh,Mq,Nf,Nc,rj,rh,Zv,Q7,hF,yK,Y0,ZJ,mU,ph,IT,JY,Pq,kx,nV,Zc,ui,D6,DQ,Sm,xL,QU,es,jw,lv,pf,py,Tx,HC,wf,TU,ih,Nd,zp,Xu,lu,tk,me,oB,Ah,yu,MI,Ub,bM,pQ,Qy,ju,OE,N9,BA,d0,tp,rE,PI,PQ,uz,NB,p8,AD,Gr,cs,GH,To,jr,qI,qB,rQ,Lx,d5,hy,r8,aS,CG,qF,jk,Rk,Eo,Pe,o4,ZD,Rl,cu,BD,vR,Ja,zI,cB,LQ,yR,HP,fa,l4,Et,np,Pi,qO,xt,tG,P0,xl,Xr,Sl,Qm,WZ,ET,df,zU,K8,xj,dE,ZA,dT,nl,eE,V6,FK,Gv,yE,YE,Ue,iC,is,Q,P,bU,VA,O,PK,JO,O2,aX,NY,cC,RA,IY,JH,jl,Vg,Iy,JM,Ua,ns,yo,Bj,NO,II,fP,X1,HU,oo,OW,Tf,iY,yH,FA,Av,ku,LI,FD,Nv,Cj,u8,Zr,Zo,L4,vV,Am,XO,dr,TL,KX,uZ,OQ,Tp,Bp,v,GS,lb,tD,hJ,dC,wN,VX,XG,W1,c7,oD,Fx,Og,U9,GF,dQ,QN,P4,oe,uU,rf,yr,aL,bX,a7,i1,xy,MH,A8,U5,SO,TN,Lj,Qr,IW,GD,th,ha,C6,Ft,fA,WV,yZ,tK,DL,b8,Pf,Zf,Fe,vs,da,pV,U7,rH,cX,ZL,rq,RW,YP,FZ,ez,OM,qh,MO,Uf,KA,fI,LV,OH,m0,pK,R8,hj,MK,k6,oi,fG,EQ,YB,a1,db,i5,N6,b6,tj,zQ,Yp,u3,mW,LU,E9,lD,W0,Sw,o0,Ma,Vj,uw,FE,Uk,zF,by,QM,Y2,CL,a2,fR,iP,CP,a6,P7,DW,Ge,LK,AT,bJ,eY,JS,ub,ds,lj,UV,VS,t7,HG,aE,eV,kM,KN,An,zM,c8,lf,a,mE,qU,Rn,wv,wz,B1,zL,ec,dx,x5,S6,hm,rl,tJ,i7,JQ,Pb,zW,mD,Eg,m6,ct,IA,W9,kF,mk,MM,fm,Eq,E4,r7,Tz,Wk,DV,Hp,Nz,Jd,QS,b0,Dg,Ob,GV,Pg,fj,Ip]}
