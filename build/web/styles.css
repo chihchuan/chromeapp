@@ -25,6 +25,12 @@ body {
   height: 100%;
   resize: none;
   overflow-y: scroll;
+  margin: 2px;
+}
+
+#textBtn {
+  margin: 2px;
+  position: left;
 }
 
 #ctrlPanel, #selectPanel {
