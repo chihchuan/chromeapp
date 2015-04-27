@@ -34,9 +34,10 @@ body {
 }
 
 #ctrlPanel, #selectPanel {
-  border: 2px;
+  border: 2px solid red;
   margin-left: 10px;
   margin-right: 10px;
+  margin-top: 10px;
   padding: 10px;
 }
 
