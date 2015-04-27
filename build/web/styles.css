@@ -30,7 +30,7 @@ body {
 
 #textBtn {
   margin: 2px;
-  position: left;
+  float: right;
 }
 
 #ctrlPanel, #selectPanel {
