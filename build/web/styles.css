@@ -29,11 +29,11 @@ body {
 }
 
 #textBtn {
-  margin: 2px;
+  margin: 12px;
   float: right;
 }
 
-#ctrlPanel, #selectPanel {
+#selectPanel {
   border: 2px solid red;
   margin-left: 10px;
   margin-right: 10px;
