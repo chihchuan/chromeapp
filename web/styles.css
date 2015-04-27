@@ -35,12 +35,14 @@ body {
 
 #ctrlPanel {
   margin-top: 50px;
+  margin-left: 50px;
 }
 
 #selectPanel {
-  border: 2px solid red;
-  margin: 20px;
+  border: 1px solid #aabbcc;
+  margin: 0px auto;
   padding: 10px;
+  position: fixed;
 }
 
 .selectClass {
